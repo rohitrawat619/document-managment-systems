@@ -1,0 +1,235 @@
+.promo-primary {
+    position: relative;
+    overflow: hidden;
+    font-family: Quicksand,sans-serif;
+    height: 200px;
+    position: fixed;
+    top: 0;
+}
+
+.promo-primary .align-container__item {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+}
+
+.promo-primary .promo-primary__title::before {
+    left: auto;
+    right: 0 !important;
+    background-color: #fdd340;
+}
+
+.d-details{
+    padding-top: 40px;
+    padding-bottom: 30px;
+    text-align: justify;
+    width: 95%;
+}
+
+.wrapper{
+  display:flex;
+  height: 8em;
+  flex-direction: row;
+  padding: 0 20px;
+  align-items: center;
+  justify-content: center;
+}
+.img--bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -o-object-position: top center;
+    object-position: top center;
+    font-family: "object-fit: cover; object-position: top center";
+    z-index: -1
+}
+
+.img--contain {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    width: 100%;
+    height: 100%;
+    -o-object-fit: contain;
+    object-fit: contain;
+    -o-object-position: center center;
+    object-position: center center;
+    font-family: "object-fit: contain; object-position: center center";
+    z-index: -1
+}
+
+.img--layout {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    z-index: -1;
+    pointer-events: none
+}
+
+.img--aside {
+    display: none;
+    position: absolute;
+    width: 25%;
+    max-width: 500px;
+    z-index: -1
+}
+
+@media only screen and (min-width: 1200px) {
+    .img--aside {
+        display:inline-block
+    }
+}
+/* Table Layout */
+
+table.vitamins {
+  margin: 20px 0 0 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background: #212121;
+  color: #fff;
+  width: 100%;
+}
+
+table.vitamins th,
+table.vitamins td {
+  text-align: center;
+}
+
+table.vitamins thead {
+  line-height: 12px;
+  background: #2e63e7;
+  text-transform: uppercase;
+}
+
+table.vitamins thead th {
+  color: #fff;
+  padding: 10px;
+  letter-spacing: 1px;
+  vertical-align: bottom;
+}
+
+table.vitamins thead th:nth-child(1) {
+  width: 20%;
+  text-align: left;
+  padding-left: 20px;
+}
+
+table.vitamins thead th:nth-child(2) {
+  width: 30%;
+}
+
+table.vitamins thead th:nth-child(3) {
+  width: 35%;
+}
+
+table.vitamins thead th:nth-child(4) {
+  width: 15%;
+}
+
+table.vitamins tbody {
+  font-size: 1em;
+  line-height: 15px;
+}
+
+table.vitamins tbody tr {
+  border-top: 2px solid rgba(109, 176, 231, 0.8);
+  transition: background 0.6s, color 0.6s;
+}
+
+table.vitamins tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+table.vitamins tbody tr:hover {
+  color: #000;
+  background: rgba(255, 255, 255, 0.7);
+  font-weight: 900;
+}
+
+table.vitamins tbody td {
+  padding: 12px;
+}
+
+table.vitamins tbody tr:hover td:first-child {
+  background: rgba(0, 0, 0, 0);
+}
+
+table.vitamins tbody td:first-child {
+  text-align: left;
+  padding-left: 20px;
+  font-weight: 700;
+  background: rgba(109, 176, 231, 0.35);
+  transition: backgrounf 0.6s;
+}
+
+table.vitamins tfoot {
+  font-size: 0.8em;
+}
+
+table.vitamins tfoot tr {
+  border-top: 2px solid #2e63e7;
+}
+
+table.vitamins tfoot td {
+  color: rgba(255, 255, 215, 0.6);
+  text-align: left;
+  line-height: 15px;
+  padding: 15px 20px;
+}
+
+/* Mobile Layout */
+
+@media screen and (max-width: 400px) {
+  h1 {
+    font-size: 34px;
+    line-height: 36px;
+    padding-left: 15px;
+  }
+
+  article {
+    margin: 10px 15px;
+  }
+
+  table.vitamins {
+    font-size: 0.8em;
+  }
+}
+
+.content-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    right: 0;
+    padding: 50px 0 0;
+    z-index: 2;
+    -webkit-transform: translate3d(0,0,0);
+   
+}
+article h2{
+  font-size: 2em;
+  padding: 10px;
+  font-weight: 600;
+}
+.page-body{
+	height: auto;
+}
+
+.height-emulator {
+    float: left;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    background: url(../img/cta-bg_2.png);
+    background-size: contain;
+    bottom: 0;
+}
