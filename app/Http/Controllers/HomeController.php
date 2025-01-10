@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Role;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // return view('home');
+        return view('backend.index');
+    }
+
+    public function roles(Request $request)
+    {
+        $roles = Role::where('is_deleted',0)->get();
+
+        return view('backend.roles.index',compact('roles'));
     }
 }

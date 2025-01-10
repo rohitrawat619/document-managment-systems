@@ -34,4 +34,6 @@ Route::match(['get','post'],'/admin/login',[App\Http\Controllers\AppController::
 Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::get('/roles',[App\Http\Controllers\HomeController::class, 'roles'])->name('roles');
 });
