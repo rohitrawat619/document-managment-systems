@@ -35,5 +35,15 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::get('/roles',[App\Http\Controllers\HomeController::class, 'roles'])->name('roles');
+    // Roles
+
+    Route::get('/roles',[App\Http\Controllers\RoleController::class, 'index'])->name('roles');
+
+    Route::match(['get','post'],'/roles/create',[App\Http\Controllers\RoleController::class, 'create'])->name('roles.create');
+
+    Route::match(['get','post'],'/roles/edit/{id}',[App\Http\Controllers\RoleController::class, 'edit'])->name('roles.edit');
+
+    Route::post('/roles/status',[App\Http\Controllers\RoleController::class, 'status'])->name('roles.status');
+
+    Route::post('/roles/delete',[App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.delete');
 });

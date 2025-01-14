@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -28,10 +32,4 @@ class HomeController extends Controller
         return view('backend.index');
     }
 
-    public function roles(Request $request)
-    {
-        $roles = Role::where('is_deleted',0)->get();
-
-        return view('backend.roles.index',compact('roles'));
-    }
 }
