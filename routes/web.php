@@ -58,4 +58,18 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
 
     Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
+
+    // Document Type
+
+    Route::get('/document/office_memorandum',[App\Http\Controllers\FormController::class, 'officeMemorandum'])->name('document.office_memorandum');
+
+    Route::match(['get','post'],'/document/office_memorandum/create',[App\Http\Controllers\FormController::class, 'officeMemorandumCreate'])->name('document.office_memorandum.create');
+
+    Route::match(['get','post'],'/document/office_memorandum/edit/{id}',[App\Http\Controllers\FormController::class, 'officeMemorandumEdit'])->name('document.office_memorandum.edit');
+
+    Route::post('/document/office_memorandum/status',[App\Http\Controllers\FormController::class, 'officeMemorandumStatus'])->name('document.office_memorandum.status');
+
+    Route::post('/document/office_memorandum/delete',[App\Http\Controllers\FormController::class, 'officeMemorandumDestroy'])->name('document.office_memorandum.delete');
+
+
 });

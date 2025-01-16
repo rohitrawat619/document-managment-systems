@@ -39,6 +39,20 @@
                 <div class="menu-title active">Users</div>
             </a>
         </li>
+        <li class="menu-label">File Managemant</li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-detail'></i>
+                </div>
+                <div class="menu-title active">Document Type</div>
+            </a>
+            <ul>
+                <li> <a href="{{route('admin.document.office_memorandum')}}"><i class='bx bx-radio-circle'></i>Office Memorandum</a>
+                </li>
+                {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
+                </li> --}}
+            </ul>
+        </li>
     </ul>
     <!--end navigation-->
 </div>
