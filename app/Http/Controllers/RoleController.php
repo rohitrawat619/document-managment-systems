@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //
     public function index(Request $request)
     {
@@ -89,7 +99,7 @@ class RoleController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.roles.create')->withErrors($validator)->withInput();
+                return redirect()->route('admin.roles.edit')->withErrors($validator)->withInput();
             }
 
             $role_exist = Role::where(['name'=>$request->name,'is_deleted'=>'0'])->where('id','<>', $role_id)->count();

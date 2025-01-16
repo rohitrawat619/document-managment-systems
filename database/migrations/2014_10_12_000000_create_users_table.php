@@ -25,7 +25,12 @@ return new class extends Migration
             $table->string('designation')->nullable();
             $table->string('division')->nullable();
             $table->string('phone',100)->nullable();
+            $table->string('phone_code',50)->nullable();
+            $table->string('phone_iso',50)->nullable();
             $table->tinyInteger('is_active')->default(1)->nullable();
+            $table->tinyInteger('is_deleted')->default(0)->nullable();
+            $table->bigInteger('deleted_by')->index()->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -28,9 +28,16 @@
             <ul>
                 <li> <a href="{{route('admin.roles')}}"><i class='bx bx-radio-circle'></i>Roles</a>
                 </li>
-                <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
-                </li>
+                {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
+                </li> --}}
             </ul>
+        </li>
+        <li>
+            <a href="{{route('admin.users')}}">
+                <div class="parent-icon"><i class='bx bx-user'></i>
+                </div>
+                <div class="menu-title active">Users</div>
+            </a>
         </li>
     </ul>
     <!--end navigation-->

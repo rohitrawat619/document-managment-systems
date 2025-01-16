@@ -46,4 +46,16 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::post('/roles/status',[App\Http\Controllers\RoleController::class, 'status'])->name('roles.status');
 
     Route::post('/roles/delete',[App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.delete');
+
+    // User
+
+    Route::get('/users',[App\Http\Controllers\UserController::class, 'index'])->name('users');
+
+    Route::match(['get','post'],'/users/create',[App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+
+    Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+
+    Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
+
+    Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
 });
