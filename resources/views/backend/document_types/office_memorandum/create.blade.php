@@ -114,6 +114,19 @@
                                     </span>
                                 @endif
                             </div>
+                            <div class="col-md-6">
+                                <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
+                                <select class="form-control" name="file_type">
+                                    <option value="">--Select--</option>
+                                    <option value="0">Confidential</option>
+                                    <option value="1">Non-Confidential</option>
+                                </select>
+                                @if ($errors->has('file_type'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('file_type') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
                                     <button type="submit" class="btn btn-primary px-4">Submit</button>
