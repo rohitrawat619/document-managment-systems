@@ -35,33 +35,36 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    // Roles
+    Route::middleware(['is_access'])->group(function () {
 
-    Route::get('/roles',[App\Http\Controllers\RoleController::class, 'index'])->name('roles');
+        // Roles
 
-    Route::match(['get','post'],'/roles/create',[App\Http\Controllers\RoleController::class, 'create'])->name('roles.create');
+        Route::get('/roles',[App\Http\Controllers\RoleController::class, 'index'])->name('roles.index');
 
-    Route::match(['get','post'],'/roles/edit/{id}',[App\Http\Controllers\RoleController::class, 'edit'])->name('roles.edit');
+        Route::match(['get','post'],'/roles/create',[App\Http\Controllers\RoleController::class, 'create'])->name('roles.create');
 
-    Route::post('/roles/status',[App\Http\Controllers\RoleController::class, 'status'])->name('roles.status');
+        Route::match(['get','post'],'/roles/edit/{id}',[App\Http\Controllers\RoleController::class, 'edit'])->name('roles.edit');
 
-    Route::post('/roles/delete',[App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.delete');
+        Route::post('/roles/status',[App\Http\Controllers\RoleController::class, 'status'])->name('roles.status');
 
-    // User
+        Route::post('/roles/delete',[App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.delete');
 
-    Route::get('/users',[App\Http\Controllers\UserController::class, 'index'])->name('users');
+        // User
 
-    Route::match(['get','post'],'/users/create',[App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+        Route::get('/users',[App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 
-    Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+        Route::match(['get','post'],'/users/create',[App\Http\Controllers\UserController::class, 'create'])->name('users.create');
 
-    Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
+        Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
 
-    Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
+        Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
+
+        Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
+    });
 
     // Document Type
 
-    Route::get('/document/office_memorandum',[App\Http\Controllers\FormController::class, 'officeMemorandum'])->name('document.office_memorandum');
+    Route::get('/document/office_memorandum',[App\Http\Controllers\FormController::class, 'officeMemorandum'])->name('document.office_memorandum.index');
 
     Route::match(['get','post'],'/document/office_memorandum/create',[App\Http\Controllers\FormController::class, 'officeMemorandumCreate'])->name('document.office_memorandum.create');
 

@@ -65,7 +65,7 @@ class RoleController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.roles')->with('success','Role Created Successfully !!');
+            return redirect()->route('admin.roles.index')->with('success','Role Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -115,7 +115,7 @@ class RoleController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.roles')->with('success','Role Updated Successfully !!');
+            return redirect()->route('admin.roles.index')->with('success','Role Updated Successfully !!');
         }
         catch (\Exception $e) {
             DB::rollback();

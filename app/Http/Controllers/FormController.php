@@ -106,7 +106,7 @@ class FormController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.document_types.office_memorandum')->with('success','Form Created Successfully !!');
+            return redirect()->route('admin.document_types.office_memorandum.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {

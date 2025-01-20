@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('user_name',150);
             $table->string('password');
             $table->bigInteger('role_id')->index()->nullable();
-            $table->string('designation')->nullable();
-            $table->string('division')->nullable();
+            $table->string('designation')->index()->nullable();
+            $table->string('division')->index()->nullable();
             $table->string('phone',100)->nullable();
             $table->string('phone_code',50)->nullable();
             $table->string('phone_iso',50)->nullable();
