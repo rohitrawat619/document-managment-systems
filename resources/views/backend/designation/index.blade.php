@@ -10,13 +10,13 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Roles</li>
+                        <li class="breadcrumb-item active" aria-current="page">Designation</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.roles.create')}}" type="button" class="btn btn-primary">Add</a>
+                    <a href="{{route('admin.designation.create')}}" type="button" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -47,21 +47,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($roles as $k => $r)
+                                @forelse ($designation as $k => $r)
                                     <tr>
                                         <th scope="row">{{$k + 1}}</th>
                                         <td>{{$r->name}}</td>
                                         <td>
                                             <div class="d-flex order-actions">
-												<a href="{{route('admin.roles.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+												<a href="{{route('admin.designation.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
 												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                @if($r->is_active==1)
+                                                {{-- @if($r->is_active==1)
                                                     <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
                                                     <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
                                                 @else
                                                     <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
                                                     <a href="javascript:;" class="ms-3 status" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif
+                                                @endif --}}
 											</div>
                                         </td>
                                     </tr>
@@ -79,61 +79,7 @@
 </div>
 @push('scripts')
     <script>
-       $(document).on('click', '.status', function (event) {
-            var id = $(this).attr('data-id');
-            var type = $(this).attr('data-type');
 
-            // Correct way to call SweetAlert2
-            Swal.fire({
-                title: "Are you Want to Change The Status of This Role?",
-                text: "",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#189bc3",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "YES",
-                cancelButtonText: "CANCEL",
-                reverseButtons: true // Ensure the 'Cancel' button is on the right
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{route('admin.roles.status')}}",
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            'id': id,
-                            'type': type
-                        },
-                        success: function (response) {
-                            if (response.success == false) {
-                                toastr.error('This Role is Already Assigned to The Users');
-                            }
-                            if (response.success) {
-                                if (response.type == 'enable') {
-                                    $('table.roleTable tr').find("[data-ac='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                    $('table.roleTable tr').find("[data-dc='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.roleTable tr').find("[data-a='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.roleTable tr').find("[data-d='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                } else if (response.type == 'disable') {
-                                    $('table.roleTable tr').find("[data-dc='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                    $('table.roleTable tr').find("[data-ac='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.roleTable tr').find("[data-d='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.roleTable tr').find("[data-a='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                }
-                            }
-                            // Close SweetAlert
-                            Swal.close();
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            // handle error
-                        }
-                    });
-                } else {
-                    // If the user clicked 'Cancel' or dismissed the SweetAlert
-                    Swal.close();
-                }
-            });
-       });
 
        $(document).on('click', '.deleteBtn', function (event) {
             var id = $(this).attr('data-id');
@@ -153,17 +99,17 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.roles.delete')}}",
+                        url: "{{route('admin.designation.delete')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
                         },
                         success: function (response) {
                             if (response.success == false) {
-                                toastr.error('This Role is Already Assigned to The Users');
+                                toastr.error('This Designation is Already Assigned to The Users');
                             }
                             if (response.success) {
-                                toastr.success('Role Deleted Successfully');
+                                toastr.success('Designation Deleted Successfully');
                                 window.setTimeout(function(){
                                     window.location.reload();
                                 },2000);

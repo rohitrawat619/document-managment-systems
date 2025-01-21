@@ -17,12 +17,19 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    // protected $fillable = [
-    //     'name',
-    //     'email',
-    //     'password',
-    // ];
-    protected $guarded = ['*'];
+    protected $fillable = [
+        'first_name',  // Add the fields you want to be mass assignable
+        'last_name',
+        'email',
+        'password',
+        'division',
+        'designation',
+        'role_id',
+        'phone',
+        'phone_code',
+        'phone_iso'
+    ];
+   // protected $guarded = ['*'];
 
     /**
      * The attributes that should be hidden for serialization.

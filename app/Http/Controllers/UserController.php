@@ -37,7 +37,7 @@ class UserController extends Controller
                 ->whereNotNull('u.role_id')
                 ->groupBy('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name')
                 ->get();
-        
+
         return view('backend.users.index',compact('users'));
     }
 
@@ -144,8 +144,8 @@ class UserController extends Controller
         DB::beginTransaction();
         try{
             $rules = [
-                'first_name'=> 'required|regex:/^[a-zA-Z]+$/u|min:1|max:255',
-                'last_name'=> 'nullable|regex:/^[a-zA-Z]+$/u|min:0|max:255',
+                'first_name'=> 'required|regex:/^[a-zA-Z ]+$/u|min:1|max:255',
+                'last_name'=> 'nullable|regex:/^[a-zA-Z ]+$/u|min:0|max:255',
                 'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
@@ -160,7 +160,7 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.users.edit')->withErrors($validator)->withInput();
+                return redirect()->route('admin.users.edit',['id'=>base64_encode($user_id)])->withErrors($validator)->withInput();
             }
 
             $mobile = preg_replace('/\D/', '', $request->input('mobile'));
