@@ -90,7 +90,7 @@ class RoleController extends Controller
         DB::beginTransaction();
         try{
             $rules = [
-                'name'=> 'required|regex:/^[a-zA-Z][a-zA-Z0-9]+$/u|min:1|max:255',
+                'name'=> 'required|regex:/^[a-zA-Z][a-zA-Z0-9 ]+$/u|min:1|max:255',
             ];
 
             $messages = [
@@ -99,18 +99,18 @@ class RoleController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.roles.edit')->withErrors($validator)->withInput();
+                return redirect()->route('admin.roles.edit',['id'=>base64_encode($role_id)])->withErrors($validator)->withInput();
             }
 
             $role_exist = Role::where(['name'=>$request->name,'is_deleted'=>'0'])->where('id','<>', $role_id)->count();
 
             if($role_exist > 0)
             {
-                return redirect()->route('admin.roles.edit')->withErrors(['name'=>['The role name already exists !!']])->withInput();
+                return redirect()->route('admin.roles.edit',['id'=>base64_encode($role_id)])->withErrors(['name'=>['The role name already exists !!']])->withInput();
             }
 
             $new_role = Role::find($role_id);
-            $new_role->role= $request->name;
+            $new_role->name= $request->name;
             $new_role->save();
 
             DB::commit();

@@ -24,13 +24,15 @@
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class='bx bx-cog'></i>
                     </div>
-                    <div class="menu-title active">Roles</div>
+                    <div class="menu-title active">System</div>
                 </a>
                 <ul>
                     <li> <a href="{{route('admin.roles.index')}}"><i class='bx bx-radio-circle'></i>Roles</a>
                     </li>
                     {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
                     </li> --}}
+                    <li> <a href="{{route('admin.designation.index')}}"><i class='bx bx-radio-circle'></i>Designation</a>
+                    </li>
                 </ul>
             </li>
         @endif
