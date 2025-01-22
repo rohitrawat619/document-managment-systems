@@ -33,6 +33,8 @@
                     </li> --}}
                     <li> <a href="{{route('admin.designation.index')}}"><i class='bx bx-radio-circle'></i>Designation</a>
                     </li>
+                    <li> <a href="{{route('admin.division.index')}}"><i class='bx bx-radio-circle'></i>Division</a>
+                    </li>
                 </ul>
             </li>
         @endif
