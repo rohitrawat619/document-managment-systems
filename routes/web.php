@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
+use App\Helpers\Helper;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,18 +56,21 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/designation/create',[App\Http\Controllers\DesignationController::class, 'create'])->name('designation.create');
         Route::match(['get','post'],'/designation/edit/{id}',[App\Http\Controllers\DesignationController::class, 'edit'])->name('designation.edit');
         Route::post('/designation/delete',[App\Http\Controllers\DesignationController::class, 'destroy'])->name('designation.delete');
+        
+        // Division
+
+        Route::get('/division',[App\Http\Controllers\DivisionController::class, 'index'])->name('division.index');
+        Route::match(['get','post'],'/division/create',[App\Http\Controllers\DivisionController::class, 'create'])->name('division.create');
+        Route::match(['get','post'],'/division/edit/{id}',[App\Http\Controllers\DivisionController::class, 'edit'])->name('division.edit');
+        Route::post('/division/delete',[App\Http\Controllers\DivisionController::class, 'destroy'])->name('division.delete');
 
 
         // User
 
         Route::get('/users',[App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-
         Route::match(['get','post'],'/users/create',[App\Http\Controllers\UserController::class, 'create'])->name('users.create');
-
         Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-
         Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
-
         Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
     });
 
