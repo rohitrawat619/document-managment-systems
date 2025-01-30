@@ -7,7 +7,9 @@ use App\Models\OfficeMemorandum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
+use App\Models\OfficeMemorandumUpload;
 
 class FormController extends Controller
 {
@@ -36,8 +38,9 @@ class FormController extends Controller
         return view('backend.document_types.office_memorandum.index',compact('office_memorandum'));
     }
 
-    public function officeMemorandumCreate(Request $request)
+    public function create(Request $request)
     {
+       
         if($request->isMethod('get'))
         {
             $divisions = Division::all();
@@ -45,68 +48,74 @@ class FormController extends Controller
             return view('backend.document_types.office_memorandum.create',compact('divisions'));
         }
 
+        $roleId = Auth::user()->role_id;
+
+     
         DB::beginTransaction();
         try{
 
             $rules = [
-                'first_name'=> 'required|regex:/^[a-zA-Z]+$/u|min:1|max:255',
-                'last_name'=> 'nullable|regex:/^[a-zA-Z]+$/u|min:0|max:255',
+              
+                'computer_no' => 'required',
                 'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-                'email' => 'required|email:dns,rfc|unique:users,email',
-                'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
+                'date_of_issue' => 'required',
+                'subject' => 'required|string',
+                'issuer_name' => 'required|string',
+                'issuer_designation' => 'required|string',
+                'file_type' => 'required',
                 'division' => 'required',
-                'designation' => 'required',
-                'role' => 'required',
-                'password' => 'required|same:confirm_password|min:10',
-                'confirm_password' => 'required|string'
+                'date_of_upload' => 'required',
+                'upload_file' => 'required|array|min:1', 
+                'upload_file.*' => 'mimes:pdf|max:20480' 
+               
             ];
 
+           
+
             $messages = [
-                'name.regex' => 'The name must be combination of letter',
-                'mobile.regex'=>'Mobile Number must be Valid !!',
-                'email.unique'  =>'Email id has already been taken',
                 'file_no.regex'  =>'File No Should be in Correct Format',
+                'upload_file.*.mimes' => 'Each file should be in PDF format',
+                'upload_file.*.max' => 'Each file should be smaller than 20MB'
             ];
+
+           
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document_types.office_memorandum.create')->withErrors($validator)->withInput();
+                return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
             }
 
-            $mobile = preg_replace('/\D/', '', $request->input('mobile'));
-
-            $name = trim(preg_replace('/^\s+|\s+$|\s+(?=\s)/', '', $request->input('first_name').' '.$request->input('last_name')));
-
-            $raw_pass =$request->input('password');
-
-            if (!preg_match("/^(?=.{10,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@%£!]).*$/", $raw_pass)){
-
-                return redirect()->route('admin.document_types.office_memorandum.create')->withErrors(['password'=>'Password must be atleast 10 characters long including (Atleast 1 uppercase letter(A–Z), Lowercase letter(a–z), 1 number(0–9), 1 non-alphanumeric symbol(‘$@%£!’) !'])->withInput();
-            }
 
             $new_user = OfficeMemorandum::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'name' => $name,
-                'email' => $request->email,
-                'phone' => $mobile,
-                'phone_code' => $request->input('mobile_code'),
-                'phone_iso' => $request->input('mobile_iso'),
-                'division' => $request->division,
-                'designation' => $request->designation,
-                'role_id' => $request->role,
-                'password' => bcrypt($request->password)
+                'computer_no' => $request->computer_no,
+                'file_no'=> $request->file_no,
+                'date_of_issue' => $request->date_of_issue,
+                'subject' => $request->subject,
+                'issuer_name' => $request->issuer_name,
+                'issuer_designation' => $request->issuer_designation,
+                'file_type' => $request->file_type,
+                'division_id' => $request->division,
+                'date_of_upload' => $request->date_of_upload,
+                'uploaded_by' => $roleId
             ]);
 
-            $user_name = 'omms_'.$request->first_name.($new_user->id+1);
-
-            OfficeMemorandum::where('id',$new_user->id)->update([
-                'user_name' => $user_name
-            ]);
+            if ($request->hasFile('upload_file')) {
+                $uploadedFiles = $request->file('upload_file');
+                foreach ($uploadedFiles as $file) {
+                    
+                    $path = $file->store('office_memorandum_uploads', 'public');
+                
+                    OfficeMemorandumUpload::create([
+                        'file_path' => $path,
+                        'record_id' => $new_user->id, 
+                        'file_name' => $file->getClientOriginalName() 
+                    ]);
+                }
+            }
 
             DB::commit();
 
-            return redirect()->route('admin.document_types.office_memorandum.index')->with('success','Form Created Successfully !!');
+            return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -116,4 +125,115 @@ class FormController extends Controller
         }
 
     }
+
+    // edit function for office memorandum and office memorandum uploads
+
+    public function edit(Request $request,$id)
+    {
+    $user_id = base64_decode($request->id);
+
+    if($request->isMethod('get')) {
+        $divisions = Division::all();
+        $office_memorandum = OfficeMemorandum::where('id', $user_id)->first();
+        $office_memorandum_upload = OfficeMemorandumUpload::where('record_id', $user_id)->get();
+        return view('backend.document_types.office_memorandum.edit', compact('divisions', 'office_memorandum', 'office_memorandum_upload'));
+    }
+
+    DB::beginTransaction();
+    try {
+       
+        $validator = Validator::make($request->all(), [
+            'computer_no' => 'required',
+            'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
+            'date_of_issue' => 'required',
+            'subject' => 'required|string',
+            'issuer_name' => 'required|string',
+            'issuer_designation' => 'required|string',
+            'file_type' => 'required',
+            'division' => 'required',
+            'date_of_upload' => 'required',
+            'upload_file' => 'nullable|array|min:1',
+            'upload_file.*' => 'mimes:pdf|max:20480'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.document.office_memorandum.edit', ['id' => base64_encode($user_id)])
+                             ->withErrors($validator)
+                             ->withInput();
+        }
+        
+        $office_memorandum = OfficeMemorandum::find($id);
+
+    $office_memorandum->update([
+        'computer_no' => $request->computer_no,
+        'file_no' => $request->file_no,
+        'date_of_issue' => $request->date_of_issue,
+        'subject' => $request->subject,
+        'issuer_name' => $request->issuer_name,
+        'issuer_designation' => $request->issuer_designation,
+        'file_type' => $request->file_type,
+        'division_id' => $request->division,
+        'date_of_upload' => $request->date_of_upload
+    ]);
+
+
+        if ($request->hasFile('upload_file')) {
+            foreach ($request->file('upload_file') as $file) {
+                $path = $file->store('office_memorandum_uploads', 'public');
+                OfficeMemorandumUpload::create([
+                    'file_path' => $path,
+                    'record_id' => $office_memorandum->id,
+                    'file_name' => $file->getClientOriginalName()
+                ]);
+            }
+        }
+
+        DB::commit();
+        return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+    }
+}
+
+
+public function deleteFile(Request $request)
+{
+    $filePath = $request->file_path;
+    $fileId = $request->file_id;
+
+    if ($filePath) {
+        
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        }
+
+        $file = OfficeMemorandumUpload::find($fileId);
+        if ($file) {
+            $file->delete();
+        }
+
+        return response()->json(['message' => 'File deleted successfully']);
+    }
+
+    return response()->json(['error' => 'File not found'], 404);
+}
+
+
+    // function for deleting records of office memorandum
+
+    public function destroy(Request $request)
+    {  
+        $user_id =base64_decode($request->id);
+        $auth_id = Auth::user()->id;
+        $privacy = OfficeMemorandum::find($user_id);
+        $privacy->is_deleted = '1';
+        $privacy->deleted_by = $auth_id;
+        $privacy->deleted_at = date('Y-m-d H:i:s');
+        $privacy->save();
+
+        return response()->json(['success'=>true]);
+    }
+
+    
 }

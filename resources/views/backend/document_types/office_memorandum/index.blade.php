@@ -62,19 +62,19 @@
                                         <td>{{$r->subject}}</td>
                                         <td>{{$r->issuer_name}}</td>
                                         <td>{{$r->issuer_designation}}</td>
-                                        <td>{{$r->uploader_name.'('.$r->uploader_designation.')'}}</td>
+                                        <!-- <td>{{$r->uploader_name.'('.$r->uploader_designation.')'}}</td> -->
                                         <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                         <td>
                                             <div class="d-flex order-actions">
 												<a href="{{route('admin.document.office_memorandum.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
 												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                @if($r->is_active==1)
+                                                <!-- @if($r->is_active==1)
                                                     <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
                                                     <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
                                                 @else
                                                     <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
                                                     <a href="javascript:;" class="ms-3 status"  data-a="{{base64_encode($r->id)}}"  data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif
+                                                @endif -->
 											</div>
                                         </td>
                                     </tr>
@@ -163,7 +163,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.document.office_memorandum.delete')}}",
+                        url: "{{route('admin.office_memorandum.delete')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,

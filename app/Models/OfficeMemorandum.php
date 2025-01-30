@@ -12,4 +12,26 @@ class OfficeMemorandum extends Model
     protected $table = 'office_memorandum';
 
     protected $guarded = ['*'];
+
+    protected $fillable = [
+        'computer_no',
+        'file_no',
+        'date_of_issue',
+        'subject',
+        'issuer_name',
+        'issuer_designation',
+        'file_type',
+        'division_id',
+        'date_of_upload',
+        'uploaded_by'
+    ];
+
+    public function uploads()
+    {
+        return $this->hasMany(OfficeMemorandumUpload::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'uploaded_by');
+    }
 }
