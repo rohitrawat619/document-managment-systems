@@ -84,14 +84,12 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     // Document Type
 
     Route::get('/document/office_memorandum',[App\Http\Controllers\FormController::class, 'officeMemorandum'])->name('document.office_memorandum.index');
-
-    Route::match(['get','post'],'/document/office_memorandum/create',[App\Http\Controllers\FormController::class, 'officeMemorandumCreate'])->name('document.office_memorandum.create');
-
-    Route::match(['get','post'],'/document/office_memorandum/edit/{id}',[App\Http\Controllers\FormController::class, 'officeMemorandumEdit'])->name('document.office_memorandum.edit');
-
-    Route::post('/document/office_memorandum/status',[App\Http\Controllers\FormController::class, 'officeMemorandumStatus'])->name('document.office_memorandum.status');
-
-    Route::post('/document/office_memorandum/delete',[App\Http\Controllers\FormController::class, 'officeMemorandumDestroy'])->name('document.office_memorandum.delete');
+    Route::match(['get','post'],'/document/office_memorandum/create',[App\Http\Controllers\FormController::class, 'create'])->name('document.office_memorandum.create');
+    Route::match(['get','post'],'/document/office_memorandum/edit/{id}',[App\Http\Controllers\FormController::class, 'edit'])->name('document.office_memorandum.edit');
+    Route::post('/document/office_memorandum/status',[App\Http\Controllers\FormController::class, 'status'])->name('document.office_memorandum.status');
+    Route::post('/office_memorandum/delete',[App\Http\Controllers\FormController::class, 'destroy'])->name('office_memorandum.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\FormController::class, 'viewPdf'])->name('view.pdf');
+    Route::delete('/admin/document/office_memorandum/delete_file', [App\Http\Controllers\FormController::class, 'deleteFile'])->name('document.office_memorandum.delete_file');
 
 
 });

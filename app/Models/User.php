@@ -29,6 +29,11 @@ class User extends Authenticatable
         'phone_code',
         'phone_iso'
     ];
+
+    public function officeMemorandam()
+    {
+        return $this->hasMany(OfficeMemorandum::class, 'uploaded_by');
+    }
    // protected $guarded = ['*'];
 
     /**
