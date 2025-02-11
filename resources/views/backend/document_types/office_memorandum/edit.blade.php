@@ -117,8 +117,8 @@
                                         </div>
                                     @else
                                         @foreach($office_memorandum_upload as $key => $omu)
-                                        <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}">
-                                            <input type="file" class="form-control" name="upload_file[]">
+                                        <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}" >
+                                            <input type="file" class="form-control" name="upload_file[]" disabled>
                                             <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">
                                             <span class="ms-2">{{ $omu['file_name'] }}</span>
                                             <!-- Include data-id attribute here -->
@@ -241,7 +241,7 @@ $(document).ready(function() {
                     alert('File deleted successfully!');
                     $currentElement.find('input[type="hidden"]').val(''); 
                     $currentElement.remove(); 
-                    //location.reload();
+                    location.reload();
 
                     var currentFileCount = $('.file-input-group').length;
 
