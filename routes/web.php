@@ -42,13 +42,9 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         // Roles
 
         Route::get('/roles',[App\Http\Controllers\RoleController::class, 'index'])->name('roles.index');
-
         Route::match(['get','post'],'/roles/create',[App\Http\Controllers\RoleController::class, 'create'])->name('roles.create');
-
         Route::match(['get','post'],'/roles/edit/{id}',[App\Http\Controllers\RoleController::class, 'edit'])->name('roles.edit');
-
         Route::post('/roles/status',[App\Http\Controllers\RoleController::class, 'status'])->name('roles.status');
-
         Route::post('/roles/delete',[App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.delete');
 
         // Designation
@@ -66,19 +62,26 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/division/edit/{id}',[App\Http\Controllers\DivisionController::class, 'edit'])->name('division.edit');
         Route::post('/division/delete',[App\Http\Controllers\DivisionController::class, 'destroy'])->name('division.delete');
 
+        /*** permissions route */
+        
+
+        Route::get('/permission',[App\Http\Controllers\PermissionController::class, 'index'])->name('permission.index');
+        Route::match(['get','post'],'/permission/create',[App\Http\Controllers\PermissionController::class, 'create'])->name('permission.create');
+        Route::match(['get','post'],'/permission/edit/{id}',[App\Http\Controllers\PermissionController::class, 'edit'])->name('permission.edit');
+        Route::post('/permission/status',[App\Http\Controllers\PermissionController::class, 'status'])->name('permission.status');
+        Route::post('/permission/delete',[App\Http\Controllers\PermissionController::class, 'destroy'])->name('permission.delete');
+
 
 
         // User
 
         Route::get('/users',[App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-
         Route::match(['get','post'],'/users/create',[App\Http\Controllers\UserController::class, 'create'])->name('users.create');
-
         Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-
         Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
-
         Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
+
+       
     });
 
     // Document Type
@@ -89,6 +92,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::post('/document/office_memorandum/status',[App\Http\Controllers\FormController::class, 'status'])->name('document.office_memorandum.status');
     Route::post('/office_memorandum/delete',[App\Http\Controllers\FormController::class, 'destroy'])->name('office_memorandum.delete');
     Route::get('view-pdf/{file}', [App\Http\Controllers\FormController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/office_memorandum/get-divisions-by-user', [App\Http\Controllers\FormController::class, 'getDivisionsByUser'])->name('document.office_memorandum.get-divisions-by-user');
     Route::delete('/admin/document/office_memorandum/delete_file', [App\Http\Controllers\FormController::class, 'deleteFile'])->name('document.office_memorandum.delete_file');
 
 

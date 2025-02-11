@@ -29,11 +29,10 @@
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" name="division">
                                         <option value="">--Select--</option>
-                                        @if(count($divisions)>0)
-                                            @foreach ($divisions as $dv)
-                                              <option value="{{$dv->id}}" @if($dv->id==$office_memorandum->division_id) selected @endif>{{$dv->name}}</option>
-                                            @endforeach
-                                        @endif
+                                 
+                                           
+                                              <option value="{{$divisions->id}}"  selected>{{$divisions->name}}</option>
+                            
                                     </select>
                                     @if ($errors->has('division'))
                                         <span class="invalid-feedback">
@@ -118,19 +117,16 @@
                                         </div>
                                     @else
                                         @foreach($office_memorandum_upload as $key => $omu)
-                                            <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}">
-                                                <input type="file" class="form-control" name="upload_file[]">
-                                                <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">
-                                            
-                                                <span class="ms-2">{{ $omu['file_name'] }}</span>
-
-                                                <!-- Show the "View PDF" button for existing files -->
-                                                <button type="button" class="view_pdf ms-2 my-2 btn btn-primary" data-file="{{ Storage::url($omu['file_path']) }}">View PDF</button>
-                                                
-                                                <a href="javascript:void(0);" class="remove_button ms-2 my-2" title="Remove file">
-                                                    <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
-                                                </a>
-                                            </div>
+                                        <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}">
+                                            <input type="file" class="form-control" name="upload_file[]">
+                                            <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">
+                                            <span class="ms-2">{{ $omu['file_name'] }}</span>
+                                            <!-- Include data-id attribute here -->
+                                            <button type="button" class="view_pdf ms-2 my-2 btn btn-primary" data-file="{{ Storage::url($omu['file_path']) }}">View PDF</button>
+                                            <a href="javascript:void(0);" class="remove_button ms-2 my-2" title="Remove file" data-id="{{ $omu['id'] }}">
+                                                <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
+                                            </a>
+                                        </div>
                                         @endforeach
                                     @endif
                                 </div>
@@ -224,37 +220,48 @@ $(document).ready(function() {
     });
 
     $(wrapper).on('click', '.remove_button', function(e) {
-        e.preventDefault();
-        var filePath = $(this).siblings('input[type="hidden"]').val();
-        var fileId = $(this).data('id');
-
-        if (filePath) {
+    e.preventDefault(); 
     
-            if (confirm('Are you sure you want to delete this file?')) {
-               
-                $.ajax({
-                    url: "{{ route('admin.document.office_memorandum.delete_file') }}", 
-                    type: 'DELETE',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        file_path: filePath,
-                        file_id: fileId
-                    },
-                    success: function(response) {
-                        alert('File deleted successfully!');
-                        $(this).closest('.file-input-group').remove();
-                    },
-                    error: function() {
-                        alert('An error occurred while deleting the file.');
+    var filePath = $(this).siblings('input[type="hidden"]').val();
+    var fileId = $(this).data('id');
+
+    if (filePath) {
+        if (confirm('Are you sure you want to delete this file?')) {
+            var $currentElement = $(this).closest('.file-input-group'); 
+            $.ajax({
+                url: "{{ route('admin.document.office_memorandum.delete_file') }}", 
+                type: 'DELETE',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    file_path: filePath,
+                    file_id: fileId,
+                    delete_from_storage: true
+                },
+                success: function(response) {
+                    alert('File deleted successfully!');
+                    $currentElement.find('input[type="hidden"]').val(''); 
+                    $currentElement.remove(); 
+                    //location.reload();
+
+                    var currentFileCount = $('.file-input-group').length;
+
+                    
+                    if (currentFileCount >= 5) {
+                        alert('You cannot add more than 5 files.');
                     }
-                });
-            }
-        } else {
-          
-            $(this).closest('.file-input-group').remove();
-            x--; 
+                },
+                error: function() {
+                    alert('An error occurred while deleting the file.');
+                }
+            });
         }
-    });
+    } else {
+        $(this).closest('.file-input-group').remove();
+        x--;
+    }
+});
+
+
 
     $(document).on('click', '.view_pdf', function() {
         var fileURL = $(this).data('file'); 

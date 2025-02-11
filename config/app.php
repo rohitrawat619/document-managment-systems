@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'max_upload_size' => 100 * 1024 * 1024, // 100 MB
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

@@ -24,7 +24,7 @@ class IsAccess
             {
                 if(Auth::user()->role_id==1)
                 {
-                    if($request->routeIs('admin.users.*') || $request->routeIs('admin.divisions.*') || $request->routeIs('admin.designations.*'))
+                    if($request->routeIs('admin.users.*') || $request->routeIs('admin.divisions.*') || $request->routeIs('admin.designations.*') || $request->routeIs('admin.permissions.*'))
                         return $next($request);
                     else
                         return abort(403);

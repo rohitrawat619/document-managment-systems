@@ -19,6 +19,7 @@ class OfficeMemorandum extends Model
         'date_of_issue',
         'subject',
         'issuer_name',
+        'user_id',
         'issuer_designation',
         'file_type',
         'division_id',
