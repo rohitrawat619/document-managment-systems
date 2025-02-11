@@ -16,7 +16,8 @@ class OfficeMemorandumUpload extends Model
     protected $fillable = [
        'record_id',
        'file_path',
-       'file_name'
+       'file_name',
+       'user_id'
     ];
 
     public function officeMemorandum()

@@ -41,6 +41,7 @@ class UserController extends Controller
         return view('backend.users.index',compact('users'));
     }
 
+
     public function create(Request $request)
     {
         if($request->isMethod('get'))
@@ -62,7 +63,7 @@ class UserController extends Controller
                 'last_name'=> 'nullable|regex:/^[a-zA-Z]+$/u|min:0|max:255',
                 'email' => 'required|email:dns,rfc|unique:users,email',
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
-                'division' => 'required',
+                'division' => 'required|array',
                 'designation' => 'required',
                 'role' => 'required',
                 'password' => 'required|same:confirm_password|min:10',
@@ -99,17 +100,21 @@ class UserController extends Controller
                 'phone' => $mobile,
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
-                'division' => $request->division,
+                'division' => implode(",", $request->division),
                 'designation' => $request->designation,
                 'role_id' => $request->role,
                 'password' => bcrypt($request->password)
             ]);
+
+            
 
             $user_name = 'omms_'.$request->first_name.($new_user->id+1);
 
             User::where('id',$new_user->id)->update([
                 'user_name' => $user_name
             ]);
+
+            //echo '<pre>'; print_r($new_user); die;
 
             DB::commit();
 

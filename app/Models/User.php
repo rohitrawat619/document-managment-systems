@@ -20,11 +20,15 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',  // Add the fields you want to be mass assignable
         'last_name',
+        'unique_key',
+        'name',
+        'user_name',
         'email',
         'password',
         'division',
         'designation',
         'role_id',
+        'permission_id',
         'phone',
         'phone_code',
         'phone_iso'

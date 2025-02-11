@@ -24,16 +24,29 @@
                     <div class="card-body p-4">
                         <form action="{{route('admin.document.office_memorandum.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            @if(Auth::user()->is_admin==1)
+                                <div class="col-md-6">
+                                    <label for="User" class="form-label">User <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="user">
+                                        <option value="">--Select--</option>
+                                        @if(count($users)>0)
+                                            @foreach ($users as $user)
+                                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    @if ($errors->has('user'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('user') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            
+                            @if(Auth::user()->is_admin == 1)
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" name="division">
                                         <option value="">--Select--</option>
-                                        @if(count($divisions)>0)
-                                            @foreach ($divisions as $dv)
-                                                <option value="{{$dv->id}}">{{$dv->name}}</option>
-                                            @endforeach
-                                        @endif
+                                        <!-- Divisions will be populated dynamically based on the selected user -->
                                     </select>
                                     @if ($errors->has('division'))
                                         <span class="invalid-feedback">
@@ -136,10 +149,8 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class = "col-md-6">
+                            <div class = "col-md-12">
                             <div id="pdf_viewer">
-
-                            <!-- your show div pdf shows here -->
 
                             </div>
                             </div>
@@ -190,18 +201,56 @@
         $(wrapper).on('click', '.view_pdf', function() {
             var fileInput = $(this).siblings('input[type="file"]')[0]; 
             var file = fileInput.files[0]; 
-
             if (file && file.type === 'application/pdf') {
-                // Create an Object URL for the PDF file
                 var fileURL = URL.createObjectURL(file);
-                
-                // Create an iframe to display the PDF in the same page
                 var iframe = '<iframe src="' + fileURL + '" width="100%" height="600px" style="border: none;"></iframe>';
-
-                // Display the iframe within a div (you can style this div as needed)
                 $('#pdf_viewer').html(iframe);
             } else {
                 alert("Please upload a valid PDF file to view.");
+            }
+        });
+    });
+
+    /*** dependent dropdown for selecting divisions by users */
+    $(document).ready(function() {
+        // Listen for changes on the 'user' dropdown
+        $('select[name="user"]').on('change', function() {
+            var userId = $(this).val(); // Get the selected user's ID
+
+            if(userId) {
+                //console.log(userId);
+                // Make an AJAX request to get the corresponding divisions
+                $.ajax({
+                    url: "{{ route('admin.document.office_memorandum.get-divisions-by-user') }}",
+                    type: 'GET',
+                    data: { user_id: userId },
+                    
+                    success: function(response) {
+                        // Clear the current division dropdown
+                        $('select[name="division"]').empty();
+
+                        // Add a default 'Select' option
+                        $('select[name="division"]').append('<option value="">--Select--</option>');
+
+                        // Populate the division dropdown with the returned divisions
+                        if(response.length > 0) {
+                            $.each(response, function(index, division) {
+                                $('select[name="division"]').append(
+                                    '<option value="' + division.id + '">' + division.name + '</option>'
+                                );
+                            });
+                        } else {
+                            $('select[name="division"]').append('<option value="">No divisions available</option>');
+                        }
+                    },
+                    error: function() {
+                        alert('Error fetching divisions.');
+                    }
+                });
+            } else {
+                // If no user is selected, clear the division dropdown
+                $('select[name="division"]').empty();
+                $('select[name="division"]').append('<option value="">--Select--</option>');
             }
         });
     });
