@@ -95,5 +95,15 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/office_memorandum/get-divisions-by-user', [App\Http\Controllers\FormController::class, 'getDivisionsByUser'])->name('document.office_memorandum.get-divisions-by-user');
     Route::delete('/admin/document/office_memorandum/delete_file', [App\Http\Controllers\FormController::class, 'deleteFile'])->name('document.office_memorandum.delete_file');
 
+    //officeorder
+
+    Route::get('/document/office_order',[App\Http\Controllers\OfficeOrder::class, 'officeOrder'])->name('document.office_order.index');
+    Route::match(['get','post'],'/document/office_order/create',[App\Http\Controllers\OfficeOrder::class, 'create'])->name('document.office_order.create');
+    Route::match(['get','post'],'/document/office_order/edit/{id}',[App\Http\Controllers\OfficeOrder::class, 'edit'])->name('document.office_order.edit');
+    Route::post('/document/office_order/status',[App\Http\Controllers\OfficeOrder::class, 'status'])->name('document.office_order.status');
+    Route::post('/office_order/delete',[App\Http\Controllers\OfficeOrder::class, 'destroy'])->name('office_order.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\OfficeOrder::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/office_order/get-divisions-by-user', [App\Http\Controllers\OfficeOrder::class, 'getDivisionsByUser'])->name('document.office_order.get-divisions-by-user');
+    Route::delete('/admin/document/office_order/delete_file', [App\Http\Controllers\OfficeOrder::class, 'deleteFile'])->name('document.office_order.delete_file');
 
 });

@@ -57,6 +57,8 @@
             <ul>
                 <li> <a href="{{route('admin.document.office_memorandum.index')}}"><i class='bx bx-radio-circle'></i>Office Memorandum</a>
                 </li>
+                <li> <a href="{{route('admin.document.office_order.index')}}"><i class='bx bx-radio-circle'></i>Office Order</a>
+                </li>
                 {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
                 </li> --}}
             </ul>
