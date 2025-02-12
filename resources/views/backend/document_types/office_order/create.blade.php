@@ -10,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.document.office_memorandum.index')}}">Office Memorandum</a>
+                        <li class="breadcrumb-item"><a href="{{route('admin.document.office_order.index')}}">Office Order</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Create</li>
                     </ol>
@@ -22,7 +22,7 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                        <form action="{{route('admin.document.office_memorandum.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
+                        <form action="{{route('admin.document.office_order.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
                                 <div class="col-md-6">
                                     <label for="User" class="form-label">User <span class="text-danger">*</span></label>
@@ -221,7 +221,7 @@
                 //console.log(userId);
                 // Make an AJAX request to get the corresponding divisions
                 $.ajax({
-                    url: "{{ route('admin.document.office_memorandum.get-divisions-by-user') }}",
+                    url: "{{ route('admin.document.office_order.get-divisions-by-user') }}",
                     type: 'GET',
                     data: { user_id: userId },
                     

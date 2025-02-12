@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Role;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class RoleController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,16 +25,16 @@ class RoleController extends Controller
     //
     public function index(Request $request)
     {
-        $roles = Role::where('is_deleted',0)->get();
+        $permission = Permission::where('is_deleted',0)->get();
 
-        return view('backend.roles.index',compact('roles'));
+        return view('backend.permission.index',compact('permission'));
     }
 
     public function create(Request $request)
     {
         if($request->isMethod('get'))
         {
-            return view('backend.roles.create');
+            return view('backend.permission.create');
         }
 
         DB::beginTransaction();
@@ -50,24 +50,24 @@ class RoleController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.roles.create')->withErrors($validator)->withInput();
+                return redirect()->route('admin.permission.create')->withErrors($validator)->withInput();
             }
 
-            $role_exist = Role::where(['name'=>$request->name,'is_deleted'=>'0'])->count();
+            $permission_exist = Permission::where(['name'=>$request->name,'is_deleted'=>'0'])->count();
 
-            if($role_exist > 0)
+            if($permission_exist > 0)
             {
-                return redirect()->route('admin.roles.create')->withErrors(['name'=>['The role name already exists !!']])->withInput();
+                return redirect()->route('admin.permission.create')->withErrors(['name'=>['The permission name already exists !!']])->withInput();
             }
 
-            $new_role = new Role();
-            $new_role->name= $request->name;
-            $new_role->unique_key= Str::uuid()->toString();
-            $new_role->save();
+            $new_permission = new Permission();
+            $new_permission->name= $request->name;
+            $new_permission->unique_key= Str::uuid()->toString();
+            $new_permission->save();
 
             DB::commit();
 
-            return redirect()->route('admin.roles.index')->with('success','Role Created Successfully !!');
+            return redirect()->route('admin.permission.index')->with('success','Permission Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -80,13 +80,13 @@ class RoleController extends Controller
 
     public function edit(Request $request){
 
-        $role_id = base64_decode($request->id);
+        $permission_id = base64_decode($request->id);
 
         if($request->isMethod('get'))
         {
-            $roles = Role::where('id', $role_id)->first();
+            $permission = Permission::where('id', $permission_id)->first();
 
-            return view('backend.roles.edit', compact('roles'));
+            return view('backend.permission.edit', compact('permission'));
         }
 
         DB::beginTransaction();
@@ -101,23 +101,23 @@ class RoleController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.roles.edit',['id'=>base64_encode($role_id)])->withErrors($validator)->withInput();
+                return redirect()->route('admin.permission.edit',['id'=>base64_encode($permission_id)])->withErrors($validator)->withInput();
             }
 
-            $role_exist = Role::where(['name'=>$request->name,'is_deleted'=>'0'])->where('id','<>', $role_id)->count();
+            $permission_exist = Permission::where(['name'=>$request->name,'is_deleted'=>'0'])->where('id','<>', $permission_id)->count();
 
-            if($role_exist > 0)
+            if($permission_exist > 0)
             {
-                return redirect()->route('admin.roles.edit',['id'=>base64_encode($role_id)])->withErrors(['name'=>['The role name already exists !!']])->withInput();
+                return redirect()->route('admin.permission.edit',['id'=>base64_encode($permission_id)])->withErrors(['name'=>['The Permission name already exists !!']])->withInput();
             }
 
-            $new_role = Role::find($role_id);
-            $new_role->name= $request->name;
-            $new_role->save();
+            $new_permission = Permission::find($permission_id);
+            $new_permission->name= $request->name;
+            $new_permission->save();
 
             DB::commit();
 
-            return redirect()->route('admin.roles.index')->with('success','Role Updated Successfully !!');
+            return redirect()->route('admin.permission.index')->with('success','Permissions Updated Successfully !!');
         }
         catch (\Exception $e) {
             DB::rollback();
@@ -128,7 +128,7 @@ class RoleController extends Controller
 
     public function status(Request $request)
     {
-        $role_id=base64_decode($request->id);
+        $permission_id=base64_decode($request->id);
         $type = base64_decode($request->type);
 
         DB::beginTransaction();
@@ -136,19 +136,19 @@ class RoleController extends Controller
 
             if(stripos($type,'disable')!==false)
             {
-                $users=User::where('role_id',$role_id)->get();
+                $users=User::where('permission_id',$permission_id)->get();
                 if(count($users)>0)
                 {
                     return response()->json(['success'=>false]);
                 }
 
-                $user = Role::find($role_id);
+                $user = Permission::find($permission_id);
                 $user->is_active = '0';
                 $user->save();
             }
             elseif(stripos($type,'enable')!==false)
             {
-                $user = Role::find($role_id);
+                $user = Permission::find($permission_id);
                 $user->is_active = '1';
                 $user->save();
             }
@@ -165,25 +165,28 @@ class RoleController extends Controller
 
     public function destroy(Request $request)
     {
-        $role_id =base64_decode($request->id);
+        $permission_id =base64_decode($request->id);
         // $id = $request->id;
+        // dd($permission_id);
         $user_id = Auth::user()->id;
-        $users=User::where('role_id',$role_id)
+        $users=Permission::where('id',$permission_id)
                     ->get();
             if(count($users)>0)
             {
-                return response()->json(['success'=>false]);
-            }
-        $privacy = Role::find($role_id);
-        $privacy->is_deleted = '1';
-        $privacy->deleted_by = $user_id;
-        $privacy->deleted_at = date('Y-m-d H:i:s');
-        $privacy->save();
+                $privacy = Permission::find($permission_id);
+                $privacy->is_deleted = '1';
+                $privacy->deleted_by = $user_id;
+                $privacy->deleted_at = date('Y-m-d H:i:s');
+                $privacy->save();
 
         return response()->json(['success'=>true]);
+                
+            }
+            return response()->json(['success'=>false]);
 
         // return redirect('/roles')
         //     ->with('success', 'Role deleted successfully');
     }
 
 }
+

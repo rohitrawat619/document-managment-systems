@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OfficeMemorandumUpload extends Model
+class OfficeOrderUpload extends Model
 {
     use HasFactory;
 
-    protected $table = 'office_memorandum_uploads';
+    protected $table = 'office_order_uploads';
 
     protected $guarded = ['*'];
 
@@ -20,8 +20,8 @@ class OfficeMemorandumUpload extends Model
        'user_id'
     ];
 
-    public function officeMemorandum()
+    public function officeOrder()
     {
-        return $this->belongsTo(OfficeMemorandum::class);
+        return $this->belongsTo(OfficeOrder::class);
     }
 }

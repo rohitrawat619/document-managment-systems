@@ -43,20 +43,20 @@
                                 @endif
                             </div>
                             <div class="col-md-6">
-                                <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                <select class="form-control" name="division">
-                                    <option value="">--Select--</option>
+                            <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
+                            <select class="form-control" id="multi-select" name="division[]" multiple="multiple">
+                            <option value="">--Select--</option>
                                     @if(count($divisions)>0)
                                         @foreach ($divisions as $dv)
                                             <option value="{{$dv->id}}">{{$dv->name}}</option>
                                         @endforeach
                                     @endif
-                                </select>
-                                @if ($errors->has('division'))
+                            </select>
+                            @if ($errors->has('division'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('division') }}</strong>
                                     </span>
-                                @endif
+                            @endif
                             </div>
                             <div class="col-md-6">
                                 <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
@@ -176,6 +176,15 @@
           $('#code').val($(".mobile").intlTelInput("getSelectedCountryData").dialCode);
           $('#iso').val($(".mobile").intlTelInput("getSelectedCountryData").iso2);
       });
+
+      
+ /** select 2 multi select */
+    
+    $(document).ready(function() {
+    $('#multi-select').select2();
+    });
+   
     </script>
+    
 @endpush
 @endsection

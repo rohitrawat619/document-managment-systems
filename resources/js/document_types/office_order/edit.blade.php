@@ -12,7 +12,7 @@
                         </li>
                         <li class="breadcrumb-item"><a href="{{route('admin.document.office_memorandum.index')}}">Office Memorandum</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Create</li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </nav>
             </div>
@@ -22,31 +22,17 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                        <form action="{{route('admin.document.office_memorandum.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
+                        <form action="{{ route('admin.document.office_memorandum.edit', $office_memorandum->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                                <div class="col-md-6">
-                                    <label for="User" class="form-label">User <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="user">
-                                        <option value="">--Select--</option>
-                                        @if(count($users)>0)
-                                            @foreach ($users as $user)
-                                                <option value="{{$user->id}}">{{$user->name}}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    @if ($errors->has('user'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('user') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            
-                            @if(Auth::user()->is_admin == 1)
+                            @if(Auth::user()->is_admin==1)
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" name="division">
                                         <option value="">--Select--</option>
-                                        <!-- Divisions will be populated dynamically based on the selected user -->
+                                 
+                                           
+                                              <option value="{{$divisions->id}}"  selected>{{$divisions->name}}</option>
+                            
                                     </select>
                                     @if ($errors->has('division'))
                                         <span class="invalid-feedback">
@@ -57,7 +43,7 @@
                             @endif
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="computer_no" name="computer_no" placeholder="computer no">
+                                <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $office_memorandum->computer_no }}" placeholder="computer no">
                                 @if ($errors->has('computer_no'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('computer_no') }}</strong>
@@ -66,7 +52,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="file_no" class="form-label">File No. <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="file_no" name="file_no" placeholder="L-1222/1/2024-IA-I-(R)">
+                                <input type="text" class="form-control" id="file_no" name="file_no" value="{{ $office_memorandum->file_no }}" placeholder="L-1222/1/2024-IA-I-(R)">
                                 @if ($errors->has('file_no'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('file_no') }}</strong>
@@ -75,7 +61,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_issue" name="date_of_issue" placeholder="date of issue">
+                                <input type="date" class="form-control" id="date_of_issue" name="date_of_issue" value="{{ $office_memorandum->date_of_issue }}" placeholder="date of issue">
                                 @if ($errors->has('date_of_issue'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('date_of_issue') }}</strong>
@@ -84,7 +70,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="subject" name="subject" placeholder="">
+                                <input type="text" class="form-control" id="subject" name="subject" value="{{ $office_memorandum->subject }}" placeholder="">
                                 @if ($errors->has('subject'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('subject') }}</strong>
@@ -93,7 +79,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" placeholder="">
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ $office_memorandum->issuer_name }}" placeholder="">
                                 @if ($errors->has('issuer_name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
@@ -102,7 +88,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" placeholder="">
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ $office_memorandum->issuer_designation }}" placeholder="">
                                 @if ($errors->has('issuer_designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
@@ -120,15 +106,36 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
-                                    <div class="field_wrapper">
+
+                                <div class="field_wrapper">
+                                    @if(count($office_memorandum_upload) == 0)
                                         <div class="file-input-group d-flex align-items-center">
-                                            <input type="file" class="form-control" id="upload_file" name="upload_file[]">
-                                            <a href = "javascript:void(0);" type="button" class="btn btn-primary ms-2 my-2 view_pdf">View PDF</a>
-                                            <a href="javascript:void(0);" class="add_button ms-2" title="Add field">
-                                                <img src="{{ url('assets/images/link-images/add-icon.png') }}" />
+                                            <input type="file" class="form-control" name="upload_file[]">
+                                            <a href="javascript:void(0);" class="remove_button ms-2" style="display:none;">
+                                                <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
                                             </a>
                                         </div>
-                                    </div>
+                                    @else
+                                        @foreach($office_memorandum_upload as $key => $omu)
+                                        <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}" >
+                                            <input type="file" class="form-control" name="upload_file[]" disabled>
+                                            <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">
+                                            <span class="ms-2">{{ $omu['file_name'] }}</span>
+                                            <!-- Include data-id attribute here -->
+                                            <button type="button" class="view_pdf ms-2 my-2 btn btn-primary" data-file="{{ Storage::url($omu['file_path']) }}">View PDF</button>
+                                            <a href="javascript:void(0);" class="remove_button ms-2 my-2" title="Remove file" data-id="{{ $omu['id'] }}">
+                                                <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
+                                            </a>
+                                        </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+
+                                <!-- Add button -->
+                                <a href="javascript:void(0);" class="add_button ms-2" title="Add field">
+                                    <img src="{{ url('assets/images/link-images/add-icon.png') }}" />
+                                </a>
+
                                 @if ($errors->has('upload_file'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('upload_file') }}</strong>
@@ -139,20 +146,21 @@
                             <div class="col-md-6">
                                 <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
                                 <select class="form-control" name="file_type">
-                                    <option value="">--Select--</option>
-                                    <option value="0">Confidential</option>
-                                    <option value="1">Non-Confidential</option>
+                                    <option value="0" @if($office_memorandum->file_type == 0) selected @endif>Confidential</option>
+                                    <option value="1" @if($office_memorandum->file_type == 1) selected @endif>Non-Confidential</option>
                                 </select>
+
                                 @if ($errors->has('file_type'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('file_type') }}</strong>
                                     </span>
                                 @endif
                             </div>
-                            <div class = "col-md-12">
-                            <div id="pdf_viewer">
 
+                            <div id="pdfViewer" style="margin-top: 20px;">
+                            <iframe id="pdfIframe" width="100%" height="600px" style="display:none;" frameborder="0"></iframe>
                             </div>
+
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
@@ -168,95 +176,111 @@
         <!--end row-->
     </div>
 </div>
+
+
+
 @push('scripts')
 <script>
-    $(document).ready(function(){
-        var maxField = 5; 
-        var addButton = $('.add_button'); 
-        var wrapper = $('.field_wrapper');
-        <?php $removeIconUrl = url('assets/images/link-images/remove-icon.png'); ?>
-        var removeIconUrl = '{{ $removeIconUrl }}';
-        
-        var fieldHTML = '<div class="file-input-group d-flex align-items-center"><input type="file" class="form-control" name="upload_file[]"><a href = "javascript:void(0);" type="button" class="btn btn-primary ms-2 my-2 view_pdf">View PDF</a><a href="javascript:void(0);" class="remove_button ms-2"><img src="' + removeIconUrl + '"/></a></div>';
-        var x = 1;
+$(document).ready(function() {
+    var maxField = 5; 
+    var addButton = $('.add_button'); 
+    var wrapper = $('.field_wrapper'); 
+    <?php $removeIconUrl = url('assets/images/link-images/remove-icon.png'); ?>
+    var removeIconUrl = '{{ $removeIconUrl }}';
 
-        // Add new file input field
-        $(addButton).click(function(){
-            if(x < maxField){ 
-                x++; 
-                $(wrapper).append(fieldHTML); 
-            } else {
-                alert('A maximum of ' + maxField + ' fields are allowed to be added.');
-            }
-        });
+    var fieldHTML = '<div class="file-input-group d-flex align-items-center">' +
+                    '<input type="file" class="form-control" name="upload_file[]">' +
+                    '<button type="button" class="view_pdf ms-2 my-2 btn btn-primary" style="display:none;">View PDF</button>' + 
+                    '<a href="javascript:void(0);" class="remove_button ms-2 my-2">' +
+                    '<img src="' + removeIconUrl + '" alt="remove" />' +
+                    '</a>'  +
+                    '</div>';
 
-        // Remove file input field
-        $(wrapper).on('click', '.remove_button', function(e){
-            e.preventDefault();
-            $(this).parent('div').remove(); 
-            x--;
-        });
+    var x = wrapper.children('div').length; 
 
-        // View PDF in the same page
-        $(wrapper).on('click', '.view_pdf', function() {
-            var fileInput = $(this).siblings('input[type="file"]')[0]; 
-            var file = fileInput.files[0]; 
-            if (file && file.type === 'application/pdf') {
-                var fileURL = URL.createObjectURL(file);
-                var iframe = '<iframe src="' + fileURL + '" width="100%" height="600px" style="border: none;"></iframe>';
-                $('#pdf_viewer').html(iframe);
-            } else {
-                alert("Please upload a valid PDF file to view.");
-            }
-        });
+    $(addButton).click(function() {
+        if (x < maxField) { 
+            x++; 
+            $(wrapper).append(fieldHTML); 
+
+            $(wrapper).find('input[type="file"]').last().change(function(e) {
+                var file = e.target.files[0];
+                var viewButton = $(this).siblings('.view_pdf');  
+                if (file && file.type === 'application/pdf') {
+                    viewButton.show();
+                    viewButton.click(function() {
+                        var fileURL = URL.createObjectURL(file);
+                        $('#pdfIframe').attr('src', fileURL).show(); 
+                    });
+                }
+            });
+        } else {
+            alert('A maximum of ' + maxField + ' fields are allowed to be added.');
+        }
     });
 
-    /*** dependent dropdown for selecting divisions by users */
-    $(document).ready(function() {
-        // Listen for changes on the 'user' dropdown
-        $('select[name="user"]').on('change', function() {
-            var userId = $(this).val(); // Get the selected user's ID
+    $(wrapper).on('click', '.remove_button', function(e) {
+    e.preventDefault(); 
+    
+    var filePath = $(this).siblings('input[type="hidden"]').val();
+    var fileId = $(this).data('id');
 
-            if(userId) {
-                //console.log(userId);
-                // Make an AJAX request to get the corresponding divisions
-                $.ajax({
-                    url: "{{ route('admin.document.office_memorandum.get-divisions-by-user') }}",
-                    type: 'GET',
-                    data: { user_id: userId },
+    if (filePath) {
+        if (confirm('Are you sure you want to delete this file?')) {
+            var $currentElement = $(this).closest('.file-input-group'); 
+            $.ajax({
+                url: "{{ route('admin.document.office_memorandum.delete_file') }}", 
+                type: 'DELETE',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    file_path: filePath,
+                    file_id: fileId,
+                    delete_from_storage: true
+                },
+                success: function(response) {
+                    alert('File deleted successfully!');
+                    $currentElement.find('input[type="hidden"]').val(''); 
+                    $currentElement.remove(); 
+                    location.reload();
+
+                    var currentFileCount = $('.file-input-group').length;
+
                     
-                    success: function(response) {
-                        // Clear the current division dropdown
-                        $('select[name="division"]').empty();
-
-                        // Add a default 'Select' option
-                        $('select[name="division"]').append('<option value="">--Select--</option>');
-
-                        // Populate the division dropdown with the returned divisions
-                        if(response.length > 0) {
-                            $.each(response, function(index, division) {
-                                $('select[name="division"]').append(
-                                    '<option value="' + division.id + '">' + division.name + '</option>'
-                                );
-                            });
-                        } else {
-                            $('select[name="division"]').append('<option value="">No divisions available</option>');
-                        }
-                    },
-                    error: function() {
-                        alert('Error fetching divisions.');
+                    if (currentFileCount >= 5) {
+                        alert('You cannot add more than 5 files.');
                     }
-                });
-            } else {
-                // If no user is selected, clear the division dropdown
-                $('select[name="division"]').empty();
-                $('select[name="division"]').append('<option value="">--Select--</option>');
-            }
-        });
+                },
+                error: function() {
+                    alert('An error occurred while deleting the file.');
+                }
+            });
+        }
+    } else {
+        $(this).closest('.file-input-group').remove();
+        x--;
+    }
+});
+
+
+
+    $(document).on('click', '.view_pdf', function() {
+        var fileURL = $(this).data('file'); 
+        $('#pdfIframe').attr('src', fileURL).show();
     });
+});
 </script>
+
 @endpush
 @endsection
+
+
+
+
+
+
+
+
+
 
 
 

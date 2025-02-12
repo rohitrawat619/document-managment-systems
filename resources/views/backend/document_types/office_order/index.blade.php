@@ -10,13 +10,13 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Office Memorandum</li>
+                        <li class="breadcrumb-item active" aria-current="page">Office Order</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.document.office_memorandum.create')}}" type="button" class="btn btn-primary">Add</a>
+                    <a href="{{route('admin.document.office_order.create')}}" type="button" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($office_memorandum as $k => $r)
+                                @forelse ($office_order as $k => $r)
                                     <tr>
                                         <th scope="row">{{$k + 1}}</th>
                                         <td>{{$r->computer_no}}</td>
@@ -66,7 +66,7 @@
                                         <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                         <td>
                                             <div class="d-flex order-actions">
-												<a href="{{route('admin.document.office_memorandum.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+												<a href="{{route('admin.document.office_order.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
 												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
                                                 <!-- @if($r->is_active==1)
                                                     <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
@@ -111,7 +111,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.document.office_memorandum.status')}}",
+                        url: "{{route('admin.document.office_order.status')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
@@ -163,7 +163,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.office_memorandum.delete')}}",
+                        url: "{{route('admin.office_order.delete')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,

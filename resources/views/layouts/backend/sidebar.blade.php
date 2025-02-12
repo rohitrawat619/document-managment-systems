@@ -27,11 +27,13 @@
                     <div class="menu-title active">System</div>
                 </a>
                 <ul>
-                    <li> <a href="{{route('admin.roles.index')}}"><i class='bx bx-radio-circle'></i>Roles</a>
+                    <li> <a href="{{ route('admin.roles.index') }}"><i class='bx bx-radio-circle'></i>Roles</a>
                     </li>
-                    {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
-                    </li> --}}
-                    <li> <a href="{{route('admin.designation.index')}}"><i class='bx bx-radio-circle'></i>Designation</a>
+                    <li> <a href="{{ route('admin.permission.index') }}"><i class='bx bx-radio-circle'></i>Permission</a>
+                    </li>
+                    <li> <a href="{{ route('admin.designation.index') }}"><i class='bx bx-radio-circle'></i>Designation</a>
+                    </li>
+                    <li> <a href="{{ route('admin.division.index') }}"><i class='bx bx-radio-circle'></i>Division</a>
                     </li>
                     <li> <a href="{{route('admin.division.index')}}"><i class='bx bx-radio-circle'></i>Division</a>
                     </li>
@@ -56,6 +58,8 @@
             </a>
             <ul>
                 <li> <a href="{{route('admin.document.office_memorandum.index')}}"><i class='bx bx-radio-circle'></i>Office Memorandum</a>
+                </li>
+                <li> <a href="{{route('admin.document.office_order.index')}}"><i class='bx bx-radio-circle'></i>Office Order</a>
                 </li>
                 {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
                 </li> --}}

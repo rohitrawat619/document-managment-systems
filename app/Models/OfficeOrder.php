@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OfficeMemorandum extends Model
+class OfficeOrder extends Model
 {
     use HasFactory;
 
-    protected $table = 'office_memorandum';
+    protected $table = 'office_order';
 
     protected $guarded = ['*'];
 
@@ -29,7 +29,7 @@ class OfficeMemorandum extends Model
 
     public function uploads()
     {
-        return $this->hasMany(OfficeMemorandumUpload::class);
+        return $this->hasMany(OfficeOrderUpload::class);
     }
     public function user()
     {
