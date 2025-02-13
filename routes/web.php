@@ -96,4 +96,16 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::delete('/admin/document/office_memorandum/delete_file', [App\Http\Controllers\FormController::class, 'deleteFile'])->name('document.office_memorandum.delete_file');
 
 
+    /** Notifications */
+
+    Route::get('/document/notification',[App\Http\Controllers\NotificationController::class, 'notification'])->name('document.notification.index');
+    Route::match(['get','post'],'/document/notification/create',[App\Http\Controllers\NotificationController::class, 'create'])->name('document.notification.create');
+    Route::match(['get','post'],'/document/notification/edit/{id}',[App\Http\Controllers\NotificationController::class, 'edit'])->name('document.notification.edit');
+    Route::post('/document/notification/status',[App\Http\Controllers\NotificationController::class, 'status'])->name('document.notification.status');
+    Route::post('/notification/delete',[App\Http\Controllers\NotificationController::class, 'destroy'])->name('notification.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\NotificationController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/notification/get-divisions-by-user', [App\Http\Controllers\NotificationController::class, 'getDivisionsByUser'])->name('document.notification.get-divisions-by-user');
+    Route::delete('/admin/document/notification/delete_file', [App\Http\Controllers\NotificationController::class, 'deleteFile'])->name('document.notification.delete_file');
+
+
 });
