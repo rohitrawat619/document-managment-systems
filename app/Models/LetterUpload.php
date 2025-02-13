@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class letter_upload extends Model
+class LetterUpload extends Model
 {
     use HasFactory;
 
-    protected $table = 'letter_upload';
+    protected $table = 'letter_uploads';
 
     protected $guarded = ['*'];
 

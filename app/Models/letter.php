@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class letter extends Model
+class Letter extends Model
 {
     use HasFactory;
 
@@ -29,7 +29,7 @@ class letter extends Model
 
     public function uploads()
     {
-        return $this->hasMany(letter_upload::class);
+        return $this->hasMany(letter_uploads::class);
     }
     public function user()
     {

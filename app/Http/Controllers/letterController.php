@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use App\Models\letter;
-use App\Models\letter_upload;
+use App\Models\Letter;
+use App\Models\LetterUpload;
 
 
 
-class letterController extends Controller
+class LetterController extends Controller
 {
    
     public function __construct()
@@ -25,7 +25,7 @@ class letterController extends Controller
 
     public function letter(Request $request)
     {
-        $letter = letter::from('letter as o')
+        $letter = Letter::from('letter as o')
                             ->select('o.*','u.name as uploader_name','d.name as division_name','ds.name as uploader_designation')
                             ->leftJoin('users as u','u.id','=','o.uploaded_by')
                             ->leftJoin('divisions as d','d.id','=','o.division_id')
@@ -104,7 +104,7 @@ class letterController extends Controller
             }
             
 
-            $new_user = letter::create([
+            $new_user = Letter::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => $request->user,
@@ -126,9 +126,9 @@ class letterController extends Controller
                 $uploadedFiles = $request->file('upload_file');
                 foreach ($uploadedFiles as $file) {
                     
-                    $path = $file->store('letter_upload', 'public');
+                    $path = $file->store('LetterUpload', 'public');
 
-                        letter_upload::create([
+                        LetterUpload::create([
                         'file_path' => $path,
                         'user_id' => $user,
                         'record_id' => $new_user->id, 
@@ -158,16 +158,16 @@ class letterController extends Controller
 
     if($request->isMethod('get')) {
         
-        $letter = letter::where('id', $user_id)->first();
+        $letter = Letter::where('id', $user_id)->first();
         $data = $letter->id;
         $div = $letter->user_id;
         
-        $letter_upload = letter_upload::where('record_id', $data)->get()->toArray();
-         //dd($letter_upload);
-        //echo '<pre>'; print_r($letter); die;
+        $letterUpload = LetterUpload::where('record_id', $data)->get()->toArray();
+         //dd($LetterUpload);s
+        //echo '<pre>'; print_r($Letter); die;
         $divisions = Division::where('id', $div)->first();
         // dd($divisions);
-        return view('backend.document_types.letter.edit', compact('divisions', 'letter', 'letter_upload'));
+        return view('backend.document_types.letter.edit', compact('divisions', 'letter', 'letterUpload'));
     }
     
     
@@ -194,9 +194,9 @@ class letterController extends Controller
                              ->withInput();
         }
         
-        $letter = letter::find($id);
+        $Letter = Letter::find($id);
 
-    $letter->update([
+    $Letter->update([
         'computer_no' => $request->computer_no,
         'file_no' => $request->file_no,
         'date_of_issue' => $request->date_of_issue,
@@ -212,11 +212,11 @@ class letterController extends Controller
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('letter_upload', 'public');
-                letter_upload::create([
+                $path = $file->store('LetterUpload', 'public');
+                LetterUpload::create([
                     'file_path' => $path,
-                    'user_id' => $letter->user_id,
-                    'record_id' => $letter->id,
+                    'user_id' => $Letter->user_id,
+                    'record_id' => $Letter->id,
                     'file_name' => $file->getClientOriginalName()
                 ]);
             }
@@ -248,7 +248,7 @@ public function deleteFile(Request $request)
             }
         }
 
-        $file = letter_upload::find($fileId);
+        $file = LetterUpload::find($fileId);
         if ($file) {
             $file->delete();
         }
@@ -264,7 +264,7 @@ public function destroy(Request $request)
 {  
     $user_id =base64_decode($request->id);
     $auth_id = Auth::user()->id;
-    $privacy = letter::find($user_id);
+    $privacy = Letter::find($user_id);
     $privacy->is_deleted = '1';
     $privacy->deleted_by = $auth_id;
     $privacy->deleted_at = date('Y-m-d H:i:s');

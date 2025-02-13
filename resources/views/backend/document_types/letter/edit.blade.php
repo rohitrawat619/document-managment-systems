@@ -108,7 +108,7 @@
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
 
                                 <div class="field_wrapper">
-                                    @if(count($letter_upload) == 0)
+                                    @if(count($letterUpload) == 0)
                                         <div class="file-input-group d-flex align-items-center">
                                             <input type="file" class="form-control" name="upload_file[]">
                                             <a href="javascript:void(0);" class="remove_button ms-2" style="display:none;">
@@ -116,7 +116,7 @@
                                             </a>
                                         </div>
                                     @else
-                                        @foreach($letter_upload as $key => $omu)
+                                        @foreach($letterUpload as $key => $omu)
                                         <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}" >
                                             <input type="file" class="form-control" name="upload_file[]" disabled>
                                             <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">

@@ -104,14 +104,14 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
     //letter
 
-    Route::get('/document/letter',[App\Http\Controllers\letterController::class, 'letter'])->name('document.letter.index');
-    Route::match(['get','post'],'/document/letter/create',[App\Http\Controllers\letterController::class, 'create'])->name('document.letter.create');
-    Route::match(['get','post'],'/document/letter/edit/{id}',[App\Http\Controllers\letterController::class, 'edit'])->name('document.letter.edit');
-    Route::post('/document/letter/status',[App\Http\Controllers\letterController::class, 'status'])->name('document.letter.status');
-    Route::post('/letter/delete',[App\Http\Controllers\letterController::class, 'destroy'])->name('letter.delete');
-    Route::get('view-pdf/{file}', [App\Http\Controllers\letterController::class, 'viewPdf'])->name('view.pdf');
-    Route::get('/admin/document/letter/get-divisions-by-user', [App\Http\Controllers\letterController::class, 'getDivisionsByUser'])->name('document.letter.get-divisions-by-user');
-    Route::delete('/admin/document/letter/delete_file', [App\Http\Controllers\letterController::class, 'deleteFile'])->name('document.letter.delete_file');
+    Route::get('/document/letter',[App\Http\Controllers\LetterController::class, 'letter'])->name('document.letter.index');
+    Route::match(['get','post'],'/document/letter/create',[App\Http\Controllers\LetterController::class, 'create'])->name('document.letter.create');
+    Route::match(['get','post'],'/document/letter/edit/{id}',[App\Http\Controllers\LetterController::class, 'edit'])->name('document.letter.edit');
+    Route::post('/document/letter/status',[App\Http\Controllers\LetterController::class, 'status'])->name('document.letter.status');
+    Route::post('/letter/delete',[App\Http\Controllers\LetterController::class, 'destroy'])->name('letter.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\LetterController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/letter/get-divisions-by-user', [App\Http\Controllers\LetterController::class, 'getDivisionsByUser'])->name('document.letter.get-divisions-by-user');
+    Route::delete('/admin/document/letter/delete_file', [App\Http\Controllers\LetterController::class, 'deleteFile'])->name('document.letter.delete_file');
 
     //officeorder
 
