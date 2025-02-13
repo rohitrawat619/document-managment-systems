@@ -35,6 +35,8 @@
                     </li>
                     <li> <a href="{{ route('admin.division.index') }}"><i class='bx bx-radio-circle'></i>Division</a>
                     </li>
+                    <li> <a href="{{route('admin.division.index')}}"><i class='bx bx-radio-circle'></i>Division</a>
+                    </li>
                 </ul>
             </li>
         @endif
@@ -57,15 +59,12 @@
             <ul>
                 <li> <a href="{{route('admin.document.office_memorandum.index')}}"><i class='bx bx-radio-circle'></i>Office Memorandum</a>
                 </li>
-<<<<<<< HEAD
-                <li> <a href="{{route('admin.document.letter.index')}}"><i class='bx bx-radio-circle'></i>Letters</a>
+                <li> <a href="{{route('admin.document.office_order.index')}}"><i class='bx bx-radio-circle'></i>Office Order</a>
                 </li>
-=======
-
                 <li> <a href="{{route('admin.document.notification.index')}}"><i class='bx bx-radio-circle'></i>Notification</a>
                 </li>
-
->>>>>>> a1851ec34c5f97d2f469a5641ce9eae7baeb386a
+                <li> <a href="{{route('admin.document.letter.index')}}"><i class='bx bx-radio-circle'></i>Letters</a>
+                </li>
                 {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
                 </li> --}}
             </ul>
