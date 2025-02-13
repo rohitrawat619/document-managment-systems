@@ -30,17 +30,22 @@
         window.onunload=function(){null};
     </script>
     <style>
+
+        #refresh-captcha {
+        display: inline-block;
+        visibility: visible;
+        }
         #captchaText, #p-captchaText, #i-captchaText {
             font-weight: bold;
             font-size: 18px;
-            color: #333;
+            color: white;
             margin-bottom: 10px;
             text-transform: none;
         }
         #captchaText , #p-captchaText, #i-captchaText{
             font-weight: bold;
             font-size: 18px;
-            color: #333;
+            color: white;
             margin-bottom: 10px;
             text-transform: none;
         }
@@ -70,14 +75,14 @@
         <div class="app-container">
             <div class="h-100">
                 <div class="h-100 no-gutters row">
-                    <div class="d-none d-lg-block col-lg-4">
+                    <div class="d-none d-lg-block col-lg-8 col-md-12">
                         <div class="slider-light">
                             <div class="slick-slider">
                                 <div>
                                     <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-plum-plate" tabindex="-1">
                                         <div class="slide-img-bg" style="background-image: url('{{asset('assets/admin/img/2.jpg')}}');"></div>
                                         <div class="slider-content">
-                                            <h3>Office Memorandum File System</h3>
+                                            <h3>Document Management System </h3>
                                             <p>This module will contain all functionalities from the present physical file system which is relevant to e-file manager module
                                             </p>
                                         </div>
@@ -87,7 +92,7 @@
                                     <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark" tabindex="-1">
                                         <div class="slide-img-bg" style="background-image: url('{{asset('assets/admin/img/3.jpg')}}');"></div>
                                         <div class="slider-content">
-                                            <h3>Office Memorandum File System</h3>
+                                            <h3>Document Management System </h3>
                                             <p>This module will contain all functionalities from the present physical file system which is relevant to e-file manager module
                                             </p>
                                         </div>
@@ -97,7 +102,7 @@
                                     <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-sunny-morning" tabindex="-1">
                                         <div class="slide-img-bg" style="background-image: url('{{asset('assets/admin/img/1.jpg')}}');"></div>
                                         <div class="slider-content">
-                                            <h3>Office Memorandum File System</h3>
+                                            <h3>Document Management System </h3>
                                             <p>This module will contain all functionalities from the present physical file system which is relevant to e-file manager module
                                             </p>
                                         </div>
@@ -109,12 +114,12 @@
 
 
 
-                    <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">
-                        <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+                    <div class="h-100 d-flex justify-content-center align-items-center col-md-12 col-lg-4" style="background:#2155d9;">
+                        <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-10" style="color: wheat;">
                             <div class="app-logo"></div>
                             <h4 class="mb-0">
-                                <span class="d-block">Welcome back,</span>
-                                <span>Please sign in to your account.</span>
+                                <center> <b><span class="d-block">Welcome back,</span>
+                                <span>Please sign in to your account.</span></b></center>
                             </h4>
                             <!-- <h6 class="mt-3">No account? <a href="javascript:void(0);" class="text-primary">Sign up now</a></h6> -->
                             <div class="divider row"></div>
@@ -134,9 +139,9 @@
                                                 </div>
                                             @endif
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="position-relative form-group">
-                                                <label for="exampleEmail">User Name</label>
+                                                <b><label for="exampleEmail">User Name</label></b>
                                                 <input placeholder="Username or Email address" name="username" id="username" class="form-control" type="text" autocomplete="off" onKeyPress="if(this.value.length==40) return false;" />
                                                 @if ($errors->has('username'))
                                                     <span class="invalid-feedback">
@@ -145,9 +150,9 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="position-relative form-group">
-                                                <label for="examplePassword">Password</label>
+                                                <b><label for="examplePassword">Password</label></b>
                                                 <input placeholder= "Password" name="password" id="password" class="form-control" type="password" autocomplete="off" onKeyPress="if(this.value.length==16) return false;" />
                                                 @if ($errors->has('password'))
                                                     <span class="invalid-feedback">
@@ -167,9 +172,9 @@
                                                 <?php echo showCZACaptcha($this);?><a href="javascript:void(0);" onclick="reloadCZACaptcha(this);"> <i class="fa-solid fa-arrows-rotate"></i> </a>
                                             </div>
                                         </div> --}}
-                                        <div class="col-md-6 col-6">
+                                        <div class="col-md-12 col-lg-12">
                                             <div class="position-relative form-group">
-                                                <label for="captcha">Enter Captcha:<font color="red">*</font>  <span id="captchaText">{{ $captcha }}</span>
+                                                <b><label for="captcha">Enter Captcha:<font color="red">*</font>  <span id="captchaText">{{ $captcha }}</span></b>
                                                 <button type="button" id="refresh-captcha" >
                                                     <i class="fa fa-refresh" style="font-size:22px;color:rgb(14, 141, 14);"></i></label>
                                                 </button>
@@ -187,8 +192,8 @@
                                     <div class="divider row"></div>
                                     <div class="d-flex align-items-center">
                                         <div class="ml-auto">
-                                            <a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a>
-                                            <button type="submit" class="btn btn-primary btn-lg" id="login-button">Login to Dashboard</button>
+                                            <a href="javascript:void(0);" class="btn-lg btn btn-link" style="margin-bottom: 11%; color:white;">Recover Password</a>
+                                            <button type="submit" class="btn btn-primary btn-lg" id="login-button" style="margin-top: -11%;">Login to Dashboard</button>
                                         </div>
                                     </div>
                                     <input type="hidden" name="p_func" value="Log In">
