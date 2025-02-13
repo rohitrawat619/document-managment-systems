@@ -163,11 +163,12 @@ class FormController extends Controller
     if($request->isMethod('get')) {
         
         $office_memorandum = OfficeMemorandum::where('id', $user_id)->first();
+        // dd($office_memorandum);
         $data = $office_memorandum->id;
         $div = $office_memorandum->user_id;
-        
+
         $office_memorandum_upload = OfficeMemorandumUpload::where('record_id', $data)->get()->toArray();
-         //dd($office_memorandum_upload);
+        // dd($office_memorandum_upload);
         //echo '<pre>'; print_r($office_memorandum); die;
         $divisions = Division::where('id', $div)->first();
         // dd($divisions);
