@@ -126,7 +126,7 @@ class LetterController extends Controller
                 $uploadedFiles = $request->file('upload_file');
                 foreach ($uploadedFiles as $file) {
                     
-                    $path = $file->store('LetterUpload', 'public');
+                    $path = $file->store('letterupload', 'public');
 
                         LetterUpload::create([
                         'file_path' => $path,
@@ -212,7 +212,7 @@ class LetterController extends Controller
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('LetterUpload', 'public');
+                $path = $file->store('letterupload', 'public');
                 LetterUpload::create([
                     'file_path' => $path,
                     'user_id' => $Letter->user_id,
