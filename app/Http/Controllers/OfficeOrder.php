@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\OfficeMemorandum;
+use App\Models\OfficeOrder as OfficeOrders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
-use App\Models\OfficeMemorandumUpload;
+use App\Models\OfficeOrderUpload;
 use Illuminate\Support\Facades\Log;
 
-class FormController extends Controller
+class OfficeOrder extends Controller
 {
     //
 
@@ -27,9 +27,9 @@ class FormController extends Controller
         $this->middleware('auth');
     }
 
-    public function officeMemorandum(Request $request)
+    public function officeOrder(Request $request)
     {
-        $office_memorandum = OfficeMemorandum::from('office_memorandum as o')
+        $office_order = OfficeOrders::from('office_order as o')
                             ->select('o.*','u.name as uploader_name','d.name as division_name','ds.name as uploader_designation')
                             ->leftJoin('users as u','u.id','=','o.uploaded_by')
                             ->leftJoin('divisions as d','d.id','=','o.division_id')
@@ -37,7 +37,9 @@ class FormController extends Controller
                             ->where('o.is_deleted',0)
                             ->get();
 
-        return view('backend.document_types.office_memorandum.index',compact('office_memorandum'));
+                            // dd($office_order);
+
+        return view('backend.document_types.office_order.index',compact('office_order'));
     }
 
     public function getDivisionsByUser(Request $request)
@@ -64,7 +66,7 @@ class FormController extends Controller
 
             $users = User::all();
 
-            return view('backend.document_types.office_memorandum.create',compact('divisions','users'));
+            return view('backend.document_types.office_order.create',compact('divisions','users'));
         }
 
         
@@ -102,11 +104,11 @@ class FormController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
+                return redirect()->route('admin.document.office_order.create')->withErrors($validator)->withInput();
             }
             
 
-            $new_user = OfficeMemorandum::create([
+            $new_user = OfficeOrders::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => $request->user,
@@ -128,9 +130,9 @@ class FormController extends Controller
                 $uploadedFiles = $request->file('upload_file');
                 foreach ($uploadedFiles as $file) {
                     
-                    $path = $file->store('office_memorandum_uploads', 'public');
+                    $path = $file->store('office_order_uploads', 'public');
 
-                        OfficeMemorandumUpload::create([
+                        OfficeOrderUpload::create([
                         'file_path' => $path,
                         'user_id' => $user,
                         'record_id' => $new_user->id, 
@@ -141,7 +143,7 @@ class FormController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
+            return redirect()->route('admin.document.office_order.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -162,17 +164,16 @@ class FormController extends Controller
 
     if($request->isMethod('get')) {
         
-        $office_memorandum = OfficeMemorandum::where('id', $user_id)->first();
-        // dd($office_memorandum);
-        $data = $office_memorandum->id;
-        $div = $office_memorandum->user_id;
-
-        $office_memorandum_upload = OfficeMemorandumUpload::where('record_id', $data)->get()->toArray();
-        // dd($office_memorandum_upload);
-        //echo '<pre>'; print_r($office_memorandum); die;
+        $office_order = OfficeOrders::where('id', $user_id)->first();
+        $data = $office_order->id;
+        $div = $office_order->user_id;
+        
+        $office_order_upload = OfficeOrderUpload::where('record_id', $data)->get()->toArray();
+         //dd($office_order_upload);
+        //echo '<pre>'; print_r($office_order); die;
         $divisions = Division::where('id', $div)->first();
-        dd($divisions);
-        return view('backend.document_types.office_memorandum.edit', compact('divisions', 'office_memorandum', 'office_memorandum_upload'));
+        // dd($divisions);
+        return view('backend.document_types.office_order.edit', compact('divisions', 'office_order', 'office_order_upload'));
     }
     
     
@@ -194,14 +195,14 @@ class FormController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.document.office_memorandum.edit', ['id' => base64_encode($user_id)])
+            return redirect()->route('admin.document.office_order.edit', ['id' => base64_encode($user_id)])
                              ->withErrors($validator)
                              ->withInput();
         }
         
-        $office_memorandum = OfficeMemorandum::find($id);
+        $office_order = officeOrders::find($id);
 
-    $office_memorandum->update([
+    $office_order->update([
         'computer_no' => $request->computer_no,
         'file_no' => $request->file_no,
         'date_of_issue' => $request->date_of_issue,
@@ -217,18 +218,18 @@ class FormController extends Controller
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('office_memorandum_uploads', 'public');
-                OfficeMemorandumUpload::create([
+                $path = $file->store('office_order_uploads', 'public');
+                OfficeOrderUpload::create([
                     'file_path' => $path,
-                    'user_id' => $office_memorandum->user_id,
-                    'record_id' => $office_memorandum->id,
+                    'user_id' => $office_order->user_id,
+                    'record_id' => $office_order->id,
                     'file_name' => $file->getClientOriginalName()
                 ]);
             }
         }
 
         DB::commit();
-        return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
+        return redirect()->route('admin.document.office_order.index')->with('success', 'Office Order Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -254,7 +255,7 @@ public function deleteFile(Request $request)
             }
         }
 
-        $file = OfficeMemorandumUpload::find($fileId);
+        $file = OfficeOrderUpload::find($fileId);
         if ($file) {
             $file->delete();
         }
@@ -271,7 +272,7 @@ public function deleteFile(Request $request)
     {  
         $user_id =base64_decode($request->id);
         $auth_id = Auth::user()->id;
-        $privacy = OfficeMemorandum::find($user_id);
+        $privacy = OfficeOrders::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $auth_id;
         $privacy->deleted_at = date('Y-m-d H:i:s');

@@ -3,33 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\OfficeMemorandum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
-use App\Models\OfficeMemorandumUpload;
 use Illuminate\Support\Facades\Log;
+use App\Models\Letter;
+use App\Models\LetterUpload;
 
-class FormController extends Controller
+
+
+class LetterController extends Controller
 {
-    //
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+   
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function officeMemorandum(Request $request)
+    public function letter(Request $request)
     {
-        $office_memorandum = OfficeMemorandum::from('office_memorandum as o')
+        $letter = Letter::from('letter as o')
                             ->select('o.*','u.name as uploader_name','d.name as division_name','ds.name as uploader_designation')
                             ->leftJoin('users as u','u.id','=','o.uploaded_by')
                             ->leftJoin('divisions as d','d.id','=','o.division_id')
@@ -37,8 +33,9 @@ class FormController extends Controller
                             ->where('o.is_deleted',0)
                             ->get();
 
-        return view('backend.document_types.office_memorandum.index',compact('office_memorandum'));
+        return view('backend.document_types.letter.index',compact('letter'));
     }
+
 
     public function getDivisionsByUser(Request $request)
     { 
@@ -55,6 +52,7 @@ class FormController extends Controller
         return response()->json([]);
     }
 
+
     public function create(Request $request)
     {
        
@@ -64,7 +62,7 @@ class FormController extends Controller
 
             $users = User::all();
 
-            return view('backend.document_types.office_memorandum.create',compact('divisions','users'));
+            return view('backend.document_types.letter.create',compact('divisions','users'));
         }
 
         
@@ -102,11 +100,11 @@ class FormController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
+                return redirect()->route('admin.document.letter.create')->withErrors($validator)->withInput();
             }
             
 
-            $new_user = OfficeMemorandum::create([
+            $new_user = Letter::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => $request->user,
@@ -128,9 +126,9 @@ class FormController extends Controller
                 $uploadedFiles = $request->file('upload_file');
                 foreach ($uploadedFiles as $file) {
                     
-                    $path = $file->store('office_memorandum_uploads', 'public');
+                    $path = $file->store('letterupload', 'public');
 
-                        OfficeMemorandumUpload::create([
+                        LetterUpload::create([
                         'file_path' => $path,
                         'user_id' => $user,
                         'record_id' => $new_user->id, 
@@ -141,7 +139,7 @@ class FormController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
+            return redirect()->route('admin.document.letter.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -152,8 +150,6 @@ class FormController extends Controller
 
     }
 
-    // edit function for office memorandum and office memorandum uploads
-
     public function edit(Request $request,$id)
     {
        
@@ -162,17 +158,16 @@ class FormController extends Controller
 
     if($request->isMethod('get')) {
         
-        $office_memorandum = OfficeMemorandum::where('id', $user_id)->first();
-        // dd($office_memorandum);
-        $data = $office_memorandum->id;
-        $div = $office_memorandum->user_id;
-
-        $office_memorandum_upload = OfficeMemorandumUpload::where('record_id', $data)->get()->toArray();
-        // dd($office_memorandum_upload);
-        //echo '<pre>'; print_r($office_memorandum); die;
+        $letter = Letter::where('id', $user_id)->first();
+        $data = $letter->id;
+        $div = $letter->user_id;
+        
+        $letterUpload = LetterUpload::where('record_id', $data)->get()->toArray();
+         //dd($LetterUpload);s
+        //echo '<pre>'; print_r($Letter); die;
         $divisions = Division::where('id', $div)->first();
-        dd($divisions);
-        return view('backend.document_types.office_memorandum.edit', compact('divisions', 'office_memorandum', 'office_memorandum_upload'));
+        // dd($divisions);
+        return view('backend.document_types.letter.edit', compact('divisions', 'letter', 'letterUpload'));
     }
     
     
@@ -194,14 +189,14 @@ class FormController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.document.office_memorandum.edit', ['id' => base64_encode($user_id)])
+            return redirect()->route('admin.document.letter.edit', ['id' => base64_encode($user_id)])
                              ->withErrors($validator)
                              ->withInput();
         }
         
-        $office_memorandum = OfficeMemorandum::find($id);
+        $Letter = Letter::find($id);
 
-    $office_memorandum->update([
+    $Letter->update([
         'computer_no' => $request->computer_no,
         'file_no' => $request->file_no,
         'date_of_issue' => $request->date_of_issue,
@@ -217,24 +212,23 @@ class FormController extends Controller
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('office_memorandum_uploads', 'public');
-                OfficeMemorandumUpload::create([
+                $path = $file->store('letterupload', 'public');
+                LetterUpload::create([
                     'file_path' => $path,
-                    'user_id' => $office_memorandum->user_id,
-                    'record_id' => $office_memorandum->id,
+                    'user_id' => $Letter->user_id,
+                    'record_id' => $Letter->id,
                     'file_name' => $file->getClientOriginalName()
                 ]);
             }
         }
 
         DB::commit();
-        return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
+        return redirect()->route('admin.document.letter.index')->with('success', 'Office Memorandum Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
 }
-
 
 public function deleteFile(Request $request)
 {
@@ -254,7 +248,7 @@ public function deleteFile(Request $request)
             }
         }
 
-        $file = OfficeMemorandumUpload::find($fileId);
+        $file = LetterUpload::find($fileId);
         if ($file) {
             $file->delete();
         }
@@ -265,19 +259,16 @@ public function deleteFile(Request $request)
     return response()->json(['error' => 'File not found'], 404);
 }
 
-    // function for deleting records of office memorandum
 
-    public function destroy(Request $request)
-    {  
-        $user_id =base64_decode($request->id);
-        $auth_id = Auth::user()->id;
-        $privacy = OfficeMemorandum::find($user_id);
-        $privacy->is_deleted = '1';
-        $privacy->deleted_by = $auth_id;
-        $privacy->deleted_at = date('Y-m-d H:i:s');
-        $privacy->save();
-        return response()->json(['success'=>true]);
-    }
-
-    
+public function destroy(Request $request)
+{  
+    $user_id =base64_decode($request->id);
+    $auth_id = Auth::user()->id;
+    $privacy = Letter::find($user_id);
+    $privacy->is_deleted = '1';
+    $privacy->deleted_by = $auth_id;
+    $privacy->deleted_at = date('Y-m-d H:i:s');
+    $privacy->save();
+    return response()->json(['success'=>true]);
+}
 }
