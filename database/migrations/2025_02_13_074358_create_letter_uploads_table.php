@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('letter_uploads', function (Blueprint $table) {
             $table->id();
+            $table->unique('user_id')->nullable();
             $table->bigInteger('record_id')->index()->nullable();
             $table->string('file_path',500)->nullable();
             $table->string('file_name')->nullable();
