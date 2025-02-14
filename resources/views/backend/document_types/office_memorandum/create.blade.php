@@ -24,40 +24,40 @@
                     <div class="card-body p-4">
                         <form action="{{route('admin.document.office_memorandum.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                                <div class="col-md-6">
-                                    <label for="User" class="form-label">User <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="user">
-                                        <option value="">--Select--</option>
-                                        @if(count($users)>0)
-                                            @foreach ($users as $user)
-                                                <option value="{{$user->id}}">{{$user->name}}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    @if ($errors->has('user'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('user') }}</strong>
-                                        </span>
+                            <div class="col-md-6">
+                                <label for="User" class="form-label">User <span class="text-danger">*</span></label>
+                                <select class="form-control" name="user">
+                                    <option value="">--Select--</option>
+                                    @if(count($users) > 0)
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}" {{ old('user') == $user->id ? 'selected' : '' }}>
+                                                {{ $user->name }}
+                                            </option>
+                                        @endforeach
                                     @endif
-                                </div>
-                            
+                                </select>
+                                @if ($errors->has('user'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('user') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                             @if(Auth::user()->is_admin == 1)
-                                <div class="col-md-6">
-                                    <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="division">
-                                        <option value="">--Select--</option>
-                                        <!-- Divisions will be populated dynamically based on the selected user -->
-                                    </select>
-                                    @if ($errors->has('division'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('division') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
+                            <div class="col-md-6">
+                                <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
+                                <select class="form-control" name="division">
+                                    <option value="">--Select--</option>
+                                </select>
+                                @if ($errors->has('division'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('division') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                             @endif
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="computer_no" name="computer_no" placeholder="computer no">
+                                <input type="text" class="form-control" id="computer_no" value="{{ old('computer_no')}}" name="computer_no" placeholder="computer no">
                                 @if ($errors->has('computer_no'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('computer_no') }}</strong>
@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="file_no" class="form-label">File No. <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="file_no" name="file_no" placeholder="L-1222/1/2024-IA-I-(R)">
+                                <input type="text" class="form-control" id="file_no" value="{{ old('file_no')}}" name="file_no" placeholder="L-1222/1/2024-IA-I-(R)">
                                 @if ($errors->has('file_no'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('file_no') }}</strong>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_issue" name="date_of_issue" placeholder="date of issue">
+                                <input type="date" class="form-control" id="date_of_issue" value="{{ old('date_of_issue') }}"  name="date_of_issue" placeholder="date of issue">
                                 @if ($errors->has('date_of_issue'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('date_of_issue') }}</strong>
@@ -84,7 +84,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="subject" name="subject" placeholder="">
+                                <input type="text" class="form-control" id="subject" value="{{ old('subject') }}" name="subject" placeholder="">
                                 @if ($errors->has('subject'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('subject') }}</strong>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" placeholder="">
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ old('issuer_name') }}" placeholder="">
                                 @if ($errors->has('issuer_name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" placeholder="">
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ old('issuer_designation') }}" placeholder="">
                                 @if ($errors->has('issuer_designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_upload" class="form-label">Date of Upload <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_upload" name="date_of_upload" value="{{date('Y-m-d')}}" placeholder="date of issue" readonly>
+                                <input type="date" class="form-control" id="date_of_upload" name="date_of_upload"  value="{{ old('date', date('Y-m-d')) }}" placeholder="date of issue" readonly>
                                 @if ($errors->has('date_of_upload'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('date_of_upload') }}</strong>
@@ -122,6 +122,9 @@
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
                                     <div class="field_wrapper">
                                         <div class="file-input-group d-flex align-items-center">
+                                        @if(session('temp_upload_file'))
+                                            <input type="hidden" name="temp_upload_file" value="{{ session('temp_upload_file') }}">
+                                            @endif
                                             <input type="file" class="form-control" id="upload_file" name="upload_file[]">
                                             <a href = "javascript:void(0);" type="button" class="btn btn-primary ms-2 my-2 view_pdf">View PDF</a>
                                             <a href="javascript:void(0);" class="add_button ms-2" title="Add field">
@@ -137,12 +140,12 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
-                                <select class="form-control" name="file_type">
-                                    <option value="">--Select--</option>
-                                    <option value="0">Confidential</option>
-                                    <option value="1">Non-Confidential</option>
-                                </select>
+                            <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
+                            <select class="form-control" name="file_type">
+                                <option value="">--Select--</option>
+                                <option value="0" {{ old('file_type') == '0' ? 'selected' : '' }}>Confidential</option>
+                                <option value="1" {{ old('file_type') == '1' ? 'selected' : '' }}>Non-Confidential</option>
+                            </select>
                                 @if ($errors->has('file_type'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('file_type') }}</strong>
