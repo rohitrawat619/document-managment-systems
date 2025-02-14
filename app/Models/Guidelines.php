@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Letter extends Model
+class Guidelines extends Model
 {
     use HasFactory;
 
-    protected $table = 'letter';
+    protected $table = 'guidelines';
 
     protected $guarded = ['*'];
 
@@ -29,7 +29,7 @@ class Letter extends Model
 
     public function uploads()
     {
-        return $this->hasMany(letter_uploads::class);
+        return $this->hasMany(GuidelinesUpload::class);
     }
     public function user()
     {
