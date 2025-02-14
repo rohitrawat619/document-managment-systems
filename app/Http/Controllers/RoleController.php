@@ -93,7 +93,11 @@ class RoleController extends Controller
         {
             $roles = Role::where('id', $role_id)->first();
 
-            return view('backend.roles.edit', compact('roles'));
+            $permission = Role::where('id', $role_id)->get()->toArray();
+
+            //echo '<pre>'; print_r($permission); die;
+
+            return view('backend.roles.edit', compact('roles','permission'));
         }
 
         DB::beginTransaction();

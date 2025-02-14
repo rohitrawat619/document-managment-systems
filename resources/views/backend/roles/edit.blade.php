@@ -33,6 +33,22 @@
                                     </span>
                                 @endif
                             </div>
+                            <hr/>
+                            @foreach($permission as $per)
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" 
+                                            type="checkbox" 
+                                            name="permissions[]" 
+                                            value="{{ $per->id }}" 
+                                            id="permission_{{ $per->id }}" 
+                                            {{ in_array($per->id, $rolePermissions) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="permission_{{ $per->id }}">
+                                            {{ $per->id }} - {{ $per->name }}
+                                        </label>
+                                    </div>
+                                </div>
+                            @endforeach
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
                                     <button type="submit" class="btn btn-primary px-4">Submit</button>
