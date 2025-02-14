@@ -173,7 +173,6 @@ class LetterController extends Controller
         return view('backend.document_types.letter.edit', compact('divisions', 'letter', 'letterUpload'));
     }
     
-    
     DB::beginTransaction();
     try {
        
