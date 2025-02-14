@@ -12,7 +12,6 @@ use App\Models\Division;
 use App\Models\User;
 use App\Models\OfficeMemorandumUpload;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 
 class FormController extends Controller
 {
@@ -103,10 +102,10 @@ class FormController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-
                 return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
             }
             
+
             $new_user = OfficeMemorandum::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
@@ -121,40 +120,24 @@ class FormController extends Controller
                 'uploaded_by' => $roleId
             ]);
 
+
             $user = $request->user;
 
-            $rules = [
-                'upload_file.*' => 'required|mimes:pdf|max:20480', // 20MB limit
-            ];
-            
-            $validator = Validator::make($request->all(), $rules);
-            
-            if ($validator->fails()) {
-                // Store uploaded file paths temporarily in session
-                $uploadedFiles = Session::get('upload_file', []);
-        
-                if ($request->hasFile('upload_file')) {
-                    foreach ($request->file('upload_file') as $file) {
-                        $path = $file->store('temp_files'); // Store in 'storage/app/temp_files'
-                        $uploadedFiles[] = $path;
-                    }
-                }
-                
-                // Save file paths to session
-                Session::flash('upload_file', $uploadedFiles);
-        
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-        
-            // Handle successful file uploads
+
             if ($request->hasFile('upload_file')) {
-                foreach ($request->file('upload_file') as $file) {
-                    $file->store('permanent_storage'); // Move files to permanent location
+                $uploadedFiles = $request->file('upload_file');
+                foreach ($uploadedFiles as $file) {
+                    
+                    $path = $file->store('office_memorandum_uploads', 'public');
+
+                        OfficeMemorandumUpload::create([
+                        'file_path' => $path,
+                        'user_id' => $user,
+                        'record_id' => $new_user->id, 
+                        'file_name' => $file->getClientOriginalName() 
+                    ]);
                 }
             }
-        
-            // Clear temporary files
-            Session::forget('uploaded_files');
 
             DB::commit();
 
@@ -187,7 +170,7 @@ class FormController extends Controller
          //dd($office_memorandum_upload);
         //echo '<pre>'; print_r($office_memorandum); die;
         $divisions = Division::where('id', $div)->first();
-        //dd($divisions);
+        // dd($divisions);
         return view('backend.document_types.office_memorandum.edit', compact('divisions', 'office_memorandum', 'office_memorandum_upload'));
     }
     
