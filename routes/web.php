@@ -135,4 +135,14 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/notification/get-divisions-by-user', [App\Http\Controllers\NotificationController::class, 'getDivisionsByUser'])->name('document.notification.get-divisions-by-user');
     Route::delete('/admin/document/notification/delete_file', [App\Http\Controllers\NotificationController::class, 'deleteFile'])->name('document.notification.delete_file');
 
+    //guideline
+
+    Route::get('/document/guideline',[App\Http\Controllers\GuidelineController::class, 'guideline'])->name('document.guideline.index');
+    Route::match(['get','post'],'/document/guideline/create',[App\Http\Controllers\GuidelineController::class, 'create'])->name('document.guideline.create');
+    Route::match(['get','post'],'/document/guideline/edit/{id}',[App\Http\Controllers\GuidelineController::class, 'edit'])->name('document.guideline.edit');
+    Route::post('/document/guideline/status',[App\Http\Controllers\GuidelineController::class, 'status'])->name('document.guideline.status');
+    Route::post('/guideline/delete',[App\Http\Controllers\GuidelineController::class, 'destroy'])->name('guideline.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\GuidelineController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/guideline/get-divisions-by-user', [App\Http\Controllers\GuidelineController::class, 'getDivisionsByUser'])->name('document.guideline.get-divisions-by-user');
+    Route::delete('/admin/document/guideline/delete_file', [App\Http\Controllers\GuidelineController::class, 'deleteFile'])->name('document.guideline.delete_file');
 });
