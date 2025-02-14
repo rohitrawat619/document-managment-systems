@@ -33,6 +33,34 @@
                                     </span>
                                 @endif
                             </div>
+                            <div class="col-md-6">
+                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                                <select class="form-control" name="designation">
+                                    <option value="">--Select--</option>
+                                    @if(count($designations)>0)
+                                        @foreach ($designations as $dv)
+                                            <option value="{{$dv->id}}">{{$dv->name}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @if ($errors->has('designation'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('designation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <hr/>
+                            @foreach($permission as $per)
+                            <div class = "col-md-3">
+                                <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                    {{ $per->id }} - {{ $per->name }}
+                                    </label>
+                                </div>
+                            </div>
+                            @endforeach
+                            
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
                                     <button type="submit" class="btn btn-primary px-4">Submit</button>

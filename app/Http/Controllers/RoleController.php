@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Designation;
+use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -34,7 +36,10 @@ class RoleController extends Controller
     {
         if($request->isMethod('get'))
         {
-            return view('backend.roles.create');
+            $designations = Designation::all();
+            $permission = Permission::all();
+
+            return view('backend.roles.create',compact('designations','permission'));
         }
 
         DB::beginTransaction();
@@ -61,7 +66,9 @@ class RoleController extends Controller
             }
 
             $new_role = new Role();
-            $new_role->name= $request->name;
+            $new_role->name = $request->name;
+            $new_role->permission_id = implode(",",$request->permissions); 
+            $new_role->designation_id = $request->designation;
             $new_role->unique_key= Str::uuid()->toString();
             $new_role->save();
 
