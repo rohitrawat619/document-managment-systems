@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great! test
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
@@ -53,6 +52,13 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/designation/create',[App\Http\Controllers\DesignationController::class, 'create'])->name('designation.create');
         Route::match(['get','post'],'/designation/edit/{id}',[App\Http\Controllers\DesignationController::class, 'edit'])->name('designation.edit');
         Route::post('/designation/delete',[App\Http\Controllers\DesignationController::class, 'destroy'])->name('designation.delete');
+        
+        // Division
+
+        Route::get('/division',[App\Http\Controllers\DivisionController::class, 'index'])->name('division.index');
+        Route::match(['get','post'],'/division/create',[App\Http\Controllers\DivisionController::class, 'create'])->name('division.create');
+        Route::match(['get','post'],'/division/edit/{id}',[App\Http\Controllers\DivisionController::class, 'edit'])->name('division.edit');
+        Route::post('/division/delete',[App\Http\Controllers\DivisionController::class, 'destroy'])->name('division.delete');
 
 
         // Division
@@ -95,14 +101,48 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/office_memorandum/get-divisions-by-user', [App\Http\Controllers\FormController::class, 'getDivisionsByUser'])->name('document.office_memorandum.get-divisions-by-user');
     Route::delete('/admin/document/office_memorandum/delete_file', [App\Http\Controllers\FormController::class, 'deleteFile'])->name('document.office_memorandum.delete_file');
 
-    // letter
 
-    Route::get('/document/letter',[App\Http\Controllers\letterController::class, 'letter'])->name('document.letter.index');
-    Route::match(['get','post'],'/document/letter/create',[App\Http\Controllers\letterController::class, 'create'])->name('document.letter.create');
-    Route::match(['get','post'],'/document/letter/edit/{id}',[App\Http\Controllers\letterController::class, 'edit'])->name('document.letter.edit');
-    Route::post('/document/letter/status',[App\Http\Controllers\letterController::class, 'status'])->name('document.letter.status');
-    Route::post('/letter/delete',[App\Http\Controllers\letterController::class, 'destroy'])->name('letter.delete');
-    Route::get('view-pdf/{file}', [App\Http\Controllers\letterController::class, 'viewPdf'])->name('view.pdf');
-    Route::get('/admin/document/letter/get-divisions-by-user', [App\Http\Controllers\letterController::class, 'getDivisionsByUser'])->name('document.letter.get-divisions-by-user');
-    Route::delete('/admin/document/letter/delete_file', [App\Http\Controllers\letterController::class, 'deleteFile'])->name('document.letter.delete_file');
+    //letter
+
+    Route::get('/document/letter',[App\Http\Controllers\LetterController::class, 'letter'])->name('document.letter.index');
+    Route::match(['get','post'],'/document/letter/create',[App\Http\Controllers\LetterController::class, 'create'])->name('document.letter.create');
+    Route::match(['get','post'],'/document/letter/edit/{id}',[App\Http\Controllers\LetterController::class, 'edit'])->name('document.letter.edit');
+    Route::post('/document/letter/status',[App\Http\Controllers\LetterController::class, 'status'])->name('document.letter.status');
+    Route::post('/letter/delete',[App\Http\Controllers\LetterController::class, 'destroy'])->name('letter.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\LetterController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/letter/get-divisions-by-user', [App\Http\Controllers\LetterController::class, 'getDivisionsByUser'])->name('document.letter.get-divisions-by-user');
+    Route::delete('/admin/document/letter/delete_file', [App\Http\Controllers\LetterController::class, 'deleteFile'])->name('document.letter.delete_file');
+
+    //officeorder
+
+    Route::get('/document/office_order',[App\Http\Controllers\OfficeOrder::class, 'officeOrder'])->name('document.office_order.index');
+    Route::match(['get','post'],'/document/office_order/create',[App\Http\Controllers\OfficeOrder::class, 'create'])->name('document.office_order.create');
+    Route::match(['get','post'],'/document/office_order/edit/{id}',[App\Http\Controllers\OfficeOrder::class, 'edit'])->name('document.office_order.edit');
+    Route::post('/document/office_order/status',[App\Http\Controllers\OfficeOrder::class, 'status'])->name('document.office_order.status');
+    Route::post('/office_order/delete',[App\Http\Controllers\OfficeOrder::class, 'destroy'])->name('office_order.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\OfficeOrder::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/office_order/get-divisions-by-user', [App\Http\Controllers\OfficeOrder::class, 'getDivisionsByUser'])->name('document.office_order.get-divisions-by-user');
+    Route::delete('/admin/document/office_order/delete_file', [App\Http\Controllers\OfficeOrder::class, 'deleteFile'])->name('document.office_order.delete_file');
+
+     //Notifications
+
+    Route::get('/document/notification',[App\Http\Controllers\NotificationController::class, 'notification'])->name('document.notification.index');
+    Route::match(['get','post'],'/document/notification/create',[App\Http\Controllers\NotificationController::class, 'create'])->name('document.notification.create');
+    Route::match(['get','post'],'/document/notification/edit/{id}',[App\Http\Controllers\NotificationController::class, 'edit'])->name('document.notification.edit');
+    Route::post('/document/notification/status',[App\Http\Controllers\NotificationController::class, 'status'])->name('document.notification.status');
+    Route::post('/notification/delete',[App\Http\Controllers\NotificationController::class, 'destroy'])->name('notification.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\NotificationController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/notification/get-divisions-by-user', [App\Http\Controllers\NotificationController::class, 'getDivisionsByUser'])->name('document.notification.get-divisions-by-user');
+    Route::delete('/admin/document/notification/delete_file', [App\Http\Controllers\NotificationController::class, 'deleteFile'])->name('document.notification.delete_file');
+
+    //guideline
+
+    Route::get('/document/guideline',[App\Http\Controllers\GuidelineController::class, 'guideline'])->name('document.guideline.index');
+    Route::match(['get','post'],'/document/guideline/create',[App\Http\Controllers\GuidelineController::class, 'create'])->name('document.guideline.create');
+    Route::match(['get','post'],'/document/guideline/edit/{id}',[App\Http\Controllers\GuidelineController::class, 'edit'])->name('document.guideline.edit');
+    Route::post('/document/guideline/status',[App\Http\Controllers\GuidelineController::class, 'status'])->name('document.guideline.status');
+    Route::post('/guideline/delete',[App\Http\Controllers\GuidelineController::class, 'destroy'])->name('guideline.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\GuidelineController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/guideline/get-divisions-by-user', [App\Http\Controllers\GuidelineController::class, 'getDivisionsByUser'])->name('document.guideline.get-divisions-by-user');
+    Route::delete('/admin/document/guideline/delete_file', [App\Http\Controllers\GuidelineController::class, 'deleteFile'])->name('document.guideline.delete_file');
 });

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('office_memorandum_uploads', function (Blueprint $table) {
+        Schema::create('letter_uploads', function (Blueprint $table) {
             $table->id();
             $table->unique('user_id')->nullable();
             $table->bigInteger('record_id')->index()->nullable();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('office_memorandum_uploads');
+        Schema::dropIfExists('letter_uploads');
     }
 };
