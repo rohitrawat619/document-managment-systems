@@ -147,7 +147,3 @@ class DivisionController extends Controller
         //     ->with('success', 'Role deleted successfully');
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> rohitdev
