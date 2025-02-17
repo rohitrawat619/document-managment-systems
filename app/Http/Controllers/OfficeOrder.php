@@ -104,8 +104,11 @@ class OfficeOrder extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.office_order.create')->withErrors($validator)->withInput();
+                dd($validator->errors()); 
             }
+            // if ($validator->fails()) {
+            //     return redirect()->route('admin.document.office_order.create')->withErrors($validator)->withInput();
+            // }
             
 
             $new_user = OfficeOrders::create([
@@ -127,8 +130,8 @@ class OfficeOrder extends Controller
 
 
             if ($request->hasFile('upload_file')) {
-                $uploadedFiles = $request->file('upload_file');
-                foreach ($uploadedFiles as $file) {
+                $a = $request->file('upload_file');
+                foreach ($a as $file) {
                     
                     $path = $file->store('office_order_uploads', 'public');
 
@@ -142,8 +145,8 @@ class OfficeOrder extends Controller
             }
 
             DB::commit();
-
-            return redirect()->route('admin.document.office_order.index')->with('success','Form Created Successfully !!');
+            return response()->json('Form Created Successfully !!');
+            //return redirect()->route('admin.document.office_order.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {

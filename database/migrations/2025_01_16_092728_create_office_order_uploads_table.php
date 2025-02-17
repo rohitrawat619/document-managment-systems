@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('office_order_uploads', function (Blueprint $table) {
             $table->id();
-            $table->unique('user_id')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->bigInteger('record_id')->index()->nullable();
             $table->string('file_path',500)->nullable();
             $table->string('file_name')->nullable();
@@ -26,6 +26,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('office_order_uploads');
+        Schema::table('office_order_uploads', function (Blueprint $table) {
+            $table->dropColumn('user_id');
+        });
     }
 };
