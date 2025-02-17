@@ -173,7 +173,7 @@ class FormController extends Controller
         // dd($office_memorandum_upload);
         //echo '<pre>'; print_r($office_memorandum); die;
         $divisions = Division::where('id', $div)->first();
-        dd($divisions);
+        //dd($divisions);
         return view('backend.document_types.office_memorandum.edit', compact('divisions', 'office_memorandum', 'office_memorandum_upload'));
     }
     
