@@ -26,7 +26,7 @@
                             @csrf
                                 <div class="col-md-6">
                                     <label for="User" class="form-label">User <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="user">
+                                    <select class="form-control" id="user" name="user">
                                         <option value="">--Select--</option>
                                         @if(count($users)>0)
                                             @foreach ($users as $user)
@@ -44,7 +44,7 @@
                             @if(Auth::user()->is_admin == 1)
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="division">
+                                    <select class="form-control" id="division" name="division">
                                         <option value="">--Select--</option>
                                         <!-- Divisions will be populated dynamically based on the selected user -->
                                     </select>
@@ -138,7 +138,7 @@
 
                             <div class="col-md-6">
                                 <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
-                                <select class="form-control" name="file_type">
+                                <select class="form-control" name="file_type" id="file_type">
                                     <option value="">--Select--</option>
                                     <option value="0">Confidential</option>
                                     <option value="1">Non-Confidential</option>
@@ -156,7 +156,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <button type="submit" id="sub" class="btn btn-primary px-4">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -169,6 +169,112 @@
     </div>
 </div>
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+        $('#sub').click(function(e){
+
+            if($('#user').val()=="")
+				{
+					alert("Please Enter User");
+					$('#user').focus();
+					return false;
+				}
+
+                if($('#division').val()=="")
+				{
+					alert("Please Enter Division");
+					$('#division').focus();
+					return false;
+				}
+
+                if($('#computer_no').val()=="")
+				{
+					alert("Please Enter Computer No");
+					$('#computer_no').focus();
+					return false;
+				}
+
+                if($('#file_no').val()=="")
+				{
+					alert("Please Enter File No");
+					$('#file_no').focus();
+					return false;
+				}
+
+                if($('#date_of_issue').val()=="")
+				{
+					alert("Please Enter Date of Issue");
+					$('#date_of_issue').focus();
+					return false;
+				}
+
+                if($('#subject').val()=="")
+				{
+					alert("Please Enter Subject");
+					$('#subject').focus();
+					return false;
+				}
+
+                if($('#issuer_name').val()=="")
+				{
+					alert("Please Enter Issuer Name");
+					$('#issuer_name').focus();
+					return false;
+				}
+
+                if($('#issuer_designation').val()=="")
+				{
+					alert("Please Enter Issuer Designation");
+					$('#issuer_designation').focus();
+					return false;
+				}
+
+                if($('#date_of_upload').val()=="")
+				{
+					alert("Please Enter Date of upload");
+					$('#date_of_upload').focus();
+					return false;
+				}
+
+                if($('#file_type').val()=="")
+				{
+					alert("Please Enter File type");
+					$('#file_type').focus();
+					return false;
+				}
+
+                if($('#upload_file').val()=="")
+				{
+					alert("Please Upload File");
+					$('#upload_file').focus();
+					return false;
+				}
+                
+            var fileInput2 = document.getElementById('upload_file');
+            var file2 = fileInput2.files[0];
+            var fileSize2 = file2.size; 
+            var fileType2 = file2.type;
+
+            if (fileSize2 > "20000000" ) {
+                alert('File size must be less then 20MB');
+				$('#upload_file').focus();
+                return false;
+            }
+
+            if (!allowedTypes1.includes(fileType2)) {
+                alert('Invalid file type. Allowed types are: PDF.');
+				$('#upload_file').focus();
+                return false;
+            }
+
+
+                
+        });
+    });
+</script>
+
 <script>
     $(document).ready(function(){
         var maxField = 5; 
