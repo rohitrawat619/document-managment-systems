@@ -23,7 +23,8 @@ class DivisionController extends Controller
 
     public function index(Request $request)
     {
-        $division = Division::where('is_deleted',0)->get();
+        // $division = Division::where('is_deleted',0)->get();
+        $division = Division::where('is_deleted', 0)->orderBy('id', 'asc')->paginate(10);
 
         return view('backend.division.index',compact('division'));
     }

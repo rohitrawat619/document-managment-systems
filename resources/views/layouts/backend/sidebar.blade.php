@@ -35,7 +35,6 @@
                     </li>
                     <li> <a href="{{ route('admin.division.index') }}"><i class='bx bx-radio-circle'></i>Division</a>
                     </li>
-                    
                 </ul>
             </li>
         @endif
@@ -63,7 +62,7 @@
                 <li> <a href="{{route('admin.document.notification.index')}}"><i class='bx bx-radio-circle'></i>Notification</a>
                 </li>
                 <li> <a href="{{route('admin.document.letter.index')}}"><i class='bx bx-radio-circle'></i>Letters</a>
-                
+
                 <li> <a href="{{route('admin.document.guideline.index')}}"><i class='bx bx-radio-circle'></i>Guidelines</a>
                 </li>
 
