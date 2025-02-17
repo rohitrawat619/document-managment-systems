@@ -22,8 +22,8 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                        <form action="{{route('admin.document.office_order.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
-                            @csrf
+                        <form action="" id ="guidelineForm" method="post" class="row g-3" enctype="multipart/form-data">
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
                                 <div class="col-md-6">
                                     <label for="User" class="form-label">User <span class="text-danger">*</span></label>
                                     <select class="form-control" name="user">
@@ -156,7 +156,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <button type="submit" class="btn btn-primary1 px-4">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -169,6 +169,60 @@
     </div>
 </div>
 @push('scripts')
+
+<script>
+
+$(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    var guidelineStoreUrl = "{{ url('admin/document/office_order/create') }}";
+    $('#guidelineForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        let formData = new FormData(this); 
+
+        $.ajax({
+            url: guidelineStoreUrl, 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                $('.btn-primary1').prop('disabled', true).text('Submitting...');
+            },
+            success: function(response) {
+                $('.btn-primary1').prop('disabled', false).text('Submit');
+                alert(response);
+                     window.location.href = "{{ route('admin.document.office_order.index') }}";
+            },
+            error: function(xhr) {
+                console.log(xhr);
+                $('.btn-primary1').prop('disabled', false).text('Submit'); 
+                
+                
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessage = "";
+                    $.each(errors, function(key, value) {
+                        errorMessage += value[0] + "\n";
+                    });
+                    alert(errorMessage);
+                } else {
+                    alert("An error occurred. Please try again.");
+                }
+            }
+        });
+    });
+});
+
+
+    </script>
+
+
 <script>
     $(document).ready(function(){
         var maxField = 5; 

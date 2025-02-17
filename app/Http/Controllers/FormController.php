@@ -71,7 +71,7 @@ class FormController extends Controller
 
         $roleId = Auth::user()->role_id;
 
-     
+    //  dd($roleId);
         DB::beginTransaction();
         try{
 
@@ -120,6 +120,8 @@ class FormController extends Controller
                 'uploaded_by' => $roleId
             ]);
 
+
+            
 
             $user = $request->user;
 

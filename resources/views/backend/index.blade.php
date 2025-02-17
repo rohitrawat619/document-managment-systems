@@ -9,11 +9,12 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-secondary">Total Orders</p>
-                                <h4 class="my-1 text-info">4805</h4>
-                                <p class="mb-0 font-13">+2.5% from last week</p>
+                                <p class="mb-0 text-secondary">Total no of Division</p>
+                                <h4 class="my-1 text-info">66</h4>
+                                <!-- <p class="mb-0 font-13">+2.5% from last week</p> -->
                             </div>
-                            <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto"><i class='bx bxs-cart'></i>
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto"><i class='bx bxs-business'></i>
+
                             </div>
                         </div>
                     </div>
@@ -24,11 +25,13 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Total Revenue</p>
-                            <h4 class="my-1 text-danger">$84,245</h4>
-                            <p class="mb-0 font-13">+5.4% from last week</p>
+                            <p class="mb-0 text-secondary">Total no of User</p>
+                            <h4 class="my-1 text-danger">3</h4>
+                            <!-- <p class="mb-0 font-13">+5.4% from last week</p> -->
                         </div>
-                        <div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto"><i class='bx bxs-wallet'></i>
+                        <!-- <div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto"><i class='bx bxs-wallet'></i>
+                        </div> -->
+                        <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto"><i class='bx bxs-group'></i>
                         </div>
                     </div>
                 </div>
@@ -39,11 +42,12 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Bounce Rate</p>
-                            <h4 class="my-1 text-success">34.6%</h4>
-                            <p class="mb-0 font-13">-4.5% from last week</p>
+                            <p class="mb-0 text-secondary">Total no of Document Submit</p>
+                            <h4 class="my-1 text-success">25</h4>
+                            <!-- <p class="mb-0 font-13">-4.5% from last week</p> -->
                         </div>
-                        <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bxs-bar-chart-alt-2' ></i>
+                        <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bxs-file'></i>
+
                         </div>
                     </div>
                 </div>
@@ -54,12 +58,14 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Total Customers</p>
-                            <h4 class="my-1 text-warning">8.4K</h4>
-                            <p class="mb-0 font-13">+8.4% from last week</p>
+                            <p class="mb-0 text-secondary">Total no of Designation</p>
+                            <h4 class="my-1 text-warning">41</h4>
+                            <!-- <p class="mb-0 font-13">+8.4% from last week</p> -->
                         </div>
-                        <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto"><i class='bx bxs-group'></i>
-                        </div>
+                        <div class="widgets-icons-2 rounded-circle text-white ms-auto" style="background:rgb(175, 76, 170);">
+    <i class='bx bxs-user-badge'></i>
+</div>
+
                     </div>
                 </div>
                 </div>
@@ -163,9 +169,10 @@
                     </ul>
                 </div>
             </div>
-            </div><!--end row-->
+            </div> 
+             <!-- end row  -->
 
-            <div class="card radius-10">
+            <!-- <div class="card radius-10">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <div>
@@ -276,10 +283,10 @@
                     </table>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-12 col-lg-7 col-xl-8 d-flex">
                     <div class="card radius-10 w-100">
                         <div class="card-header bg-transparent">
@@ -357,9 +364,9 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                    </div> -->
 
-                    <div class="col-12 col-lg-5 col-xl-4 d-flex">
+                    <!-- <div class="col-12 col-lg-5 col-xl-4 d-flex">
                         <div class="card w-100 radius-10">
                         <div class="card-body">
                         <div class="card radius-10 border shadow-none">
@@ -405,10 +412,10 @@
 
                         </div>
 
-                    </div>
-                </div><!--end row-->
+                    </div> -->
+                <!-- </div> end row -->
 
-                <div class="row row-cols-1 row-cols-lg-3">
+                <!-- <div class="row row-cols-1 row-cols-lg-3">
                     <div class="col d-flex">
                     <div class="card radius-10 w-100">
                         <div class="card-body">
@@ -509,10 +516,10 @@
                                         <p class="mb-0">Electronic</p>
                                     </div>
                                 </div>
-                            </div><!--end row-->
-                        </div>
+                            </div>end row-->
+                        <!-- </div>
                     </div>
-                </div><!--end row-->
+                </div>end row  -->
 
         </div>
     </div>
