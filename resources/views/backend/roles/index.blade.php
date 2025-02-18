@@ -38,7 +38,7 @@
                 <hr/>
                 <div class="card">
                     <div class="card-body">
-                    <form method="GET" action="{{ route('admin.designation.index') }}" class="form-inline">
+                    <form method="GET" action="{{ route('admin.roles.index') }}" class="form-inline">
                     <div class="d-flex mb-2">
                     <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
                     <button type="submit" class="btn btn-primary ms-2">Search</button>

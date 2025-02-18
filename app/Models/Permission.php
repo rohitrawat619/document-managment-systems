@@ -13,6 +13,7 @@ class Permission extends Model
 
     public function role()
     {
+
         return $this->hasOne(Role::class);
     }
 }
