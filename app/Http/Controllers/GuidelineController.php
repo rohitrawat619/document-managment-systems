@@ -57,7 +57,7 @@ class GuidelineController extends Controller
 
     public function create(Request $request)
     {
-       
+     
         if($request->isMethod('get'))
         {
             $divisions = Division::all();
@@ -67,7 +67,7 @@ class GuidelineController extends Controller
             return view('backend.document_types.guideline.create',compact('divisions','users'));
         }
 
-        
+     
 
         $roleId = Auth::user()->role_id;
 
@@ -86,27 +86,31 @@ class GuidelineController extends Controller
                 'issuer_designation' => 'required|string',
                 'file_type' => 'required',
                 'division' => 'required',
-                'date_of_upload' => 'required',
+                 'date_of_upload' => 'required',
                 'upload_file' => 'required|array|min:1', 
-                'upload_file.*' => 'mimes:pdf|max:20480' 
+               'upload_file.*' => 'mimes:pdf|max:20480' 
                
             ];
 
             $messages = [
-                'file_no.regex'  =>'File No Should be in Correct Format',
-                'upload_file.*.mimes' => 'Each file should be in PDF format',
-                'upload_file.*.max' => 'Each file should be smaller than 20MB'
+             'file_no.regex'  =>'File No Should be in Correct Format',
+                 'upload_file.*.mimes' => 'Each file should be in PDF format',
+                 'upload_file.*.max' => 'Each file should be smaller than 20MB'
             ];
 
            
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.guideline.create')->withErrors($validator)->withInput();
+                dd($validator->errors()); // Yeh validation errors show karega
             }
             
+            // if ($validator->fails()) {
+            //     return redirect()->route('admin.document.guideline.create')->withErrors($validator)->withInput();
+            // }
+            
 
-            $new_user = guideline::create([
+            $new_user = Guidelines::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => $request->user,
@@ -123,10 +127,11 @@ class GuidelineController extends Controller
 
             $user = $request->user;
 
-
-            if ($request->hasFile('upload_file')) {
-                $uploadedFiles = $request->file('upload_file');
-                foreach ($uploadedFiles as $file) {
+           
+            if ($request->hasFile('upload_file')) {  
+            $a = $request->file('upload_file');
+                //dd($a);
+                foreach ($a as $file) {
                     
                     $path = $file->store('guideline_uploads', 'public');
 
@@ -140,8 +145,8 @@ class GuidelineController extends Controller
             }
 
             DB::commit();
-
-            return redirect()->route('admin.document.guideline.index')->with('success','Form Created Successfully !!');
+            return response()->json('Form Created Successfully !!');
+            //return redirect()->route('admin.document.guideline.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {

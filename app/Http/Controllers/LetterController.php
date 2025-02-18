@@ -100,8 +100,11 @@ class LetterController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.letter.create')->withErrors($validator)->withInput();
+                dd($validator->errors()); // Yeh validation errors show karega
             }
+            // if ($validator->fails()) {
+            //     return redirect()->route('admin.document.letter.create')->withErrors($validator)->withInput();
+            // }
             
 
             $new_user = Letter::create([
@@ -138,8 +141,8 @@ class LetterController extends Controller
             }
 
             DB::commit();
-
-            return redirect()->route('admin.document.letter.index')->with('success','Form Created Successfully !!');
+            return response()->json('Form Created Successfully !!');
+           // return redirect()->route('admin.document.letter.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -169,7 +172,6 @@ class LetterController extends Controller
         // dd($divisions);
         return view('backend.document_types.letter.edit', compact('divisions', 'letter', 'letterUpload'));
     }
-    
     
     DB::beginTransaction();
     try {

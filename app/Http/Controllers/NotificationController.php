@@ -95,8 +95,11 @@ class NotificationController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.notification.create')->withErrors($validator)->withInput();
+                dd($validator->errors()); 
             }
+            // if ($validator->fails()) {
+            //     return redirect()->route('admin.document.notification.create')->withErrors($validator)->withInput();
+            // }
             
 
             $new_user = Notification::create([
@@ -133,8 +136,8 @@ class NotificationController extends Controller
             }
 
             DB::commit();
-
-            return redirect()->route('admin.document.notification.index')->with('success','Form Created Successfully !!');
+            return response()->json('Form Created Successfully !!');
+           // return redirect()->route('admin.document.notification.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {

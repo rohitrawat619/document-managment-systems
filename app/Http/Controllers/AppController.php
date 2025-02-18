@@ -75,10 +75,10 @@ class AppController extends Controller
         //$remember_me = $request->has('remember_me') ? true : false;
 
         if (Auth::attempt($credentials)) {
-
+            
             return redirect()->route('admin.home');
         }
-
+       
         return back()->with('error', 'The provided credentials do not match our records.');
 
     }
