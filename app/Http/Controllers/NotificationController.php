@@ -28,7 +28,7 @@ class NotificationController extends Controller
                             ->leftJoin('divisions as d','d.id','=','n.division_id')
                             ->leftJoin('designations as ds','ds.id','=','u.designation')
                             ->where('n.is_deleted',0)
-                            ->get();
+                            ->orderBy('id', 'asc')->paginate(10);
 
         return view('backend.document_types.notification.index',compact('notification'));
     }
