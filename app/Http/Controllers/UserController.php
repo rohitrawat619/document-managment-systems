@@ -137,13 +137,15 @@ class UserController extends Controller
         {
             $users = User::where('id', $user_id)->first();
 
-            $divisions = Division::all();
+            $selectedDivision = explode(',', $users->division); // Convert string to array
+
+            $divisions = DB::table('divisions')->get();
 
             $designations = Designation::all();
 
             $roles = Role::all();
 
-            return view('backend.users.edit', compact('users','divisions','designations','roles'));
+            return view('backend.users.edit', compact('users','divisions','designations','roles','selectedDivision'));
         }
 
         DB::beginTransaction();
@@ -180,7 +182,7 @@ class UserController extends Controller
                 'phone' => $mobile,
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
-                'division' => $request->division,
+                'division' => implode(",",$request->division),
                 'designation' => $request->designation,
             ]);
 
