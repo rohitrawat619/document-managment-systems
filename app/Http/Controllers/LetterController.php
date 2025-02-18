@@ -225,7 +225,8 @@ class LetterController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.letter.index')->with('success', 'Office Memorandum Updated Successfully!');
+        return response()->json('Letters Updated Successfully!');
+       // return redirect()->route('admin.document.letter.index')->with('success', 'Letters Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());

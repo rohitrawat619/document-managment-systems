@@ -215,6 +215,13 @@
 					$('#file_no').focus();
 					return false;
 				}
+                var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
+
+                if (!fileNoRegex.test($('#file_no').val())) {
+                    $('#file_no1').text("Invalid File No format. Please follow the correct format").show();
+                    $('#file_no').focus();
+                    return false;
+                }
 
                 if($('#date_of_issue').val()=="")
 				{
