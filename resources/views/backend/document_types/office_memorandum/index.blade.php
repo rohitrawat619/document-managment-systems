@@ -38,6 +38,12 @@
                 <hr/>
                 <div class="card">
                     <div class="card-body">
+                    <div class="d-flex  mb-3">
+                    <form method="GET" action="{{ route('admin.designation.index') }}" class="form-inline">
+                    <div class="d-flex mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                     </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>
