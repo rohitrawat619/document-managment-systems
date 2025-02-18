@@ -58,6 +58,7 @@
                                         <strong>{{ $errors->first('file_no') }}</strong>
                                     </span>
                                 @endif
+                                <div id="file_no1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
@@ -164,7 +165,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <button id ="sub" type="submit" class="btn btn-primary px-4">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -180,6 +181,29 @@
 
 
 @push('scripts')
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+        $('#sub').click(function(e){
+            if($('#file_no').val()=="")
+				{
+                    $('#file_no1').text("Please Enter File No").show();
+					$('#file_no').focus();
+					return false;
+				}
+                var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
+
+                if (!fileNoRegex.test($('#file_no').val())) {
+                    $('#file_no1').text("Invalid File No format. Please follow the correct format").show();
+                    $('#file_no').focus();
+                    return false;
+                }
+        });
+    });
+</script>
+
 <script>
 
 $(document).ready(function() { 

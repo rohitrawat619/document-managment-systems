@@ -102,8 +102,11 @@ class FormController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
+                dd($validator->errors()); 
             }
+            // if ($validator->fails()) {
+            //     return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
+            // }
             
 
             $new_user = OfficeMemorandum::create([
@@ -140,8 +143,8 @@ class FormController extends Controller
             }
 
             DB::commit();
-
-            return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
+            return response()->json('Form Created Successfully !!');
+           // return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -227,7 +230,8 @@ class FormController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
+        return response()->json('Office Memorandum Updated Successfully!');
+        //return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
