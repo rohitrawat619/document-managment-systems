@@ -23,10 +23,22 @@ class DivisionController extends Controller
 
     public function index(Request $request)
     {
-        // $division = Division::where('is_deleted',0)->get();
-        $division = Division::where('is_deleted', 0)->orderBy('id', 'asc')->paginate(10);
+    $search = $request->get('search'); // Get search query
 
-        return view('backend.division.index',compact('division'));
+    // If there's a search query, filter the divisions by name
+    if ($search) {
+        $division = Division::where('name', 'like', '%' . $search . '%')
+            ->where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+    } else {
+        // If no search query, just paginate all divisions
+        $division = Division::where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+    }
+
+    return view('backend.division.index', compact('division'));
     }
 
     public function create(Request $request)
