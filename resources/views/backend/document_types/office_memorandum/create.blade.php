@@ -26,7 +26,7 @@
                             @csrf
                                 <div class="col-md-6">
                                     <label for="User" class="form-label">User <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="user" name="user">
+                                    <select class="form-control" name="user">
                                         <option value="">--Select--</option>
                                         @if(count($users)>0)
                                             @foreach ($users as $user)
@@ -44,7 +44,7 @@
                             @if(Auth::user()->is_admin == 1)
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="division" name="division">
+                                    <select class="form-control" name="division">
                                         <option value="">--Select--</option>
                                         <!-- Divisions will be populated dynamically based on the selected user -->
                                     </select>
@@ -138,7 +138,7 @@
 
                             <div class="col-md-6">
                                 <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
-                                <select class="form-control" name="file_type" id="file_type">
+                                <select class="form-control" name="file_type">
                                     <option value="">--Select--</option>
                                     <option value="0">Confidential</option>
                                     <option value="1">Non-Confidential</option>
@@ -363,7 +363,3 @@
 </script>
 @endpush
 @endsection
-
-
-
-

@@ -233,7 +233,7 @@ class GuidelineController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.guideline.index')->with('success', 'Office Memorandum Updated Successfully!');
+        return redirect()->route('admin.document.guideline.index')->with('success', 'Guidelines Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -276,7 +276,7 @@ public function deleteFile(Request $request)
     {  
         $user_id =base64_decode($request->id);
         $auth_id = Auth::user()->id;
-        $privacy = guideline::find($user_id);
+        $privacy = Guidelines::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $auth_id;
         $privacy->deleted_at = date('Y-m-d H:i:s');

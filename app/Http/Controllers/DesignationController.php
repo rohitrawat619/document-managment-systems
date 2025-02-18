@@ -23,7 +23,7 @@ class DesignationController extends Controller
 
     public function index(Request $request)
     {
-        $designation = Designation::where('is_deleted',0)->get();
+        $designation = Designation::where('is_deleted',0)->orderBy('id', 'asc')->paginate(10);
 
         return view('backend.designation.index',compact('designation'));
     }

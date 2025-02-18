@@ -181,6 +181,40 @@
 
 @push('scripts')
 <script>
+
+$(document).ready(function() {
+    $('#guidelineForm').on('submit', function(e) {
+        e.preventDefault();  
+
+        var formData = new FormData(this);  
+
+        $.ajax({
+            url: $(this).attr('action'),  
+            type: 'POST',
+            data: formData,
+            processData: false,  
+            contentType: false, 
+            success: function(response) {
+                // if (response.success) {
+                    
+                    alert('Guideline updated successfully...!');
+                // } else {
+                    
+                //     $.each(response.errors, function(key, value) {
+                //         $('#' + key).addClass('is-invalid');
+                //         $('#' + key).next('.invalid-feedback').text(value);
+                //     });
+                // }
+            },
+            error: function(xhr, status, error) {
+              
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+});
+
+
 $(document).ready(function() {
     var maxField = 5; 
     var addButton = $('.add_button'); 

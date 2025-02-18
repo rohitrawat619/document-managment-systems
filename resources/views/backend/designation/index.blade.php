@@ -47,29 +47,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($designation as $k => $r)
-                                    <tr>
-                                        <th scope="row">{{$k + 1}}</th>
-                                        <td>{{$r->name}}</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="{{route('admin.designation.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                {{-- @if($r->is_active==1)
-                                                    <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @else
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif --}}
-											</div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <td colspan="5">No Records Found</td>
-                                @endforelse
-                            </tbody>
+                            @foreach($designation as $r)
+                                <tr>
+                                    <!-- Show row number continuously across pages -->
+                                    <th scope="row">{{ ($designation->currentPage() - 1) * $designation->perPage() + $loop->iteration }}</th>
+                                    <td>{{ $r->name }}</td>
+                                    <td>
+                                        <div class="d-flex order-actions">
+                                            <a href="{{ route('admin.designation.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                <i class="bx bxs-edit"></i>
+                                            </a>
+                                            <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                <i class="bx bxs-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                         </table>
+                         <!-- Pagination Links -->
+                         <div class="d-flex justify-content-center mt-4">
+                            {{ $designation->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
                 </div>
             </div>
