@@ -31,7 +31,7 @@ class LetterController extends Controller
                             ->leftJoin('divisions as d','d.id','=','o.division_id')
                             ->leftJoin('designations as ds','ds.id','=','u.designation')
                             ->where('o.is_deleted',0)
-                            ->get();
+                            ->orderBy('id', 'asc')->paginate(10);
 
         return view('backend.document_types.letter.index',compact('letter'));
     }
