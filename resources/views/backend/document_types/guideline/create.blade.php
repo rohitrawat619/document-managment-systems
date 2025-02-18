@@ -318,18 +318,11 @@ $(document).ready(function() {
             success: function(response) {
                 $('.btn-primary1').prop('disabled', false).text('Submit');
                 alert(response);
-                // if (response.success) {
-                //     console.log(response);
-                //     alert("kuch hi");
                      window.location.href = "{{ route('admin.document.guideline.index') }}";
-                // } else {
-                //     alert(response.message);
-                // }
             },
             error: function(xhr) {
                 console.log(xhr);
                 $('.btn-primary1').prop('disabled', false).text('Submit'); 
-                
                 
                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                     var errors = xhr.responseJSON.errors;
@@ -346,8 +339,7 @@ $(document).ready(function() {
     });
 });
 
-
-    </script>
+</script>
 
 
 

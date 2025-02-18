@@ -55,7 +55,7 @@
                                 <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
                                     <label class="form-check-label" for="flexCheckDefault">
-                                    {{ $per->id }} - {{ $per->name }}
+                                    {{ $per->name }}
                                     </label>
                                 </div>
                             </div>

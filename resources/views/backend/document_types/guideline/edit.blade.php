@@ -22,7 +22,7 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                        <form action="{{ route('admin.document.guideline.edit', $guideline->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
+                        <form id="guidelineForm" action="{{ route('admin.document.guideline.edit', $guideline->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
                             @if(Auth::user()->is_admin==1)
                                 <div class="col-md-6">
@@ -182,7 +182,7 @@
 @push('scripts')
 <script>
 
-$(document).ready(function() {
+$(document).ready(function() { 
     $('#guidelineForm').on('submit', function(e) {
         e.preventDefault();  
 
@@ -194,17 +194,10 @@ $(document).ready(function() {
             data: formData,
             processData: false,  
             contentType: false, 
-            success: function(response) {
-                // if (response.success) {
-                    
-                    alert('Guideline updated successfully...!');
-                // } else {
-                    
-                //     $.each(response.errors, function(key, value) {
-                //         $('#' + key).addClass('is-invalid');
-                //         $('#' + key).next('.invalid-feedback').text(value);
-                //     });
-                // }
+            success: function(response) { 
+                    alert(response);
+                    window.location.href = "{{ route('admin.document.guideline.index') }}";
+                
             },
             error: function(xhr, status, error) {
               

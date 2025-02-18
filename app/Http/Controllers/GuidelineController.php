@@ -35,7 +35,8 @@ class GuidelineController extends Controller
                             ->leftJoin('divisions as d','d.id','=','o.division_id')
                             ->leftJoin('designations as ds','ds.id','=','u.designation')
                             ->where('o.is_deleted',0)
-                            ->get();
+                            ->orderBy('id', 'asc')->paginate(10);
+
 
         return view('backend.document_types.guideline.index',compact('guideline'));
     }
@@ -233,7 +234,8 @@ class GuidelineController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.guideline.index')->with('success', 'Guidelines Updated Successfully!');
+        return response()->json('Guidelines Updated Successfully!');
+        //return redirect()->route('admin.document.guideline.index')->with('success', 'Guidelines Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());

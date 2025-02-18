@@ -93,11 +93,25 @@ class RoleController extends Controller
         {
             $roles = Role::where('id', $role_id)->first();
 
-            $permission = Role::where('id', $role_id)->get()->toArray();
+            /*** fetch for designation selected bu user */
 
-            //echo '<pre>'; print_r($permission); die;
+            $designations = DB::table('designations')->get(); 
 
-            return view('backend.roles.edit', compact('roles','permission'));
+            $selectedDesignations = DB::table('roles')
+                ->where('id', $role_id)
+                ->pluck('designation_id')
+                ->toArray(); 
+
+            
+            /*** fetch for particular permission given by the user */
+
+            $rolePermissions = explode(',', $roles->permission_id); 
+
+            $permissions = DB::table('permissions')
+                ->select('permissions.id', 'permissions.name')
+                ->get();
+        
+            return view('backend.roles.edit', compact('roles','rolePermissions','permissions','designations','selectedDesignations'));
         }
 
         DB::beginTransaction();
@@ -124,6 +138,8 @@ class RoleController extends Controller
 
             $new_role = Role::find($role_id);
             $new_role->name= $request->name;
+            $new_role->permission_id = implode(",",$request->permissions); 
+            $new_role->designation_id = $request->designation;
             $new_role->save();
 
             DB::commit();
