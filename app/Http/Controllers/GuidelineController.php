@@ -29,13 +29,21 @@ class GuidelineController extends Controller
 
     public function guideline(Request $request)
     {
-        $guideline = Guidelines::from('guidelines as o')
-                            ->select('o.*','u.name as uploader_name','d.name as division_name','ds.name as uploader_designation')
-                            ->leftJoin('users as u','u.id','=','o.uploaded_by')
-                            ->leftJoin('divisions as d','d.id','=','o.division_id')
-                            ->leftJoin('designations as ds','ds.id','=','u.designation')
-                            ->where('o.is_deleted',0)
-                            ->orderBy('id', 'asc')->paginate(10);
+                $query = Guidelines::from('guidelines as o')
+                ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
+                ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
+                ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
+                ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
+                ->where('o.is_deleted', 0);
+
+                // Apply filter if 'computer_no' is provided
+                if ($request->filled('search')) {
+                    $computer_no = $request->get('search');
+                    $query->where('o.computer_no', 'like', "%{$computer_no}%");
+                }
+
+                // Fetch the paginated result
+                $guideline = $query->orderBy('o.id', 'asc')->paginate(10);
 
 
         return view('backend.document_types.guideline.index',compact('guideline'));
@@ -234,7 +242,8 @@ class GuidelineController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.guideline.index')->with('success', 'Office Memorandum Updated Successfully!');
+        return response()->json('Guidelines Updated Successfully!');
+        //return redirect()->route('admin.document.guideline.index')->with('success', 'Guidelines Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -277,7 +286,7 @@ public function deleteFile(Request $request)
     {  
         $user_id =base64_decode($request->id);
         $auth_id = Auth::user()->id;
-        $privacy = guideline::find($user_id);
+        $privacy = Guidelines::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $auth_id;
         $privacy->deleted_at = date('Y-m-d H:i:s');

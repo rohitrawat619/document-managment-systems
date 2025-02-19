@@ -23,8 +23,19 @@ class DesignationController extends Controller
 
     public function index(Request $request)
     {
-        $designation = Designation::where('is_deleted',0)->orderBy('id', 'asc')->paginate(10);
+        $search = $request->get('search'); // Get search query
 
+        if ($search) {
+            $designation = Designation::where('name', 'like', '%' . $search . '%')
+            ->where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+        } else {
+        // If no search query, just paginate all divisions
+        $designation = Designation::where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+        }
         return view('backend.designation.index',compact('designation'));
     }
 

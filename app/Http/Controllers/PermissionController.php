@@ -25,10 +25,20 @@ class PermissionController extends Controller
     //
     public function index(Request $request)
     {
-        // $permission = Permission::where('is_deleted',0)->get();
-        $permission = Permission::where('is_deleted', 0)
-        ->orderBy('id', 'asc')  // Order by 'id' in ascending order
-        ->paginate(10); 
+        $search = $request->get('search');
+
+        // If there's a search query, filter the divisions by name
+            if ($search) {
+                $permission = Permission::where('name', 'like', '%' . $search . '%')
+                    ->where('is_deleted', 0)
+                    ->orderBy('id', 'asc')
+                    ->paginate(10);
+            } else {
+            // If no search query, just paginate all divisions
+                $permission = Permission::where('is_deleted', 0)
+                    ->orderBy('id', 'asc')
+                    ->paginate(10);
+            }
 
         return view('backend.permission.index',compact('permission'));
     }

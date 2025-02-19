@@ -7,6 +7,7 @@
             <div class="col">
                 <div class="card radius-10 border-start border-0 border-4 border-info">
                     <div class="card-body">
+                        
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-secondary">Total no of Division</p>
