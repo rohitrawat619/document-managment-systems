@@ -7,9 +7,10 @@
             <div class="col">
                 <div class="card radius-10 border-start border-0 border-4 border-info">
                     <div class="card-body">
+
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-secondary">Total no of Division</p>
+                                <p class="mb-0 text-secondary">Total Divisions</p>
                                 <h4 class="my-1 text-info">66</h4>
                                 <!-- <p class="mb-0 font-13">+2.5% from last week</p> -->
                             </div>
@@ -25,7 +26,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Total no of User</p>
+                            <p class="mb-0 text-secondary">Total Users</p>
                             <h4 class="my-1 text-danger">3</h4>
                             <!-- <p class="mb-0 font-13">+5.4% from last week</p> -->
                         </div>
@@ -42,7 +43,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Total no of Document Submit</p>
+                            <p class="mb-0 text-secondary">Documents Submitted</p>
                             <h4 class="my-1 text-success">25</h4>
                             <!-- <p class="mb-0 font-13">-4.5% from last week</p> -->
                         </div>
@@ -58,7 +59,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Total no of Designation</p>
+                            <p class="mb-0 text-secondary">Total Designation</p>
                             <h4 class="my-1 text-warning">41</h4>
                             <!-- <p class="mb-0 font-13">+8.4% from last week</p> -->
                         </div>
@@ -78,7 +79,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Sales Overview</h6>
+                                <h6 class="mb-0">Annual Visitor Report for {{date('Y')}} </h6>
                             </div>
                             <div class="dropdown ms-auto">
                                 <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
@@ -98,10 +99,10 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex align-items-center ms-auto font-13 gap-2 mb-3">
+                        {{-- <div class="d-flex align-items-center ms-auto font-13 gap-2 mb-3">
                             <span class="border px-1 rounded cursor-pointer"><i class="bx bxs-circle me-1" style="color: #14abef"></i>Sales</span>
                             <span class="border px-1 rounded cursor-pointer"><i class="bx bxs-circle me-1" style="color: #ffc107"></i>Visits</span>
-                        </div>
+                        </div> --}}
                         <div class="chart-container-1">
                             <canvas id="chart1"></canvas>
                         </div>
@@ -133,7 +134,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Trending Products</h6>
+                                <h6 class="mb-0">User Status</h6>
                             </div>
                             <div class="dropdown ms-auto">
                                 <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
@@ -158,21 +159,20 @@
                         </div>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center border-top">Jeans <span class="badge bg-success rounded-pill">25</span>
+                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center border-top">Active Users <span class="badge bg-success rounded-pill">1</span>
                         </li>
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">T-Shirts <span class="badge bg-danger rounded-pill">10</span>
+                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">User in Trash <span class="badge bg-danger rounded-pill">2</span>
                         </li>
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Shoes <span class="badge bg-primary rounded-pill">65</span>
+                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">In-active Users <span class="badge bg-primary rounded-pill">4</span>
                         </li>
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Lingerie <span class="badge bg-warning text-dark rounded-pill">14</span>
-                        </li>
+
                     </ul>
                 </div>
             </div>
-            </div> 
+            </div>
              <!-- end row  -->
 
-            <!-- <div class="card radius-10">
+             {{-- <div class="card radius-10">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <div>
@@ -283,7 +283,7 @@
                     </table>
                     </div>
                 </div>
-            </div> -->
+            </div> --}}
 
 
                 <!-- <div class="row">
@@ -415,7 +415,7 @@
                     </div> -->
                 <!-- </div> end row -->
 
-                <!-- <div class="row row-cols-1 row-cols-lg-3">
+           {{-- <div class="row row-cols-1 row-cols-lg-3">
                     <div class="col d-flex">
                     <div class="card radius-10 w-100">
                         <div class="card-body">
@@ -516,12 +516,12 @@
                                         <p class="mb-0">Electronic</p>
                                     </div>
                                 </div>
-                            </div>end row-->
-                        <!-- </div>
+                            </div>
+                        </div>
                     </div>
-                </div>end row  -->
+                </div>
 
-        </div>
+        </div> --}}
     </div>
 <!--end page wrapper -->
 @push('scripts')

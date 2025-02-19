@@ -58,7 +58,7 @@
                                     </span>
                             @endif
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
                                 <select class="form-control" name="designation">
                                     <option value="">--Select--</option>
@@ -73,7 +73,7 @@
                                         <strong>{{ $errors->first('designation') }}</strong>
                                     </span>
                                 @endif
-                            </div>
+                            </div> -->
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                                 <select class="form-control" name="role">

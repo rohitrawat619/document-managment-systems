@@ -38,6 +38,13 @@
                 <hr/>
                 <div class="card">
                     <div class="card-body">
+                    <div class="d-flex  mb-3">
+                    <form method="GET" action="{{ route('admin.document.guideline.index') }}" class="form-inline" style="width: 100%;">
+                    <div class="d-flex mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    <a href="{{ route('admin.document.guideline.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                    </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>

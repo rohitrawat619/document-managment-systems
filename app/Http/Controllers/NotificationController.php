@@ -22,14 +22,22 @@ class NotificationController extends Controller
 
     public function notification(Request $request)
     {
-        $notification = Notification::from('notification as n')
-                            ->select('n.*','u.name as uploader_name','d.name as division_name','ds.name as uploader_designation')
-                            ->leftJoin('users as u','u.id','=','n.uploaded_by')
-                            ->leftJoin('divisions as d','d.id','=','n.division_id')
-                            ->leftJoin('designations as ds','ds.id','=','u.designation')
-                            ->where('n.is_deleted',0)
-                            ->orderBy('id', 'asc')->paginate(10);
+        $query = Notification::from('notification as o')
+            ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
+            ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
+            ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
+            ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
+            ->where('o.is_deleted', 0);
 
+            // Apply filter if 'computer_no' is provided
+            if ($request->filled('search')) {
+                $computer_no = $request->get('search');
+                $query->where('o.computer_no', 'like', "%{$computer_no}%");
+            }
+
+            // Fetch the paginated result
+            $notification = $query->orderBy('o.id', 'asc')->paginate(10);
+        
         return view('backend.document_types.notification.index',compact('notification'));
     }
 
@@ -223,7 +231,8 @@ class NotificationController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.notification.index')->with('success', 'Notification Updated Successfully!');
+        return response()->json('Notification Updated Successfully!');
+        //return redirect()->route('admin.document.notification.index')->with('success', 'Notification Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());

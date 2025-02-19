@@ -60,24 +60,13 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/division/edit/{id}',[App\Http\Controllers\DivisionController::class, 'edit'])->name('division.edit');
         Route::post('/division/delete',[App\Http\Controllers\DivisionController::class, 'destroy'])->name('division.delete');
 
-
-        // Division
-
-        Route::get('/division',[App\Http\Controllers\DivisionController::class, 'index'])->name('division.index');
-        Route::match(['get','post'],'/division/create',[App\Http\Controllers\DivisionController::class, 'create'])->name('division.create');
-        Route::match(['get','post'],'/division/edit/{id}',[App\Http\Controllers\DivisionController::class, 'edit'])->name('division.edit');
-        Route::post('/division/delete',[App\Http\Controllers\DivisionController::class, 'destroy'])->name('division.delete');
-
         /*** permissions route */
-        
 
         Route::get('/permission',[App\Http\Controllers\PermissionController::class, 'index'])->name('permission.index');
         Route::match(['get','post'],'/permission/create',[App\Http\Controllers\PermissionController::class, 'create'])->name('permission.create');
         Route::match(['get','post'],'/permission/edit/{id}',[App\Http\Controllers\PermissionController::class, 'edit'])->name('permission.edit');
         Route::post('/permission/status',[App\Http\Controllers\PermissionController::class, 'status'])->name('permission.status');
         Route::post('/permission/delete',[App\Http\Controllers\PermissionController::class, 'destroy'])->name('permission.delete');
-
-
 
         // User
 
@@ -87,7 +76,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
         Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
 
-       
     });
 
     // Document Type

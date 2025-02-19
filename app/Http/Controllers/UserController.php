@@ -39,8 +39,12 @@ class UserController extends Controller
                     'u.phone_iso', 
                     'ds.name as designation_name', 
                     DB::raw('GROUP_CONCAT(dv.name) as division_name')
-                );
-             
+                )
+                ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
+                ->leftJoin('designations as ds', 'u.designation', '=', 'ds.id')
+                ->where('u.is_deleted', 0)
+                ->whereNotNull('u.role_id');
+
             // Apply search filter if there is a search query
             if ($search) {
                 $users->where(function ($users) use ($search) {
@@ -49,6 +53,7 @@ class UserController extends Controller
                 });
             }
 
+>>>>>>> development
             // Group and paginate results
             $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone', 'u.phone_code', 'u.phone_iso', 'ds.name')
                 ->paginate(10);

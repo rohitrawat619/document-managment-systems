@@ -44,21 +44,20 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                <select class="form-control" name="division">
-                                    <option value="">--Select--</option>
-                                    @if(count($divisions)>0)
-                                        @foreach ($divisions as $dv)
-                                            <option value="{{$dv->id}}" @if($dv->id==$users->division) selected @endif>{{$dv->name}}</option>
-                                        @endforeach
-                                    @endif
+                                <select class="form-control" id="multi-select" name="division[]" multiple="multiple">
+                                    @foreach ($divisions as $dv)
+                                        <option value="{{ $dv->id }}" {{ in_array($dv->id, $selectedDivision) ? 'selected' : '' }}>{{ $dv->name }}</option>
+                                    @endforeach
                                 </select>
+
                                 @if ($errors->has('division'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('division') }}</strong>
                                     </span>
                                 @endif
                             </div>
-                            <div class="col-md-6">
+
+                            <!-- <div class="col-md-6">
                                 <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
                                 <select class="form-control" name="designation">
                                     <option value="">--Select--</option>
@@ -73,7 +72,9 @@
                                         <strong>{{ $errors->first('designation') }}</strong>
                                     </span>
                                 @endif
-                            </div>
+                            </div> -->
+
+                           
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                                 <select class="form-control" name="role">
@@ -158,6 +159,12 @@
           $('#code').val($(".mobile").intlTelInput("getSelectedCountryData").dialCode);
           $('#iso').val($(".mobile").intlTelInput("getSelectedCountryData").iso2);
       });
+  
+    /** select 2 multi select */
+    $(document).ready(function() {
+    $('#multi-select').select2();
+    });
+
     </script>
 @endpush
 @endsection
