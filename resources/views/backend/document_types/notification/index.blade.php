@@ -39,7 +39,7 @@
                 <div class="card">
                     <div class="card-body">
                     <div class="d-flex  mb-3">
-                    <form method="GET" action="{{ route('admin.document.notification.index') }}" class="form-inline">
+                    <form method="GET" action="{{ route('admin.document.notification.index') }}" class="form-inline" style="width: 100%;">
                     <div class="d-flex mb-3">
                     <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
                     <button type="submit" class="btn btn-primary ms-2">Search</button>

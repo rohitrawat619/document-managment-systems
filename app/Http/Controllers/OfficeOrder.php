@@ -240,7 +240,8 @@ class OfficeOrder extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.office_order.index')->with('success', 'Office Order Updated Successfully!');
+        return response()->json('Office Order Updated Successfully!');
+        //return redirect()->route('admin.document.office_order.index')->with('success', 'Office Order Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());

@@ -231,7 +231,8 @@ class NotificationController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.notification.index')->with('success', 'Notification Updated Successfully!');
+        return response()->json('Notification Updated Successfully!');
+        //return redirect()->route('admin.document.notification.index')->with('success', 'Notification Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
