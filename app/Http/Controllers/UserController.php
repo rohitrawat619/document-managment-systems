@@ -53,7 +53,6 @@ class UserController extends Controller
                 });
             }
 
->>>>>>> development
             // Group and paginate results
             $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone', 'u.phone_code', 'u.phone_iso', 'ds.name')
                 ->paginate(10);
