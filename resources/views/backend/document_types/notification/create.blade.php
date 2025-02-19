@@ -26,7 +26,7 @@
                         <meta name="csrf-token" content="{{ csrf_token() }}">
                                 <div class="col-md-6">
                                     <label for="User" class="form-label">User <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="user">
+                                    <select class="form-control" id="user" name="user">
                                         <option value="">--Select--</option>
                                         @if(count($users)>0)
                                             @foreach ($users as $user)
@@ -39,12 +39,13 @@
                                             <strong>{{ $errors->first('user') }}</strong>
                                         </span>
                                     @endif
+                                    <div id="error-message" style="color: red; display: none;"></div>
                                 </div>
                             
                             @if(Auth::user()->is_admin == 1)
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="division">
+                                    <select class="form-control" id="division" name="division">
                                         <option value="">--Select--</option>
                                         <!-- Divisions will be populated dynamically based on the selected user -->
                                     </select>
@@ -53,6 +54,7 @@
                                             <strong>{{ $errors->first('division') }}</strong>
                                         </span>
                                     @endif
+                                    <div id="division1" style="color: red; display: none;"></div>
                                 </div>
                             @endif
                             <div class="col-md-6">
@@ -63,6 +65,7 @@
                                         <strong>{{ $errors->first('computer_no') }}</strong>
                                     </span>
                                 @endif
+                                <div id="computer_no1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="file_no" class="form-label">File No. <span class="text-danger">*</span></label>
@@ -72,6 +75,7 @@
                                         <strong>{{ $errors->first('file_no') }}</strong>
                                     </span>
                                 @endif
+                                <div id="file_no1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
@@ -81,6 +85,7 @@
                                         <strong>{{ $errors->first('date_of_issue') }}</strong>
                                     </span>
                                 @endif
+                                <div id="date_of_issue1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
@@ -90,6 +95,7 @@
                                         <strong>{{ $errors->first('subject') }}</strong>
                                     </span>
                                 @endif
+                                <div id="subject1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
@@ -99,6 +105,7 @@
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
                                     </span>
                                 @endif
+                                <div id="issuer_name1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
@@ -108,6 +115,7 @@
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
                                     </span>
                                 @endif
+                                <div id="issuer_designation1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_upload" class="form-label">Date of Upload <span class="text-danger">*</span></label>
@@ -117,6 +125,7 @@
                                         <strong>{{ $errors->first('date_of_upload') }}</strong>
                                     </span>
                                 @endif
+                                <div id="date_of_upload1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
@@ -134,11 +143,12 @@
                                         <strong>{{ $errors->first('upload_file') }}</strong>
                                     </span>
                                 @endif
+                                <div id="upload_file1" style="color: red; display: none;"></div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
-                                <select class="form-control" name="file_type">
+                                <select class="form-control" id="file_type" name="file_type">
                                     <option value="">--Select--</option>
                                     <option value="0">Confidential</option>
                                     <option value="1">Non-Confidential</option>
@@ -148,6 +158,7 @@
                                         <strong>{{ $errors->first('file_type') }}</strong>
                                     </span>
                                 @endif
+                                <div id="file_type1" style="color: red; display: none;"></div>
                             </div>
                             <div class = "col-md-12">
                             <div id="pdf_viewer">
@@ -169,6 +180,122 @@
     </div>
 </div>
 @push('scripts')
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+        $('#sub').click(function(e){
+
+            if($('#user').val()=="")
+				{
+					$('#error-message').text("Please Enter User").show();
+					$('#user').focus();
+					return false;
+				}
+
+                if($('#division').val()=="")
+				{
+					$('#division1').text("Please Enter Division").show();
+					$('#division').focus();
+					return false;
+				}
+
+                if($('#computer_no').val()=="")
+				{
+                    $('#computer_no1').text("Please Enter Computer No").show();
+					$('#computer_no').focus();
+					return false;invalid-feedback
+				}
+
+                if($('#file_no').val()=="")
+				{
+                    $('#file_no1').text("Please Enter File No").show();
+					$('#file_no').focus();
+					return false;
+				}
+                var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
+
+                if (!fileNoRegex.test($('#file_no').val())) {
+                    $('#file_no1').text("Invalid File No format. Please follow the correct format").show();
+                    $('#file_no').focus();
+                    return false;
+                }
+
+                if($('#date_of_issue').val()=="")
+				{
+                    $('#date_of_issue1').text("Please Enter Date of Issue").show();
+					$('#date_of_issue').focus();
+					return false;
+				}
+
+                if($('#subject').val()=="")
+				{
+                    $('#subject1').text("Please Enter Subject").show();
+					$('#subject').focus();
+					return false;
+				}
+
+                if($('#issuer_name').val()=="")
+				{
+                    $('#issuer_name1').text("Please Enter Issuer Name").show();
+					$('#issuer_name').focus();
+					return false;
+				}
+
+                if($('#issuer_designation').val()=="")
+				{
+                    $('#issuer_designation1').text("Please Enter Issuer Designation").show();
+					$('#issuer_designation').focus();
+					return false;
+				}
+
+                if($('#date_of_upload').val()=="")
+				{
+                    $('#date_of_upload1').text("Please Enter Date of upload").show();
+					$('#date_of_upload').focus();
+					return false;
+				}
+
+                if($('#file_type').val()=="")
+				{
+                    $('#file_type1').text("Please Enter File Type").show();
+					$('#file_type').focus();
+					return false;
+				}
+
+                if($('#upload_file').val()=="")
+				{
+                    $('#upload_file1').text("Please Upload File").show();
+					$('#upload_file').focus();
+					return false;
+				}
+                
+            var fileInput2 = document.getElementById('upload_file');
+            var file2 = fileInput2.files[0];
+            var fileSize2 = file2.size; 
+            var fileType2 = file2.type;
+            var allowedTypes1 = ['application/pdf'];
+            if (fileSize2 > "20000000" ) {
+                $('#upload_file1').text("File size must be less then 20MB").show();
+                //alert('File size must be less then 20MB');
+				$('#upload_file').focus();
+                return false;
+            }
+
+            if (!allowedTypes1.includes(fileType2)) {
+                $('#upload_file1').text("Invalid file type. Allowed types are: PDF.").show();
+               // alert('Invalid file type. Allowed types are: PDF.');
+				$('#upload_file').focus();
+                return false;
+            }
+
+
+                
+        });
+    });
+</script>
+
 
 <script>
 
