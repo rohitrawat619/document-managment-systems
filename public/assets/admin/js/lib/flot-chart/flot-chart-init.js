@@ -199,9 +199,9 @@
         } );
     },
 
-    line2Flot: function(){
+    line2Flot: function() {
 
-        // first chart
+        // Chart options
         var chart1Options = {
             series: {
                 lines: {
@@ -213,39 +213,40 @@
             },
             xaxis: {
                 mode: "time",
-                timeformat: "%m/%d",
-                minTickSize: [ 1, "day" ]
+                timeformat: "%m/%Y", // Display months and years (e.g., 02/2025)
+                minTickSize: [1, "month"] // Set minimum tick size to 1 month
             },
             grid: {
-                hoverable: true
-            },
-            legend: {
-                show: false
-            },
-            grid: {
-                color: "#fff",
                 hoverable: true,
+                color: "#fff",
                 borderWidth: 0,
                 backgroundColor: 'transparent'
             },
             tooltip: {
                 show: true,
-                content: "y: %y"
+                content: "Visitors: %y"
+            },
+            legend: {
+                show: false
             }
         };
+
+        // Updated chart data with visitor counts for each month
         var chart1Data = {
-            label: "chart1",
+            label: "Visitors",
             color: "#007BFF",
             data: [
-          [ 1354521600000, 6322 ],
-          [ 1355040000000, 6360 ],
-          [ 1355223600000, 6368 ],
-          [ 1355306400000, 6374 ],
-          [ 1355487300000, 6388 ],
-          [ 1355571900000, 6393 ]
-        ]
+                [ 1354521600000, 6322 ], // Nov 2012
+                [ 1357200000000, 6360 ], // Dec 2012
+                [ 1359878400000, 6400 ], // Jan 2013
+                [ 1362556800000, 6450 ], // Feb 2013
+                [ 1365148800000, 6500 ], // Mar 2013
+                [ 1367827200000, 6600 ]  // Apr 2013
+            ]
         };
-        $.plot( $( "#chart1" ), [ chart1Data ], chart1Options );
+
+        // Plot the chart
+        $.plot($( "#chart1" ), [ chart1Data ], chart1Options);
     },
 
     barFlot: function(){
