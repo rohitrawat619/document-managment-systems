@@ -83,7 +83,7 @@ class UserController extends Controller
                 'email' => 'required|email:dns,rfc|unique:users,email',
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required|array',
-                'designation' => 'required',
+                // 'designation' => 'required',
                 'role' => 'required',
                 'password' => 'required|same:confirm_password|min:10',
                 'confirm_password' => 'required|string'
@@ -120,7 +120,7 @@ class UserController extends Controller
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",", $request->division),
-                'designation' => $request->designation,
+                // 'designation' => $request->designation,
                 'role_id' => $request->role,
                 'password' => bcrypt($request->password)
             ]);
