@@ -33,22 +33,24 @@
                                     </span>
                                 @endif
                             </div>
+
                             <div class="col-md-6">
-                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-                                <select class="form-control" name="designation">
-                                    <option value="">--Select--</option>
+                            <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                            <select class="form-control" id="multi-select" name="designation[]" multiple="multiple">
+                            <option value="">--Select--</option>
                                     @if(count($designations)>0)
                                         @foreach ($designations as $dv)
                                             <option value="{{$dv->id}}">{{$dv->name}}</option>
                                         @endforeach
                                     @endif
-                                </select>
-                                @if ($errors->has('designation'))
+                            </select>
+                            @if ($errors->has('designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('designation') }}</strong>
                                     </span>
-                                @endif
+                            @endif
                             </div>
+                            
                             <hr/>
                             @foreach($permission as $per)
                             <div class = "col-md-3">
@@ -75,5 +77,17 @@
         <!--end row-->
     </div>
 </div>
+
+@push('scripts')
+
+<script>
+    /** select 2 multi select */
+    $(document).ready(function() {
+    $('#multi-select').select2();
+    });
+</script>
+
+
+@endpush
 
 @endsection

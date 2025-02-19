@@ -33,39 +33,33 @@
                                     </span>
                                 @endif
                             </div>
-                        <div class="col-md-6">
-                            <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-                            <select class="form-control" name="designation">
-                                @foreach ($designations as $dv)
-                                    <option value="{{ $dv->id }}" 
-                                        {{ in_array($dv->id, $selectedDesignations) ? 'selected' : '' }}>
-                                        {{ $dv->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <div class="col-md-6">
+                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                                <select class="form-control" id="multi-select" name="designation[]" multiple="multiple">
+                                    @foreach ($designations as $dv)
+                                        <option value="{{ $dv->id }}" 
+                                            {{ in_array($dv->id, $selectedDesignations) ? 'selected' : '' }}>
+                                            {{ $dv->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
 
-                            @if ($errors->has('designation'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('designation') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+                                @if ($errors->has('designation'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('designation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
 
 
-
-                           
                             <hr/>
                            
                             @foreach($permissions as $key => $per)
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" 
-                                            name="permissions[]" 
-                                            value="{{ $per->id }}" 
-                                            id="permission_{{ $per->id }}"
+                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}"
                                             {{ in_array($per->id, $rolePermissions) ? 'checked' : '' }}>
-                                            
-                                        <label class="form-check-label" for="permission_{{ $per->id }}">
+                                            <label class="form-check-label" for="permission_{{ $per->id }}">
                                             {{ $per->name }}
                                         </label>
                                     </div>
@@ -85,5 +79,15 @@
         <!--end row-->
     </div>
 </div>
+
+@push('scripts')
+<script>
+    /** select 2 multi select */
+    $(document).ready(function() {
+    $('#multi-select').select2();
+    });
+</script>
+
+@endpush
 
 @endsection

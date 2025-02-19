@@ -25,20 +25,39 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    //
     public function index(Request $request)
     {
-        $users = User::from('users as u')
-                ->select('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name as designation_name',DB::raw('GROUP_CONCAT(dv.name) as division_name'))
-                //->leftJoin('divisions as dv','u.division','=','dv.id')
+            $search = $request->get('search'); // Get search query
+            
+            $users = User::from('users as u')
+                ->select(
+                    'u.id', 
+                    'u.name', 
+                    'u.email', 
+                    'u.phone', 
+                    'u.phone_code', 
+                    'u.phone_iso', 
+                    'ds.name as designation_name', 
+                    DB::raw('GROUP_CONCAT(dv.name) as division_name')
+                )
                 ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
-                ->leftJoin('designations as ds','u.designation','=','ds.id')
-                ->where('u.is_deleted',0)
-                ->whereNotNull('u.role_id')
-                ->groupBy('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name')
-                ->get();
+                ->leftJoin('designations as ds', 'u.designation', '=', 'ds.id')
+                ->where('u.is_deleted', 0)
+                ->whereNotNull('u.role_id');
 
-        return view('backend.users.index',compact('users'));
+            // Apply search filter if there is a search query
+            if ($search) {
+                $users->where(function ($users) use ($search) {
+                    $users->where('u.name', 'like', '%' . $search . '%') // Search by user name
+                        ->orWhere('dv.name', 'like', '%' . $search . '%'); // Search by division name
+                });
+            }
+
+            // Group and paginate results
+            $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone', 'u.phone_code', 'u.phone_iso', 'ds.name')
+                ->paginate(10);
+
+            return view('backend.users.index',compact('users'));
     }
 
 
@@ -137,13 +156,15 @@ class UserController extends Controller
         {
             $users = User::where('id', $user_id)->first();
 
-            $divisions = Division::all();
+            $selectedDivision = explode(',', $users->division); // Convert string to array
+
+            $divisions = DB::table('divisions')->get();
 
             $designations = Designation::all();
 
             $roles = Role::all();
 
-            return view('backend.users.edit', compact('users','divisions','designations','roles'));
+            return view('backend.users.edit', compact('users','divisions','designations','roles','selectedDivision'));
         }
 
         DB::beginTransaction();
@@ -180,7 +201,7 @@ class UserController extends Controller
                 'phone' => $mobile,
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
-                'division' => $request->division,
+                'division' => implode(",",$request->division),
                 'designation' => $request->designation,
             ]);
 
