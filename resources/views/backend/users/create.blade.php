@@ -57,7 +57,7 @@
                                         <strong>{{ $errors->first('division') }}</strong>
                                     </span>
                             @endif
-                            </div>
+                            </div>  
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                                 <select class="form-control" id="role" name="role_id">
@@ -73,20 +73,10 @@
                                 @endif
                             </div>
                             <div class="col-md-6">
-                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-                                <select class="form-control" name="designation">
-                                    <option value="">--Select--</option>
-                                    @if(count($designations)>0)
-                                        @foreach ($designations as $dv)
-                                            <option value="{{$dv->id}}">{{$dv->name}}</option>
-                                        @endforeach
-                                    @endif
+                            <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                                <select class="form-control" id="designation" name="designation_id">
+                                        <option value="">Select Designation</option>
                                 </select>
-                                @if ($errors->has('designation'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('designation') }}</strong>
-                                    </span>
-                                @endif
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">NIC Email <span class="text-danger">*</span></label>

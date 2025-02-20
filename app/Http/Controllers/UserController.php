@@ -116,8 +116,6 @@ class UserController extends Controller
                 'email' => 'required|email:dns,rfc|unique:users,email',
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required|array',
-                // 'designation' => 'required',
-                'role' => 'required',
                 'password' => 'required|same:confirm_password|min:10',
                 'confirm_password' => 'required|string'
             ];
@@ -154,11 +152,10 @@ class UserController extends Controller
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",", $request->division),
-                // 'designation' => $request->designation,
-                'role_id' => $request->role,
+                'designation' => $request->designation_id,
+                'role_id' => $request->role_id,
                 'password' => bcrypt($request->password)
             ]);
-
             $user_name = 'omms_'.$request->first_name.($new_user->id+1);
 
             User::where('id',$new_user->id)->update([
@@ -222,7 +219,7 @@ class UserController extends Controller
                 'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
-                // 'designation' => 'required'
+                
             ];
 
             $messages = [
@@ -246,10 +243,11 @@ class UserController extends Controller
                 'name' => $name,
                 'email' => $request->email,
                 'phone' => $mobile,
+                'role_id' => $request->role_id,
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",",$request->division),
-                //'designation' => $request->designation,
+               
             ]);
 
             DB::commit();
@@ -297,9 +295,9 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         $user_id =base64_decode($request->id);
-        // $id = $request->id;
-        $user_id = Auth::user()->id;
-
+        $id = $request->id;
+        
+        $user = Auth::user()->id;
         $privacy = User::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $user_id;
