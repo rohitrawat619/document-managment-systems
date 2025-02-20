@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     //return view('welcome');
     return redirect()->route('admin.login');
@@ -137,3 +138,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
+
+Route::post('/report-counts', [ReportController::class, 'getCounts']);
+Route::get('/admin/home', [DashboardController::class, 'index'])->name('admin.home');
