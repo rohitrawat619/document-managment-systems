@@ -144,11 +144,6 @@ class UserController extends Controller
                 'user_name' => $user_name
             ]);
 
-            //dd($new_user);
-
-            //echo '<pre>'; print_r($new_user); die;
-
-
             DB::commit();
 
             return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
@@ -206,7 +201,7 @@ class UserController extends Controller
                 'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
-                'designation' => 'required'
+                // 'designation' => 'required'
             ];
 
             $messages = [
@@ -233,7 +228,7 @@ class UserController extends Controller
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",",$request->division),
-                'designation' => $request->designation,
+                //'designation' => $request->designation,
             ]);
 
             DB::commit();
