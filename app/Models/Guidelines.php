@@ -24,7 +24,8 @@ class Guidelines extends Model
         'file_type',
         'division_id',
         'date_of_upload',
-        'uploaded_by'
+        'uploaded_by',
+        'keyword'
     ];
 
     public function uploads()
