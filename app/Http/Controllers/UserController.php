@@ -29,6 +29,25 @@ class UserController extends Controller
     {
             $search = $request->get('search'); // Get search query
 
+            $users = User::from('users as u')
+                ->select(
+                    'u.id', 
+                    'u.name', 
+                    'u.email', 
+                    'u.phone', 
+                    'u.phone_code', 
+                    'u.phone_iso', 
+                    'ds.name as designation_name', 
+                    DB::raw('GROUP_CONCAT(dv.name) as division_name')
+                )
+                
+                ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
+                ->leftJoin('designations as ds','u.designation','=','ds.id')
+                ->where('u.is_deleted',0)
+                ->whereNotNull('u.role_id')
+                ->groupBy('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name')
+                ->get();
+
             /*** fetch designations from roles table */
 
             $designation = Designation::all();
