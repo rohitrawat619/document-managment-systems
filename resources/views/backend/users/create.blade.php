@@ -60,13 +60,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
-                                <select class="form-control" name="role">
+                                <select class="form-control" id="role" name="role_id">
                                     <option value="">--Select--</option>
-                                    @if(count($roles)>0)
-                                        @foreach ($roles as $dv)
-                                            <option value="{{$dv->id}}">{{$dv->name}}</option>
-                                        @endforeach
-                                    @endif
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                    @endforeach
                                 </select>
                                 @if ($errors->has('role'))
                                     <span class="invalid-feedback">
@@ -178,11 +176,35 @@
       });
 
       
- /** select 2 multi select */
+    /** select 2 multi select */
     
     $(document).ready(function() {
     $('#multi-select').select2();
     });
+
+    /*** Dependent dropdown for auto selected designations */
+
+    $(document).ready(function(){
+    $('#role').change(function(){
+        var roleId = $(this).val();
+        if(roleId) {
+            $.ajax({
+                
+                url: '/get-designations/' + roleId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#designation').empty().append('<option value="">Select Designation</option>');
+                    $.each(data, function(index, designation){
+                        $('#designation').append('<option value="'+designation.id+'">'+designation.name+'</option>');
+                    });
+                }
+            });
+        } else {
+            $('#designation').empty().append('<option value="">Select Designation</option>');
+        }
+    });
+});
    
     </script>
     

@@ -28,6 +28,18 @@ class UserController extends Controller
     public function index(Request $request)
     {
             $search = $request->get('search'); // Get search query
+
+            /*** fetch designations from roles table */
+
+            $designation = Designation::all();
+
+            $desig = DB::table('roles')
+            ->join('users','roles.id','=','users.role_id')
+            ->join('designations','designations.id','=','roles.designation_id')
+            ->select('designations.name','designations.id')
+            ->get()->toArray();
+
+         //   echo '<pre>';print_r($desig); die;
             
             $users = User::from('users as u')
                 ->select(
@@ -74,6 +86,8 @@ class UserController extends Controller
             return view('backend.users.create',compact('divisions','designations','roles'));
         }
 
+        //echo "<pre>"; print_r($_POST); die;
+
         DB::beginTransaction();
         try{
 
@@ -97,6 +111,7 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
+                //dd($validator);
                 return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
             }
 
@@ -125,15 +140,11 @@ class UserController extends Controller
                 'password' => bcrypt($request->password)
             ]);
 
-            
-
             $user_name = 'omms_'.$request->first_name.($new_user->id+1);
 
             User::where('id',$new_user->id)->update([
                 'user_name' => $user_name
             ]);
-
-            //echo '<pre>'; print_r($new_user); die;
 
             DB::commit();
 
@@ -145,6 +156,23 @@ class UserController extends Controller
             // something went wrong
             return $e;
         }
+
+    }
+
+    public function getDesignations($roleId)
+    {
+        $role = Role::find($roleId);
+        if (!$role) {
+            return response()->json([]);
+        }
+
+        // Convert comma-separated IDs to an array
+        $designationIds = explode(',', $role->designation_id);
+
+        // Fetch matching designations
+        $designations = Designation::whereIn('id', $designationIds)->get();
+
+        return response()->json($designations);
 
     }
 
@@ -175,7 +203,7 @@ class UserController extends Controller
                 'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
-                'designation' => 'required'
+                // 'designation' => 'required'
             ];
 
             $messages = [
@@ -202,7 +230,7 @@ class UserController extends Controller
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",",$request->division),
-                'designation' => $request->designation,
+                //'designation' => $request->designation,
             ]);
 
             DB::commit();
