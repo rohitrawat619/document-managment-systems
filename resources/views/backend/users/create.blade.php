@@ -58,22 +58,6 @@
                                     </span>
                             @endif
                             </div>
-                            <!-- <div class="col-md-6">
-                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-                                <select class="form-control" name="designation">
-                                    <option value="">--Select--</option>
-                                    @if(count($designations)>0)
-                                        @foreach ($designations as $dv)
-                                            <option value="{{$dv->id}}">{{$dv->name}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                @if ($errors->has('designation'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('designation') }}</strong>
-                                    </span>
-                                @endif
-                            </div> -->
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                                 <select class="form-control" name="role">
@@ -87,6 +71,22 @@
                                 @if ($errors->has('role'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('role') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                                <select class="form-control" name="designation">
+                                    <option value="">--Select--</option>
+                                    @if(count($designations)>0)
+                                        @foreach ($designations as $dv)
+                                            <option value="{{$dv->id}}">{{$dv->name}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @if ($errors->has('designation'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('designation') }}</strong>
                                     </span>
                                 @endif
                             </div>
