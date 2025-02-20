@@ -137,7 +137,6 @@ class UserController extends Controller
                 'role_id' => $request->role_id,
                 'password' => bcrypt($request->password)
             ]);
-
             $user_name = 'omms_'.$request->first_name.($new_user->id+1);
 
             User::where('id',$new_user->id)->update([
