@@ -42,6 +42,7 @@
                     <div class="d-flex mb-2">
                     <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
                     <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    <a href="{{ route('admin.designation.index') }}" class="btn btn-secondary ms-2">Reset</a>
                     </div>
                     </form>
                  </div>            
