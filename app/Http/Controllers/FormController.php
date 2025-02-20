@@ -128,7 +128,8 @@ class FormController extends Controller
                 'file_type' => $request->file_type,
                 'division_id' => $request->division,
                 'date_of_upload' => $request->date_of_upload,
-                'uploaded_by' => $roleId
+                'uploaded_by' => $roleId,
+                'keyword' => $request->key
             ]);
 
 
@@ -220,7 +221,8 @@ class FormController extends Controller
         'issuer_designation' => $request->issuer_designation,
         'file_type' => $request->file_type,
         'division_id' => $request->division,
-        'date_of_upload' => $request->date_of_upload
+        'date_of_upload' => $request->date_of_upload,
+        'keyword' => $request->key
     ]);
      
     //$user = $request->user;

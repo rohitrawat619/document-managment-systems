@@ -160,6 +160,13 @@
                                 @endif
                                 <div id="file_type1" style="color: red; display: none;"></div>
                             </div>
+
+                            <div class="col-md-6">
+                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="key" name="key" placeholder="">
+                                <div id="key1" style="color: red; display: none;"></div>
+                            </div>
+
                             <div class = "col-md-12">
                             <div id="pdf_viewer">
 
@@ -270,6 +277,13 @@
 					$('#upload_file').focus();
 					return false;
 				}
+
+                if($('#key').val()=="")
+				{
+                    $('#key1').text("Please Enter Keywords").show();
+					$('#key').focus();
+					return false;
+				}
                 
             var fileInput2 = document.getElementById('upload_file');
             var file2 = fileInput2.files[0];
@@ -309,6 +323,10 @@ $(document).ready(function() {
     var notificationStoreUrl = "{{ url('admin/document/notification/create') }}";
     $('#guidelineForm').on('submit', function(e) {
         e.preventDefault();
+
+        var keywords = $('#key').val();
+        var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
+        $('#key').val(formattedKeywords);
         
         let formData = new FormData(this); 
 

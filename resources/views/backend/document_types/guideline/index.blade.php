@@ -55,6 +55,7 @@
                                     <th scope="col">Subject</th>
                                     <th scope="col">Issued by Name & Designation</th>
                                     <th scope="col">Uploaded By Name & Designation</th>
+                                    <th scope="col">Keywords</th>
                                     <th scope="col">Date of Upload</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -70,6 +71,7 @@
                                 <td>{{$r->subject}}</td>
                                 <td>{{$r->issuer_name}}</td>
                                 <td>{{$r->issuer_designation}}</td>
+                                <td>{{$r->keyword}}</td>
                                 <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                 <td>
                                     <div class="d-flex order-actions">
