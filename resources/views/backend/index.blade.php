@@ -57,14 +57,6 @@
             <!--end row-->
 
             <div class="row">
-<<<<<<< HEAD
-                <div class="col-12 col-lg-8 d-flex">
-                    <div class="card radius-10 w-100">
-                        <div class="card-body">
-
-                            <div id="chart-container">FusionCharts XT will load here!</div>
-                            <meta name="csrf-token" content="{{ csrf_token() }}">
-=======
             <div class="col-12 col-lg-8 d-flex">
                 <div class="card radius-10 w-100">
                     <div class="card-header">
@@ -116,13 +108,12 @@
                             <h5 class="mb-0">639.82</h5>
                             <small class="mb-0">Pages/Visit <span> <i class="bx bx-up-arrow-alt align-middle"></i> 5.62%</span></small>
                         </div>
->>>>>>> 9d5b04e8be68958432b245809acfb52364aa13f4
                         </div>
                         
                     </div>
                 </div>
             
-             <!-- end row  -->
+             <!-- end row 
             
              <div class="col-12 col-lg-4 d-flex">
                 <div class="card radius-10 w-100">

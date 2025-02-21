@@ -63,23 +63,6 @@ use Illuminate\Support\Facades\Session;
                 <div class="menu-title active">Document Type</div>
             </a>
             <ul>
-<<<<<<< HEAD
-                <li> <a href="{{route('admin.document.office_memorandum.index')}}"><i class='bx bx-radio-circle'></i>Office Memorandum</a>
-                </li>
-                <li> <a href="{{route('admin.document.office_order.index')}}"><i class='bx bx-radio-circle'></i>Office Order</a>
-                </li>
-                <li> <a href="{{route('admin.document.notification.index')}}"><i class='bx bx-radio-circle'></i>Notification</a>
-                </li>
-                <li> <a href="{{route('admin.document.letter.index')}}"><i class='bx bx-radio-circle'></i>Letters</a>
-
-                <li> <a href="{{route('admin.document.guideline.index')}}"><i class='bx bx-radio-circle'></i>Guidelines</a>
-                </li>
-                <li> <a href="{{route('admin.document.recruitment.index')}}"><i class='bx bx-radio-circle'></i>Recruitment Rules</a>
-                </li>
-
-                {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
-                </li> --}}
-=======
                 @if(in_array('8', $userPermissions))
                     <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> Office Memorandum</a></li>
                 @endif
@@ -179,7 +162,6 @@ use Illuminate\Support\Facades\Session;
                 @if(in_array('39', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> International</a></li>
                 @endif
->>>>>>> 9d5b04e8be68958432b245809acfb52364aa13f4
             </ul>
         </li>
             <!--end navigation-->
