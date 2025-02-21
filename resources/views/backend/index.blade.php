@@ -1,77 +1,57 @@
 @extends('layouts.backend.admin')
 @section('content')
+<style>
+   
+
+    </style>
 <!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-            <div class="col">
-                <div class="card radius-10 border-start border-0 border-4 border-info">
-                    <div class="card-body">
-
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Total Divisions</p>
-                                <h4 class="my-1 text-info">66</h4>
-                                <!-- <p class="mb-0 font-13">+2.5% from last week</p> -->
-                            </div>
-                            <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto"><i class='bx bxs-business'></i>
-
-                            </div>
+        <div class="container-fluid">
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+                <div class="col">
+                <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-info" style="min-height: 60px;">
+                    <div class="card-body d-flex flex-column justify-content-between ">
+                        <div>
+                            <p class="mb-0 text-secondary" style="font-size: 12px;">Total Divisions</p>
+                            <h4 class="my-1 text-info" style="font-size: 16px;">{{ $totaldivision }}</h4>
+                        </div>
+                        <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto" style="">
+                            <i class='bx bxs-business'></i>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card radius-10 border-start border-0 border-4 border-danger">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <p class="mb-0 text-secondary">Total Users</p>
-                            <h4 class="my-1 text-danger">3</h4>
-                            <!-- <p class="mb-0 font-13">+5.4% from last week</p> -->
-                        </div>
-                        <!-- <div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto"><i class='bx bxs-wallet'></i>
-                        </div> -->
-                        <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto"><i class='bx bxs-group'></i>
-                        </div>
+        <div class="col">
+            <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-danger" style="min-height: 60px;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <p class="mb-0 text-secondary" style="font-size: 12px;">Total Users</p>
+                        <h4 class="my-1 text-danger" style="font-size: 16px;">{{ $totalUsers }}</h4>
+                    </div>
+                    <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto">
+                        <i class='bx bxs-group'></i>
                     </div>
                 </div>
-                </div>
             </div>
-            <div class="col">
-                <div class="card radius-10 border-start border-0 border-4 border-success">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <p class="mb-0 text-secondary">Documents Submitted</p>
-                            <h4 class="my-1 text-success">25</h4>
-                            <!-- <p class="mb-0 font-13">-4.5% from last week</p> -->
-                        </div>
-                        <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bxs-file'></i>
-
-                        </div>
+        </div>
+        <div class="col">
+            <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-success" style="min-height: 60px;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <p class="mb-0 text-secondary" style="font-size: 12px;">Documents Submitted</p>
+                        <h4 class="my-1 text-success" style="font-size: 16px;">{{ $totalForms }}</h4>
+                    </div>
+                    <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
+                        <i class='bx bxs-file'></i>
                     </div>
                 </div>
-                </div>
             </div>
-            <div class="col">
-                <div class="card radius-10 border-start border-0 border-4 border-warning">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <p class="mb-0 text-secondary">Total Designation</p>
-                            <h4 class="my-1 text-warning">41</h4>
-                            <!-- <p class="mb-0 font-13">+8.4% from last week</p> -->
-                        </div>
-                        <div class="widgets-icons-2 rounded-circle text-white ms-auto" style="background:rgb(175, 76, 170);">
-    <i class='bx bxs-user-badge'></i>
+        </div>
+    </div>
 </div>
-
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div><!--end row-->
+          </div>                                  
+            <!--end row-->
 
             <div class="row">
             <div class="col-12 col-lg-8 d-flex">
@@ -535,5 +515,61 @@
             new PerfectScrollbar(".app-container")
         }
 	</script>
+
+<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+$(document).ready(function(){
+    //alert("hyyy");
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+    $(document).ready(function(){
+    $.ajax({
+        url: '/report-counts', 
+        method: 'POST', 
+        dataType: 'json',
+        success: function(data) {
+            console.log("Data received:", data); 
+            var chartObj = new FusionCharts({
+                type: 'column2d',
+                renderAt: 'chart-container',
+                width: '100%',
+                height: '100%',
+                dataFormat: 'json',
+                dataSource: {
+                   "chart": {
+                    "caption": "Documents Type",
+                    "xAxisName": "Document Type",
+                    "yAxisName": "Total",
+                    "xAxisNameFontBold": "1",  
+                    "yAxisNameFontBold": "1",  
+                    "xAxisNameFontSize": "16", 
+                    "yAxisNameFontSize": "16", 
+                    "xAxisNameFontColor": "#000000", 
+                    "yAxisNameFontColor": "#000000",
+                    "baseFont": "Arial",
+                    "baseFontBold": "1",  
+                    "theme": "fusion"
+                },
+                    "data": data
+                }
+            });
+            chartObj.render();
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX Error:", error);
+        }
+    });
+});
+
+  });
+
+
+    </script>
 @endpush
 @endsection

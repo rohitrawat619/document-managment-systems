@@ -10,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.document.office_order.index')}}">Office Order</a>
+                        <li class="breadcrumb-item"><a href="{{route('admin.document.recruitment.index')}}">Recruitment Rules</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Create</li>
                     </ol>
@@ -22,50 +22,18 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                        <form action="" id ="guidelineForm" method="post" class="row g-3" enctype="multipart/form-data">
+                        <form action="" id ="recruitmentForm" method="post" class="row g-3" enctype="multipart/form-data">
                         <meta name="csrf-token" content="{{ csrf_token() }}">
-                                <div class="col-md-6">
-                                    <label for="User" class="form-label">User <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="user" name="user">
-                                        <option value="">--Select--</option>
-                                        @if(count($users)>0)
-                                            @foreach ($users as $user)
-                                                <option value="{{$user->id}}">{{$user->name}}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    @if ($errors->has('user'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('user') }}</strong>
-                                        </span>
-                                    @endif
-                                    <div id="error-message" style="color: red; display: none;"></div>
-                                </div>
-                            
-                            @if(Auth::user()->is_admin == 1)
-                                <div class="col-md-6">
-                                    <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="division" name="division">
-                                        <option value="">--Select--</option>
-                                        <!-- Divisions will be populated dynamically based on the selected user -->
-                                    </select>
-                                    @if ($errors->has('division'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('division') }}</strong>
-                                        </span>
-                                    @endif
-                                    <div id="division1" style="color: red; display: none;"></div>
-                                </div>
-                            @endif
+                               
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="computer_no" name="computer_no" placeholder="computer no">
                                 @if ($errors->has('computer_no'))
-                                    <span class="invalid-feedback">
+                                    <span  class="invalid-feedback">
                                         <strong>{{ $errors->first('computer_no') }}</strong>
                                     </span>
                                 @endif
-                                <div id="computer_no1" style="color: red; display: none;"></div>
+                                <div id="computer_no_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="file_no" class="form-label">File No. <span class="text-danger">*</span></label>
@@ -75,17 +43,17 @@
                                         <strong>{{ $errors->first('file_no') }}</strong>
                                     </span>
                                 @endif
-                                <div id="file_no1" style="color: red; display: none;"></div>
+                                <div id="file_no_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_issue" name="date_of_issue" placeholder="date of issue">
-                                @if ($errors->has('date_of_issue'))
+                                <label for="date_of_publication" class="form-label">Date of Publication <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="date_of_publication" name="date_of_publication" placeholder="date of Publication">
+                                @if ($errors->has('date_of_publication'))
                                     <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('date_of_issue') }}</strong>
+                                        <strong>{{ $errors->first('date_of_publication') }}</strong>
                                     </span>
                                 @endif
-                                <div id="date_of_issue1" style="color: red; display: none;"></div>
+                                <div id="date_of_issue_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
@@ -95,7 +63,7 @@
                                         <strong>{{ $errors->first('subject') }}</strong>
                                     </span>
                                 @endif
-                                <div id="subject1" style="color: red; display: none;"></div>
+                                <div id="subject_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
@@ -105,7 +73,7 @@
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
                                     </span>
                                 @endif
-                                <div id="issuer_name1" style="color: red; display: none;"></div>
+                                <div id="issuer_name_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
@@ -115,7 +83,7 @@
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
                                     </span>
                                 @endif
-                                <div id="issuer_designation1" style="color: red; display: none;"></div>
+                                <div id="issuer_designation_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_upload" class="form-label">Date of Upload <span class="text-danger">*</span></label>
@@ -124,8 +92,13 @@
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('date_of_upload') }}</strong>
                                     </span>
-                                    <div id="date_of_upload1" style="color: red; display: none;"></div>
                                 @endif
+                                <div id="date_of_upload_error" style="color: red; display: none;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="key" name="key" placeholder="">
+                                <div id="key_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
@@ -143,28 +116,7 @@
                                         <strong>{{ $errors->first('upload_file') }}</strong>
                                     </span>
                                 @endif
-                                <div id="upload_file1" style="color: red; display: none;"></div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
-                                <select class="form-control" name="file_type" id="file_type">
-                                    <option value="">--Select--</option>
-                                    <option value="0">Confidential</option>
-                                    <option value="1">Non-Confidential</option>
-                                </select>
-                                @if ($errors->has('file_type'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('file_type') }}</strong>
-                                    </span>
-                                @endif
-                                <div id="file_type1" style="color: red; display: none;"></div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="key" name="key" placeholder="">
-                                <div id="key_error" style="color: red; display: none;"></div>
+                                <div id="upload_file_error" style="color: red; display: none;"></div>
                             </div>
 
                             <div class = "col-md-12">
@@ -174,7 +126,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button id="sub" type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <button type="submit" id="sub" class="btn btn-primary px-4">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -188,92 +140,76 @@
 </div>
 @push('scripts')
 
+
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
         $('#sub').click(function(e){
 
-            if($('#user').val()=="")
-				{
-					$('#error-message').text("Please Enter User").show();
-					$('#user').focus();
-					return false;
-				}
-
-                if($('#division').val()=="")
-				{
-					$('#division1').text("Please Enter Division").show();
-					$('#division').focus();
-					return false;
-				}
+            
 
                 if($('#computer_no').val()=="")
 				{
-                    $('#computer_no1').text("Please Enter Computer No").show();
+                    $('#computer_no_error').text("Please Enter Computer No").show();
 					$('#computer_no').focus();
 					return false;invalid-feedback
 				}
 
                 if($('#file_no').val()=="")
 				{
-                    $('#file_no1').text("Please Enter File No").show();
+                    $('#file_no_error').text("Please Enter File No").show();
 					$('#file_no').focus();
 					return false;
 				}
                 var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
 
                 if (!fileNoRegex.test($('#file_no').val())) {
-                    $('#file_no1').text("Invalid File No format. Please follow the correct format").show();
+                    $('#file_no_error').text("Invalid File No format. Please follow the correct format").show();
                     $('#file_no').focus();
                     return false;
                 }
 
-                if($('#date_of_issue').val()=="")
-				{
-                    $('#date_of_issue1').text("Please Enter Date of Issue").show();
-					$('#date_of_issue').focus();
-					return false;
-				}
+                
 
                 if($('#subject').val()=="")
 				{
-                    $('#subject1').text("Please Enter Subject").show();
+                    $('#subject_error').text("Please Enter Subject").show();
 					$('#subject').focus();
 					return false;
 				}
 
                 if($('#issuer_name').val()=="")
 				{
-                    $('#issuer_name1').text("Please Enter Issuer Name").show();
+                    $('#issuer_name_error').text("Please Enter Issuer Name").show();
 					$('#issuer_name').focus();
 					return false;
 				}
 
                 if($('#issuer_designation').val()=="")
 				{
-                    $('#issuer_designation1').text("Please Enter Issuer Designation").show();
+                    $('#issuer_designation_error').text("Please Enter Issuer Designation").show();
 					$('#issuer_designation').focus();
 					return false;
 				}
 
                 if($('#date_of_upload').val()=="")
 				{
-                    $('#date_of_upload1').text("Please Enter Date of upload").show();
+                    $('#date_of_upload_error').text("Please Enter Date of upload").show();
 					$('#date_of_upload').focus();
 					return false;
 				}
 
                 if($('#file_type').val()=="")
 				{
-                    $('#file_type1').text("Please Enter File Type").show();
+                    $('#file_type_error').text("Please Enter File Type").show();
 					$('#file_type').focus();
 					return false;
 				}
 
                 if($('#upload_file').val()=="")
 				{
-                    $('#upload_file1').text("Please Upload File").show();
+                    $('#upload_file_error').text("Please Upload File").show();
 					$('#upload_file').focus();
 					return false;
 				}
@@ -310,6 +246,7 @@
     });
 </script>
 
+
 <script>
 
 $(document).ready(function() {
@@ -319,61 +256,66 @@ $(document).ready(function() {
         }
     });
 
-    var guidelineStoreUrl = "{{ url('admin/document/office_order/create') }}";
-    $('#guidelineForm').on('submit', function(e) {
+    var recruitmentStoreUrl = "{{ url('admin/document/recruitment/create') }}";
+    $('#recruitmentForm').on('submit', function(e) {
         e.preventDefault();
-        
+
         var keywords = $('#key').val();
         var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
         $('#key').val(formattedKeywords);
 
-        
         let formData = new FormData(this); 
+        formData.append('user_id', "{{ auth()->id() }}");
+        $('.invalid-feedback').text('').hide(); 
 
         $.ajax({
-            url: guidelineStoreUrl, 
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            beforeSend: function() {
-                $('.btn-primary1').prop('disabled', true).text('Submitting...');
-            },
-            success: function(response) {
-                $('.btn-primary1').prop('disabled', false).text('Submit');
-                // alert(response);
-                //      window.location.href = "{{ route('admin.document.office_order.index') }}";
-                    Swal.fire({
-                    title: "Success!",
-                    text: response.message || "Data submitted successfully!",
-                    icon: "success",
-                    confirmButtonText: "OK"
-                }).then(() => {
-                    window.location.href = "{{ route('admin.document.office_order.index') }}";
-                });
-            },
-            error: function(xhr) {
-                console.log(xhr);
-                $('.btn-primary1').prop('disabled', false).text('Submit'); 
-                
-                
-                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessage = "";
-                    $.each(errors, function(key, value) {
-                        errorMessage += value[0] + "\n";
-                    });
-                    alert(errorMessage);
-                } else {
-                    alert("An error occurred. Please try again.");
-                }
-            }
-        });
+    url: recruitmentStoreUrl, 
+    type: "POST",
+    data: formData,
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+        $('.btn-primary1').prop('disabled', true).text('Submitting...');
+    },
+    success: function(response) {
+        $('.btn-primary1').prop('disabled', false).text('Submit');
+        //  alert(response);
+        //          window.location.href = "{{ route('admin.document.recruitment.index') }}";
+                Swal.fire({
+                title: "Success!",
+                text: response.message || "Data submitted successfully!",
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                window.location.href = "{{ route('admin.document.recruitment.index') }}";
+            });
+    },
+    error: function(xhr) {
+        console.log(xhr);
+        $('.btn-primary1').prop('disabled', false).text('Submit');
+
+        if (xhr.responseJSON && xhr.responseJSON.errors) {
+            var errors = xhr.responseJSON.errors;
+            $.each(errors, function(key, value) {
+                $('#' + key + '_error').text(value[0]).show(); 
+            });
+        } else {
+            Swal.fire({
+                title: "Error!",
+                text: xhr.responseJSON?.message || "An error occurred. Please try again.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    }
+});
+
     });
 });
 
+</script>
 
-    </script>
+
 
 
 <script>
@@ -428,7 +370,7 @@ $(document).ready(function() {
                 //console.log(userId);
                 // Make an AJAX request to get the corresponding divisions
                 $.ajax({
-                    url: "{{ route('admin.document.office_order.get-divisions-by-user') }}",
+                    url: "{{ route('admin.document.recruitment.get-divisions-by-user') }}",
                     type: 'GET',
                     data: { user_id: userId },
                     
