@@ -41,4 +41,10 @@ class HomeController extends Controller
        
         return view('backend.index');
     }
+
+    public function error404()
+    {
+        return view('errors.404');
+    }
+
 }

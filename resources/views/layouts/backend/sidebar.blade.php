@@ -76,91 +76,91 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('admin.document.letter.index') }}"><i class='bx bx-radio-circle'></i> Letters </a></li>
                 @endif
                 @if(in_array('12', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> Record of Discussion (ROD) </a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Record of Discussion (ROD) </a></li>
                 @endif
                 @if(in_array('13', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> Minutes of Meeting (MoM) </a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Minutes of Meeting (MoM) </a></li>
                 @endif
                 @if(in_array('14', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> 	
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> 	
                     Bilateral / Multilateral </a></li>
                 @endif
                 @if(in_array('15', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> International Meetings (COPs, G20, etc)
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> International Meetings (COPs, G20, etc)
                     </a></li>
                 @endif
                 @if(in_array('16', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> Gazette Notifications</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Gazette Notifications</a></li>
                 @endif
                 @if(in_array('17', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> Recruitment Rules</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Recruitment Rules</a></li>
                 @endif
                 @if(in_array('18', $userPermissions))
                     <li><a href="{{ route('admin.document.guideline.index') }}"><i class='bx bx-radio-circle'></i> Guidelines</a></li>
                 @endif
                 @if(in_array('19', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> Achievements</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Achievements</a></li>
                 @endif
                 @if(in_array('20', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> Rebuttals</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Rebuttals</a></li>
                 @endif
                 @if(in_array('21', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> Presentations</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Presentations</a></li>
                 @endif
                 @if(in_array('22', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> Parliament Questions (Lok Sabha)</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Parliament Questions (Lok Sabha)</a></li>
                 @endif
                 @if(in_array('23', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> Parliament Questions (Rajya Sabha)</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Parliament Questions (Rajya Sabha)</a></li>
                 @endif
                 @if(in_array('24', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> Office</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Office</a></li>
                 @endif
                 @if(in_array('25', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> Court Case</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Court Case</a></li>
                 @endif
                 @if(in_array('26', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> PM Reference</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> PM Reference</a></li>
                 @endif
                 @if(in_array('27', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> VIP Reference</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> VIP Reference</a></li>
                 @endif
                 @if(in_array('28', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> Cabinet Note</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Cabinet Note</a></li>
                 @endif
                 @if(in_array('29', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> Pragati</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Pragati</a></li>
                 @endif
                 @if(in_array('30', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> Prayas</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Prayas</a></li>
                 @endif
                 @if(in_array('31', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> Cabinet Observation</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Cabinet Observation</a></li>
                 @endif
                 @if(in_array('32', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> 	
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> 	
                     eSamikSha</a></li>
                 @endif
                 @if(in_array('33', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> Annual Report</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Annual Report</a></li>
                 @endif
                 @if(in_array('34', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> MEF Speech</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> MEF Speech</a></li>
                 @endif
                 @if(in_array('35', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> Subordinate Legislations</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Subordinate Legislations</a></li>
                 @endif
                 @if(in_array('36', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> Public Grievance</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Public Grievance</a></li>
                 @endif
                 @if(in_array('37', $userPermissions))
-                    <li><a href="{{ route('admin.document.notification.index') }}"><i class='bx bx-radio-circle'></i> RTI</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> RTI</a></li>
                 @endif
                 @if(in_array('38', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_memorandum.index') }}"><i class='bx bx-radio-circle'></i> Bilateral / Multilateral</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Bilateral / Multilateral</a></li>
                 @endif
                 @if(in_array('39', $userPermissions))
-                    <li><a href="{{ route('admin.document.office_order.index') }}"><i class='bx bx-radio-circle'></i> International</a></li>
+                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> International</a></li>
                 @endif
             </ul>
         </li>
