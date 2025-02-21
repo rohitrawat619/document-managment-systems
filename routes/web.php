@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
