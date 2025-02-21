@@ -138,5 +138,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
 
+Route::post('/report-counts', [ReportController::class, 'getCounts']);
+Route::get('/admin/home', [DashboardController::class, 'index'])->name('admin.home');
 
 Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
