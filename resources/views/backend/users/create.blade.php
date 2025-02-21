@@ -57,8 +57,7 @@
                                         <strong>{{ $errors->first('division') }}</strong>
                                     </span>
                             @endif
-                            </div>
-                           
+                            </div>  
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                                 <select class="form-control" id="role" name="role_id">

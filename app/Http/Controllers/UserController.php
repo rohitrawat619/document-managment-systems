@@ -29,6 +29,25 @@ class UserController extends Controller
     {
             $search = $request->get('search'); // Get search query
 
+            $users = User::from('users as u')
+                ->select(
+                    'u.id', 
+                    'u.name', 
+                    'u.email', 
+                    'u.phone', 
+                    'u.phone_code', 
+                    'u.phone_iso', 
+                    'ds.name as designation_name', 
+                    DB::raw('GROUP_CONCAT(dv.name) as division_name')
+                )
+                
+                ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
+                ->leftJoin('designations as ds','u.designation','=','ds.id')
+                ->where('u.is_deleted',0)
+                ->whereNotNull('u.role_id')
+                ->groupBy('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name')
+                ->get();
+
             /*** fetch designations from roles table */
 
             $designation = Designation::all();
@@ -137,17 +156,11 @@ class UserController extends Controller
                 'role_id' => $request->role_id,
                 'password' => bcrypt($request->password)
             ]);
-
             $user_name = 'omms_'.$request->first_name.($new_user->id+1);
 
             User::where('id',$new_user->id)->update([
                 'user_name' => $user_name
             ]);
-
-            //dd($new_user);
-
-            //echo '<pre>'; print_r($new_user); die;
-
 
             DB::commit();
 
@@ -206,7 +219,7 @@ class UserController extends Controller
                 'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
-                'designation' => 'required'
+                
             ];
 
             $messages = [
@@ -230,10 +243,11 @@ class UserController extends Controller
                 'name' => $name,
                 'email' => $request->email,
                 'phone' => $mobile,
+                'role_id' => $request->role_id,
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",",$request->division),
-                'designation' => $request->designation,
+               
             ]);
 
             DB::commit();
@@ -281,9 +295,9 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         $user_id =base64_decode($request->id);
-        // $id = $request->id;
-        $user_id = Auth::user()->id;
-
+        $id = $request->id;
+        
+        $user = Auth::user()->id;
         $privacy = User::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $user_id;

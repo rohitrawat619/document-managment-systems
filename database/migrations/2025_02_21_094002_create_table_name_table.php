@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('letter_uploads', function (Blueprint $table) {
+        Schema::create('table_name', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->nullable();
-            $table->bigInteger('record_id')->index()->nullable();
-            $table->string('file_path',500)->nullable();
-            $table->string('file_name')->nullable();
             $table->timestamps();
-            
         });
     }
 
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('letter_uploads');
+        Schema::dropIfExists('table_name');
     }
 };

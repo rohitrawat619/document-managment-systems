@@ -65,6 +65,8 @@
 
                 <li> <a href="{{route('admin.document.guideline.index')}}"><i class='bx bx-radio-circle'></i>Guidelines</a>
                 </li>
+                <li> <a href="{{route('admin.document.recruitment.index')}}"><i class='bx bx-radio-circle'></i>Recruitment Rules</a>
+                </li>
 
                 {{-- <li> <a href="javascript:;"><i class='bx bx-radio-circle'></i>Permissions</a>
                 </li> --}}
