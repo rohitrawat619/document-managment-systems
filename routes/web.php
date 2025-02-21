@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     //return view('welcome');
     return redirect()->route('admin.login');
