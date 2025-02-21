@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     //return view('welcome');
     return redirect()->route('admin.login');
@@ -75,6 +76,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
         Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
         Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
+       
 
     });
 
@@ -134,3 +136,8 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/guideline/get-divisions-by-user', [App\Http\Controllers\GuidelineController::class, 'getDivisionsByUser'])->name('document.guideline.get-divisions-by-user');
     Route::delete('/admin/document/guideline/delete_file', [App\Http\Controllers\GuidelineController::class, 'deleteFile'])->name('document.guideline.delete_file');
 });
+
+Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
+
+Route::post('/report-counts', [ReportController::class, 'getCounts']);
+Route::get('/admin/home', [DashboardController::class, 'index'])->name('admin.home');
