@@ -56,28 +56,10 @@
                                     </span>
                                 @endif
                             </div>
-
-                            <!-- <div class="col-md-6">
-                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-                                <select class="form-control" name="designation">
-                                    <option value="">--Select--</option>
-                                    @if(count($designations)>0)
-                                        @foreach ($designations as $dv)
-                                            <option value="{{$dv->id}}"  @if($dv->id==$users->designation) selected @endif>{{$dv->name}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                @if ($errors->has('designation'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('designation') }}</strong>
-                                    </span>
-                                @endif
-                            </div> -->
-
                            
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
-                                <select class="form-control" name="role">
+                                <select class="form-control" name="role_id">
                                     <option value="">--Select--</option>
                                     @if(count($roles)>0)
                                         @foreach ($roles as $dv)

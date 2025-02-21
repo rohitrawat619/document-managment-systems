@@ -125,7 +125,8 @@ class RoleController extends Controller
                 ->get();
         
             return view('backend.roles.edit', compact('roles','rolePermissions','permissions','designations','selectedDesignations'));
-        }
+        } 
+
 
         DB::beginTransaction();
         try{
