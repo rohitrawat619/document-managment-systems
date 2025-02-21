@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -28,8 +29,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // return view('home');
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+        
+        if ($role && !empty($role->permission_id)) {
+            $permissions = explode(',', $role->permission_id); // Convert CSV to array
+            Session::put('user_permissions', $permissions);
+        } else {
+            $permissions = []; // Default empty permissions array
+        }
+       
         return view('backend.index');
     }
-
 }

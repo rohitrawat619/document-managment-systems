@@ -6,32 +6,29 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 class IsAccess
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, Closure $next)
     {
         if(Auth::check())
         {
             if(Auth::user()->is_admin==1)
+            {
                 return $next($request);
+            }
             else
             {
-                if(Auth::user()->role_id==1)
-                {
-                    if($request->routeIs('admin.users.*') || $request->routeIs('admin.divisions.*') || $request->routeIs('admin.designations.*') || $request->routeIs('admin.permissions.*'))
-                        return $next($request);
-                    else
-                        return abort(403);
-                }
-                else
-                {
-                    return abort(403);
+                $user = Auth::user();
+                $role = Role::find($user->role_id);
+
+                if ($role && !empty($role->permission_id)) {
+                    $permissions = explode(',', $role->permission_id); 
+                    Session::put('user_permissions', $permissions);
+                } else {
+                    $permissions = [];
                 }
             }
         }
@@ -39,5 +36,7 @@ class IsAccess
         {
             return redirect()->route('admin.login');
         }
+
+
     }
 }
