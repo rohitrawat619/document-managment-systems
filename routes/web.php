@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     //return view('welcome');
     return redirect()->route('admin.login');
@@ -52,7 +53,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/designation/create',[App\Http\Controllers\DesignationController::class, 'create'])->name('designation.create');
         Route::match(['get','post'],'/designation/edit/{id}',[App\Http\Controllers\DesignationController::class, 'edit'])->name('designation.edit');
         Route::post('/designation/delete',[App\Http\Controllers\DesignationController::class, 'destroy'])->name('designation.delete');
-        
+
         // Division
 
         Route::get('/division',[App\Http\Controllers\DivisionController::class, 'index'])->name('division.index');
@@ -75,7 +76,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
         Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
         Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
-       
+
 
     });
 
@@ -138,5 +139,5 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
 
-
-Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
+Route::post('/report-counts', [ReportController::class, 'getCounts']);
+Route::get('/admin/home', [DashboardController::class, 'index'])->name('admin.home');
