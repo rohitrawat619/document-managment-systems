@@ -153,4 +153,3 @@ Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::c
 Route::post('/report-counts', [ReportController::class, 'getCounts']);
 Route::get('/admin/home', [DashboardController::class, 'index'])->name('admin.home');
 
-
