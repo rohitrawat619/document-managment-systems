@@ -54,7 +54,7 @@ use Illuminate\Support\Facades\Session;
         <li class="menu-label">File Managemant</li>
         
         @php
-         $userPermissions = session('user_permissions');
+         $userPermissions = Session::get('user_permissions');
          @endphp
 
         <li>
