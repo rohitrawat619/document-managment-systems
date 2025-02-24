@@ -42,7 +42,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
         // Roles
 
-
         Route::get('/roles',[App\Http\Controllers\RoleController::class, 'index'])->name('roles.index');
         Route::match(['get','post'],'/roles/create',[App\Http\Controllers\RoleController::class, 'create'])->name('roles.create');
         Route::match(['get','post'],'/roles/edit/{id}',[App\Http\Controllers\RoleController::class, 'edit'])->name('roles.edit');
@@ -141,8 +140,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
-
-Route::post('/report-counts', [ReportController::class, 'getCounts']);
 
 Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
 

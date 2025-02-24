@@ -110,10 +110,6 @@
                 </div>
             </div>
             </div>
-
-
-
-
     </div>
 <!--end page wrapper -->
 @push('scripts')

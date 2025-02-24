@@ -49,6 +49,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Username</th>
                                     <th scope="col">Division</th>
                                     <th scope="col">Designation</th>
                                     <th scope="col">NIC Email</th>
@@ -61,6 +62,7 @@
                             <tr>
                                 <th scope="row">{{ ($users->currentPage() - 1) * $users->perPage() + $k + 1 }}</th>
                                 <td>{{$r->name}}</td>
+                                <td>{{$r->user_name}}</td>
                                 <td>{{$r->division_name}}</td>
                                 <td>{{$r->designation_name}}</td>
                                 <td>{{$r->email}}</td>
