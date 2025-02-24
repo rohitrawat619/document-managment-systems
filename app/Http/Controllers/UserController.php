@@ -31,16 +31,16 @@ class UserController extends Controller
 
             $users = User::from('users as u')
                 ->select(
-                    'u.id', 
-                    'u.name', 
-                    'u.email', 
-                    'u.phone', 
-                    'u.phone_code', 
-                    'u.phone_iso', 
-                    'ds.name as designation_name', 
+                    'u.id',
+                    'u.name',
+                    'u.email',
+                    'u.phone',
+                    'u.phone_code',
+                    'u.phone_iso',
+                    'ds.name as designation_name',
                     DB::raw('GROUP_CONCAT(dv.name) as division_name')
                 )
-                
+
                 ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
                 ->leftJoin('designations as ds','u.designation','=','ds.id')
                 ->where('u.is_deleted',0)
@@ -59,16 +59,16 @@ class UserController extends Controller
             ->get()->toArray();
 
          //   echo '<pre>';print_r($desig); die;
-            
+
             $users = User::from('users as u')
                 ->select(
-                    'u.id', 
-                    'u.name', 
-                    'u.email', 
-                    'u.phone', 
-                    'u.phone_code', 
-                    'u.phone_iso', 
-                    'ds.name as designation_name', 
+                    'u.id',
+                    'u.name',
+                    'u.email',
+                    'u.phone',
+                    'u.phone_code',
+                    'u.phone_iso',
+                    'ds.name as designation_name',
                     DB::raw('GROUP_CONCAT(dv.name) as division_name')
                 )
                 ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
@@ -219,7 +219,6 @@ class UserController extends Controller
                 'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
-                
             ];
 
             $messages = [
@@ -247,7 +246,7 @@ class UserController extends Controller
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",",$request->division),
-               
+
             ]);
 
             DB::commit();
@@ -296,7 +295,7 @@ class UserController extends Controller
     {
         $user_id =base64_decode($request->id);
         $id = $request->id;
-        
+
         $user = Auth::user()->id;
         $privacy = User::find($user_id);
         $privacy->is_deleted = '1';

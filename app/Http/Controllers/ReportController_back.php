@@ -11,14 +11,12 @@ class ReportController  extends Controller
     {
         try {
             $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines'];
-            $labels = ['office memorandum', 'office order', 'notification', 'letter', 'guidelines'];
-            
             $data = [];
-            
-            foreach ($tables as $index => $table) {
+
+            foreach ($tables as $table) {
                 $count = DB::table($table)->count();
                 $data[] = [
-                    "label" => ucfirst($labels[$index]), // Use the corresponding label
+                    "label" => ucfirst($table),
                     "value" => $count
                 ];
             }
