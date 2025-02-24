@@ -80,6 +80,7 @@ class UserController extends Controller
                     'u.name',
                     'u.email',
                     'u.phone',
+                    'u.user_name',
                     'u.phone_code',
                     'u.phone_iso',
                     'ds.name as designation_name',
@@ -99,7 +100,7 @@ class UserController extends Controller
             }
 
             // Group and paginate results
-            $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone', 'u.phone_code', 'u.phone_iso', 'ds.name')
+            $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone','u.user_name', 'u.phone_code', 'u.phone_iso', 'ds.name')
                 ->paginate(10);
 
             return view('backend.users.index',compact('users'));
@@ -127,7 +128,7 @@ class UserController extends Controller
             $rules = [
                 'first_name'=> 'required|regex:/^[a-zA-Z]+$/u|min:1|max:255',
                 'last_name'=> 'nullable|regex:/^[a-zA-Z]+$/u|min:0|max:255',
-                'email' => 'required|email:dns,rfc|unique:users,email',
+                'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required|array',
                 'password' => 'required|same:confirm_password|min:10',
@@ -170,9 +171,10 @@ class UserController extends Controller
                 'role_id' => $request->role_id,
                 'password' => bcrypt($request->password)
             ]);
-            $user_name = 'omms_'.$request->first_name.($new_user->id+1);
-
-            User::where('id',$new_user->id)->update([
+           
+            $email_username = explode('@', $request->email)[0];
+            $user_name = $email_username . ($new_user->id + 1);
+            User::where('id', $new_user->id)->update([
                 'user_name' => $user_name
             ]);
 
@@ -230,7 +232,7 @@ class UserController extends Controller
             $rules = [
                 'first_name'=> 'required|regex:/^[a-zA-Z ]+$/u|min:1|max:255',
                 'last_name'=> 'nullable|regex:/^[a-zA-Z ]+$/u|min:0|max:255',
-                'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
+                'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
             ];
