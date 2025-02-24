@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Division;
+use App\Models\TotalCountModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +33,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $role = Role::find($user->role_id);
-        
+
         if ($role && !empty($role->permission_id)) {
             $permissions = explode(',', $role->permission_id); // Convert CSV to array
 
@@ -41,8 +43,14 @@ class HomeController extends Controller
         } else {
             $permissions = []; // Default empty permissions array
         }
-       
-        return view('backend.index');
+        $totalUsers = User::count();
+            $totaldivision = Division::count();
+
+            $totalForms = TotalCountModel::getTotalSubmissions();
+
+            return view('backend.index', compact('totalUsers', 'totaldivision', 'totalForms'));
+
+        //return view('backend.index');
     }
 
     public function error404()

@@ -1,14 +1,13 @@
 @extends('layouts.backend.admin')
 @section('content')
 <style>
-   
 
     </style>
 <!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
         <div class="container-fluid">
-    <div class="row row-cols-1 row-cols-md-3 g-3">
+          <div class="row row-cols-1 row-cols-md-3 g-3">
                 <div class="col">
                 <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-info" style="min-height: 60px;">
                     <div class="card-body d-flex flex-column justify-content-between ">
@@ -23,7 +22,7 @@
                 </div>
             </div>
 
-        <div class="col">
+            <div class="col">
             <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-danger" style="min-height: 60px;">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
@@ -35,8 +34,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
+            </div>
+            <div class="col">
             <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-success" style="min-height: 60px;">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
@@ -53,9 +52,9 @@
 </div>
 
 
-          </div>                                  
+          </div>
             <!--end row-->
-
+<div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-lg-8 d-flex">
                     <div class="card radius-10 w-100">
@@ -64,12 +63,12 @@
                             <div id="chart-container">FusionCharts XT will load here!</div>
                             <meta name="csrf-token" content="{{ csrf_token() }}">
                         </div>
-                        
+
                     </div>
                 </div>
-            
+
              <!-- end row  -->
-            
+
              <div class="col-12 col-lg-4 d-flex">
                 <div class="card radius-10 w-100">
                     <div class="card-header">
@@ -110,10 +109,11 @@
                     </ul>
                 </div>
             </div>
-             
-          
+            </div>
 
-          
+
+
+
     </div>
 <!--end page wrapper -->
 @push('scripts')
@@ -176,11 +176,11 @@ $(document).ready(function(){
 
     $(document).ready(function(){
     $.ajax({
-        url: '/report-counts', 
-        method: 'POST', 
+        url: '/report-counts',
+        method: 'POST',
         dataType: 'json',
         success: function(data) {
-            console.log("Data received:", data); 
+            console.log("Data received:", data);
             var chartObj = new FusionCharts({
                 type: 'column2d',
                 renderAt: 'chart-container',
@@ -192,14 +192,14 @@ $(document).ready(function(){
                     "caption": "Documents Type",
                     "xAxisName": "Document Type",
                     "yAxisName": "Total",
-                    "xAxisNameFontBold": "1",  
-                    "yAxisNameFontBold": "1",  
-                    "xAxisNameFontSize": "16", 
-                    "yAxisNameFontSize": "16", 
-                    "xAxisNameFontColor": "#000000", 
+                    "xAxisNameFontBold": "1",
+                    "yAxisNameFontBold": "1",
+                    "xAxisNameFontSize": "16",
+                    "yAxisNameFontSize": "16",
+                    "xAxisNameFontColor": "#000000",
                     "yAxisNameFontColor": "#000000",
                     "baseFont": "Arial",
-                    "baseFontBold": "1",  
+                    "baseFontBold": "1",
                     "theme": "fusion"
                 },
                     "data": data
