@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +144,5 @@ Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::c
 
 
 Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
-
 
 Route::post('/report-counts', [App\Http\Controllers\ReportController::class, 'getCounts']);

@@ -35,7 +35,10 @@ class HomeController extends Controller
         $role = Role::find($user->role_id);
         if ($role && !empty($role->permission_id)) {
             $permissions = explode(',', $role->permission_id); // Convert CSV to array
+
             Session::put('user_permissions', $permissions);
+            Session::save();
+
         } else {
             $permissions = []; // Default empty permissions array
         }
