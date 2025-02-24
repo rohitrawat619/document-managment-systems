@@ -55,6 +55,8 @@ use Illuminate\Support\Facades\Session;
         
         @php
          $userPermissions = session('user_permissions');
+         print_r($userPermissions);
+         die;
          @endphp
 
         <li>
