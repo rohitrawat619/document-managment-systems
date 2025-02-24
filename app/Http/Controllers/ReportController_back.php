@@ -11,7 +11,6 @@ class ReportController  extends Controller
     {
         try {
             $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines'];
-
             $data = [];
 
             foreach ($tables as $table) {
