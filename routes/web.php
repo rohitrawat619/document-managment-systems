@@ -138,6 +138,29 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/guideline/get-divisions-by-user', [App\Http\Controllers\GuidelineController::class, 'getDivisionsByUser'])->name('document.guideline.get-divisions-by-user');
     Route::delete('/admin/document/guideline/delete_file', [App\Http\Controllers\GuidelineController::class, 'deleteFile'])->name('document.guideline.delete_file');
 
+
+    
+    //Recruitment Rules
+
+    Route::get('/document/recruitment',[App\Http\Controllers\RecruitmentController::class, 'recruitment'])->name('document.recruitment.index');
+    Route::match(['get','post'],'/document/recruitment/create',[App\Http\Controllers\RecruitmentController::class, 'create'])->name('document.recruitment.create');
+    Route::match(['get','post'],'/document/recruitment/edit/{id}',[App\Http\Controllers\RecruitmentController::class, 'edit'])->name('document.recruitment.edit');
+    Route::post('/document/recruitment/status',[App\Http\Controllers\RecruitmentController::class, 'status'])->name('document.recruitment.status');
+    Route::post('/recruitment/delete',[App\Http\Controllers\RecruitmentController::class, 'destroy'])->name('recruitment.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\RecruitmentController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/recruitment/get-divisions-by-user', [App\Http\Controllers\RecruitmentController::class, 'getDivisionsByUser'])->name('document.recruitment.get-divisions-by-user');
+    Route::delete('/admin/document/recruitment/delete_file', [App\Http\Controllers\RecruitmentController::class, 'deleteFile'])->name('document.recruitment.delete_file');
+
+     //achievenment 
+
+     Route::get('/document/achievenment',[App\Http\Controllers\AchievementController::class, 'achievenment'])->name('document.achievenment.index');
+     Route::match(['get','post'],'/document/achievenment/create',[App\Http\Controllers\AchievementController::class, 'create'])->name('document.achievenment.create');
+     Route::match(['get','post'],'/document/achievenment/edit/{id}',[App\Http\Controllers\AchievementController::class, 'edit'])->name('document.achievenment.edit');
+     Route::post('/document/achievenment/status',[App\Http\Controllers\AchievementController::class, 'status'])->name('document.achievenment.status');
+     Route::post('/achievenment/delete',[App\Http\Controllers\AchievementController::class, 'destroy'])->name('achievenment.delete');
+     Route::get('view-pdf/{file}', [App\Http\Controllers\AchievementController::class, 'viewPdf'])->name('view.pdf');
+     Route::get('/admin/document/achievenment/get-divisions-by-user', [App\Http\Controllers\AchievementController::class, 'getDivisionsByUser'])->name('document.achievenment.get-divisions-by-user');
+     Route::delete('/admin/document/achievenment/delete_file', [App\Http\Controllers\AchievementController::class, 'deleteFile'])->name('document.achievenment.delete_file');
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
@@ -145,3 +168,6 @@ Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::c
 Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
 
 Route::post('/report-counts', [App\Http\Controllers\ReportController::class, 'getCounts']);
+
+
+
