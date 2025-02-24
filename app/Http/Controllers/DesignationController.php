@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Designation;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class DesignationController extends Controller
 {
@@ -36,6 +38,17 @@ class DesignationController extends Controller
             ->orderBy('id', 'asc')
             ->paginate(10);
         }
+
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+    
+            if ($role && !empty($role->permission_id)) {
+                $permissions = explode(',', $role->permission_id); // Convert CSV to array
+    
+                Session::put('user_permissions', $permissions);
+                Session::save();
+            }
+
         return view('backend.designation.index',compact('designation'));
     }
 

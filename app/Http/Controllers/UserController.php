@@ -10,6 +10,7 @@ use App\Models\Designation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -47,6 +48,19 @@ class UserController extends Controller
                 ->whereNotNull('u.role_id')
                 ->groupBy('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name')
                 ->get();
+
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+
+        if ($role && !empty($role->permission_id)) {
+            $permissions = explode(',', $role->permission_id); // Convert CSV to array
+
+            Session::put('user_permissions', $permissions);
+            Session::save();
+
+        } else {
+            $permissions = []; // Default empty permissions array
+        }
 
             /*** fetch designations from roles table */
 
