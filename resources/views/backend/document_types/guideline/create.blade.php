@@ -39,7 +39,7 @@
                                             <strong>{{ $errors->first('user') }}</strong>
                                         </span>
                                     @endif
-                                    <div id="error-message" style="color: red; display: none;"></div>
+                                    <div id="user_error" style="color: red; display: none;"></div>
                                 </div>
                             
                             @if(Auth::user()->is_admin == 1)
@@ -54,7 +54,7 @@
                                             <strong>{{ $errors->first('division') }}</strong>
                                         </span>
                                     @endif
-                                    <div id="division1" style="color: red; display: none;"></div>
+                                    <div id="division_error" style="color: red; display: none;"></div>
                                 </div>
                             @endif
                             <div class="col-md-6">
@@ -65,7 +65,7 @@
                                         <strong>{{ $errors->first('computer_no') }}</strong>
                                     </span>
                                 @endif
-                                <div id="computer_no1" style="color: red; display: none;"></div>
+                                <div id="computer_no_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="file_no" class="form-label">File No. <span class="text-danger">*</span></label>
@@ -75,7 +75,7 @@
                                         <strong>{{ $errors->first('file_no') }}</strong>
                                     </span>
                                 @endif
-                                <div id="file_no1" style="color: red; display: none;"></div>
+                                <div id="file_no_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
@@ -85,7 +85,7 @@
                                         <strong>{{ $errors->first('date_of_issue') }}</strong>
                                     </span>
                                 @endif
-                                <div id="date_of_issue1" style="color: red; display: none;"></div>
+                                <div id="date_of_issue_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
@@ -95,7 +95,7 @@
                                         <strong>{{ $errors->first('subject') }}</strong>
                                     </span>
                                 @endif
-                                <div id="subject1" style="color: red; display: none;"></div>
+                                <div id="subject_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
@@ -105,7 +105,7 @@
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
                                     </span>
                                 @endif
-                                <div id="issuer_name1" style="color: red; display: none;"></div>
+                                <div id="issuer_name_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
@@ -115,7 +115,7 @@
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
                                     </span>
                                 @endif
-                                <div id="issuer_designation1" style="color: red; display: none;"></div>
+                                <div id="issuer_designation_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_upload" class="form-label">Date of Upload <span class="text-danger">*</span></label>
@@ -125,7 +125,7 @@
                                         <strong>{{ $errors->first('date_of_upload') }}</strong>
                                     </span>
                                 @endif
-                                <div id="date_of_upload1" style="color: red; display: none;"></div>
+                                <div id="date_of_upload_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
@@ -143,7 +143,7 @@
                                         <strong>{{ $errors->first('upload_file') }}</strong>
                                     </span>
                                 @endif
-                                <div id="upload_file1" style="color: red; display: none;"></div>
+                                <div id="upload_file_error" style="color: red; display: none;"></div>
                             </div>
 
                             <div class="col-md-6">
@@ -158,8 +158,15 @@
                                         <strong>{{ $errors->first('file_type') }}</strong>
                                     </span>
                                 @endif
-                                <div id="file_type1" style="color: red; display: none;"></div>
+                                <div id="file_type_error" style="color: red; display: none;"></div>
                             </div>
+
+                            <div class="col-md-6">
+                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="key" name="key" placeholder="">
+                                <div id="key_error" style="color: red; display: none;"></div>
+                            </div>
+
                             <div class = "col-md-12">
                             <div id="pdf_viewer">
 
@@ -190,85 +197,92 @@
 
             if($('#user').val()=="")
 				{
-					$('#error-message').text("Please Enter User").show();
+					$('#user_error').text("Please Enter User").show();
 					$('#user').focus();
 					return false;
 				}
 
                 if($('#division').val()=="")
 				{
-					$('#division1').text("Please Enter Division").show();
+					$('#division_error').text("Please Enter Division").show();
 					$('#division').focus();
 					return false;
 				}
 
                 if($('#computer_no').val()=="")
 				{
-                    $('#computer_no1').text("Please Enter Computer No").show();
+                    $('#computer_no_error').text("Please Enter Computer No").show();
 					$('#computer_no').focus();
 					return false;invalid-feedback
 				}
 
                 if($('#file_no').val()=="")
 				{
-                    $('#file_no1').text("Please Enter File No").show();
+                    $('#file_no_error').text("Please Enter File No").show();
 					$('#file_no').focus();
 					return false;
 				}
                 var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
 
                 if (!fileNoRegex.test($('#file_no').val())) {
-                    $('#file_no1').text("Invalid File No format. Please follow the correct format").show();
+                    $('#file_no_error').text("Invalid File No format. Please follow the correct format").show();
                     $('#file_no').focus();
                     return false;
                 }
 
                 if($('#date_of_issue').val()=="")
 				{
-                    $('#date_of_issue1').text("Please Enter Date of Issue").show();
+                    $('#date_of_issue_error').text("Please Enter Date of Issue").show();
 					$('#date_of_issue').focus();
 					return false;
 				}
 
                 if($('#subject').val()=="")
 				{
-                    $('#subject1').text("Please Enter Subject").show();
+                    $('#subject_error').text("Please Enter Subject").show();
 					$('#subject').focus();
 					return false;
 				}
 
                 if($('#issuer_name').val()=="")
 				{
-                    $('#issuer_name1').text("Please Enter Issuer Name").show();
+                    $('#issuer_name_error').text("Please Enter Issuer Name").show();
 					$('#issuer_name').focus();
 					return false;
 				}
 
                 if($('#issuer_designation').val()=="")
 				{
-                    $('#issuer_designation1').text("Please Enter Issuer Designation").show();
+                    $('#issuer_designation_error').text("Please Enter Issuer Designation").show();
 					$('#issuer_designation').focus();
 					return false;
 				}
 
                 if($('#date_of_upload').val()=="")
 				{
-                    $('#date_of_upload1').text("Please Enter Date of upload").show();
+                    $('#date_of_upload_error').text("Please Enter Date of upload").show();
 					$('#date_of_upload').focus();
 					return false;
 				}
 
                 if($('#file_type').val()=="")
 				{
-                    $('#file_type1').text("Please Enter File Type").show();
+                    $('#file_type_error').text("Please Enter File Type").show();
 					$('#file_type').focus();
 					return false;
 				}
 
                 if($('#upload_file').val()=="")
 				{
-                    $('#upload_file1').text("Please Upload File").show();
+                    $('#upload_file_error').text("Please Upload File").show();
 					$('#upload_file').focus();
+					return false;
+				}
+
+                if($('#key').val()=="")
+				{
+                    $('#key_error').text("Please Enter Keywords").show();
+					$('#key').focus();
 					return false;
 				}
                 
@@ -310,8 +324,14 @@ $(document).ready(function() {
     var guidelineStoreUrl = "{{ url('admin/document/guideline/create') }}";
     $('#guidelineForm').on('submit', function(e) {
         e.preventDefault();
-        
+
+        var keywords = $('#key').val();
+        var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
+        $('#key').val(formattedKeywords);
+
         let formData = new FormData(this); 
+
+        $('.invalid-feedback').text('').hide(); 
 
         $.ajax({
             url: guidelineStoreUrl, 
@@ -329,15 +349,13 @@ $(document).ready(function() {
             },
             error: function(xhr) {
                 console.log(xhr);
-                $('.btn-primary1').prop('disabled', false).text('Submit'); 
+                $('.btn-primary1').prop('disabled', false).text('Submit');
                 
                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                     var errors = xhr.responseJSON.errors;
-                    var errorMessage = "";
                     $.each(errors, function(key, value) {
-                        errorMessage += value[0] + "\n";
+                        $('#' + key + '_error').text(value[0]).show(); 
                     });
-                    alert(errorMessage);
                 } else {
                     alert("An error occurred. Please try again.");
                 }

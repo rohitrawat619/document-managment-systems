@@ -105,6 +105,32 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <div class="col-md-6">
+                                <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
+                                <select class="form-control" name="file_type">
+                                    <option value="0" @if($office_order->file_type == 0) selected @endif>Confidential</option>
+                                    <option value="1" @if($office_order->file_type == 1) selected @endif>Non-Confidential</option>
+                                </select>
+
+                                @if ($errors->has('file_type'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('file_type') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="keyword" class="form-label">Keywords <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="key" name="key" value="{{ $office_order->keyword }}" placeholder="">
+                                @if ($errors->has('keyword'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('keyword') }}</strong>
+                                    </span>
+                                @endif
+                                <div id="key1" style="color: red; display: none;"></div>
+                            </div>
+
                             <div class="col-md-6">
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
 
@@ -144,20 +170,6 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
-                                <select class="form-control" name="file_type">
-                                    <option value="0" @if($office_order->file_type == 0) selected @endif>Confidential</option>
-                                    <option value="1" @if($office_order->file_type == 1) selected @endif>Non-Confidential</option>
-                                </select>
-
-                                @if ($errors->has('file_type'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('file_type') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
                             <div id="pdfViewer" style="margin-top: 20px;">
                             <iframe id="pdfIframe" width="100%" height="600px" style="display:none;" frameborder="0"></iframe>
                             </div>
@@ -165,7 +177,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button id ="sub" type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <button id ="sub" type="submit" class="btn btn-primary px-4" style="margin-bottom: 1%;margin-left: 1%;">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -200,6 +212,12 @@
                     $('#file_no').focus();
                     return false;
                 }
+                if($('#key').val()=="")
+				{
+                    $('#key1').text("Please Enter Keywords").show();
+					$('#key').focus();
+					return false;
+				}
         });
     });
 </script>
@@ -208,6 +226,11 @@
 $(document).ready(function() { 
     $('#officeOrderForm').on('submit', function(e) {
         e.preventDefault();  
+
+        var keywords = $('#key').val();
+        var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
+        $('#key').val(formattedKeywords);
+
 
         var formData = new FormData(this);  
 

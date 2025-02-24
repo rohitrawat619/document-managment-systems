@@ -95,9 +95,10 @@ class GuidelineController extends Controller
                 'issuer_designation' => 'required|string',
                 'file_type' => 'required',
                 'division' => 'required',
-                 'date_of_upload' => 'required',
+                'date_of_upload' => 'required',
                 'upload_file' => 'required|array|min:1', 
-               'upload_file.*' => 'mimes:pdf|max:20480' 
+               'upload_file.*' => 'mimes:pdf|max:20480',
+               'key' => 'required',
                
             ];
 
@@ -111,7 +112,8 @@ class GuidelineController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                dd($validator->errors()); // Yeh validation errors show karega
+                // dd($validator->errors()); // Yeh validation errors show karega
+                return response()->json(['errors' => $validator->errors()], 422);
             }
             
             // if ($validator->fails()) {
@@ -130,7 +132,8 @@ class GuidelineController extends Controller
                 'file_type' => $request->file_type,
                 'division_id' => $request->division,
                 'date_of_upload' => $request->date_of_upload,
-                'uploaded_by' => $roleId
+                'uploaded_by' => $roleId,
+                'keyword' => $request->key
             ]);
 
 
@@ -202,15 +205,17 @@ class GuidelineController extends Controller
             'issuer_designation' => 'required|string',
             'file_type' => 'required',
             'division' => 'required',
+            'key' => 'required',
             'date_of_upload' => 'required',
             'upload_file' => 'nullable|array|min:1',
             'upload_file.*' => 'mimes:pdf|max:20480'
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.document.guideline.edit', ['id' => base64_encode($user_id)])
-                             ->withErrors($validator)
-                             ->withInput();
+            // return redirect()->route('admin.document.guideline.edit', ['id' => base64_encode($user_id)])
+            //                  ->withErrors($validator)
+            //                  ->withInput();
+            return response()->json(['errors' => $validator->errors()], 422);
         }
         
         $guideline = Guidelines::find($id);
@@ -224,7 +229,8 @@ class GuidelineController extends Controller
         'issuer_designation' => $request->issuer_designation,
         'file_type' => $request->file_type,
         'division_id' => $request->division,
-        'date_of_upload' => $request->date_of_upload
+        'date_of_upload' => $request->date_of_upload,
+        'keyword' => $request->key
     ]);
      
     //$user = $request->user;
