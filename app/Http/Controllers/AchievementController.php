@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Guidelines;
+
+use App\Models\Achievement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -10,43 +11,37 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use App\Models\GuidelinesUpload;
+use App\Models\AchievementUpload;
 
-
-class GuidelineController extends Controller
+class AchievementController extends Controller
 {
-    //
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function guideline(Request $request)
+    public function achievenment(Request $request)
     {
-                $query = Guidelines::from('guidelines as o')
-                ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
-                ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
-                ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
-                ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
-                ->where('o.is_deleted', 0);
+        $achievenment = Achievement::paginate(10); // Ya achievement::count()
+        return view('backend.document_types.achievenment.index', compact('achievenment'));
+        //         $query = Achievement::from('achievenment as o')
+        //         ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
+        //         ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
+        //         ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
+        //         ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
+        //         ->where('o.is_deleted', 0);
 
-                // Apply filter if 'computer_no' is provided
-                if ($request->filled('search')) {
-                    $computer_no = $request->get('search');
-                    $query->where('o.computer_no', 'like', "%{$computer_no}%");
-                }
+        //         // Apply filter if 'computer_no' is provided
+        //         if ($request->filled('search')) {
+        //             $computer_no = $request->get('search');
+        //             $query->where('o.computer_no', 'like', "%{$computer_no}%");
+        //         }
 
-                // Fetch the paginated result
-                $guideline = $query->orderBy('o.id', 'asc')->paginate(10);
+        //         // Fetch the paginated result
+        //         $achievenment = $query->orderBy('o.id', 'asc')->paginate(10);
 
 
-        return view('backend.document_types.guideline.index',compact('guideline'));
+        // return view('backend.document_types.achievenment.index',compact('achievenment'));
     }
 
     public function getDivisionsByUser(Request $request)
@@ -73,7 +68,7 @@ class GuidelineController extends Controller
 
             $users = User::all();
 
-            return view('backend.document_types.guideline.create',compact('divisions','users'));
+            return view('backend.document_types.achievenment.create',compact('divisions','users'));
         }
 
      
@@ -88,13 +83,9 @@ class GuidelineController extends Controller
               
                 'computer_no' => 'required',
                 'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-                'date_of_issue' => 'required',
-                'user' => 'required',
                 'subject' => 'required|string',
                 'issuer_name' => 'required|string',
                 'issuer_designation' => 'required|string',
-                'file_type' => 'required',
-                'division' => 'required',
                 'date_of_upload' => 'required',
                 'upload_file' => 'required|array|min:1', 
                'upload_file.*' => 'mimes:pdf|max:20480',
@@ -112,25 +103,24 @@ class GuidelineController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                // dd($validator->errors()); // Yeh validation errors show karega
-                return response()->json(['errors' => $validator->errors()], 422);
+                 dd($validator->errors()); // Yeh validation errors show karega
+               // return response()->json(['errors' => $validator->errors()], 422);
             }
             
             // if ($validator->fails()) {
-            //     return redirect()->route('admin.document.guideline.create')->withErrors($validator)->withInput();
+            //     return redirect()->route('admin.document.achievenment.create')->withErrors($validator)->withInput();
             // }
             
 
-            $new_user = Guidelines::create([
+            $new_user = Achievement::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
-                'user_id' => $request->user,
-                'date_of_issue' => $request->date_of_issue,
+                'user_id' => Auth::id(),
+                'date_of_publication' => $request->date_of_publication,
                 'subject' => $request->subject,
                 'issuer_name' => $request->issuer_name,
                 'issuer_designation' => $request->issuer_designation,
                 'file_type' => $request->file_type,
-                'division_id' => $request->division,
                 'date_of_upload' => $request->date_of_upload,
                 'uploaded_by' => $roleId,
                 'keyword' => $request->key
@@ -145,11 +135,11 @@ class GuidelineController extends Controller
                 //dd($a);
                 foreach ($a as $file) {
                     
-                    $path = $file->store('guideline_uploads', 'public');
+                    $path = $file->store('achievenment_upload', 'public');
 
-                        GuidelinesUpload::create([
+                    AchievementUpload::create([
                         'file_path' => $path,
-                        'user_id' => $user,
+                        'user_id' => Auth::id(),
                         'record_id' => $new_user->id, 
                         'file_name' => $file->getClientOriginalName() 
                     ]);
@@ -157,8 +147,9 @@ class GuidelineController extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
-            //return redirect()->route('admin.document.guideline.index')->with('success','Form Created Successfully !!');
+            return response()->json(['message' => 'Form created successfully!']);
+            //return response()->json('Form Created Successfully !!');
+            //return redirect()->route('admin.document.achievenment.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -169,8 +160,6 @@ class GuidelineController extends Controller
 
     }
 
-    // edit function for office memorandum and office memorandum uploads
-
     public function edit(Request $request,$id)
     {
        
@@ -179,17 +168,17 @@ class GuidelineController extends Controller
 
     if($request->isMethod('get')) {
         
-        $guideline = Guidelines::where('id', $user_id)->first();
-        // dd($guideline);
-        $data = $guideline->id;
-        $div = $guideline->user_id;
+        $achievenment = Achievement::where('id', $user_id)->first();
+        // dd($achievement);
+        $data = $achievenment->id;
+        $div = $achievenment->user_id;
 
-        $guideline_upload = GuidelinesUpload::where('record_id', $data)->get()->toArray();
-        // dd($guideline_upload);
-        //echo '<pre>'; print_r($guideline); die;
+        $achievenment_upload = AchievementUpload::where('record_id', $data)->get()->toArray();
+        // dd($achievement_upload);
+        //echo '<pre>'; print_r($achievement); die;
         $divisions = Division::where('id', $div)->first();
         // dd($divisions);
-        return view('backend.document_types.guideline.edit', compact('divisions', 'guideline', 'guideline_upload'));
+        return view('backend.document_types.achievenment.edit', compact('divisions', 'achievenment', 'achievenment_upload'));
     }
     
     
@@ -199,12 +188,9 @@ class GuidelineController extends Controller
         $validator = Validator::make($request->all(), [
             'computer_no' => 'required',
             'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-            'date_of_issue' => 'required',
             'subject' => 'required|string',
             'issuer_name' => 'required|string',
             'issuer_designation' => 'required|string',
-            'file_type' => 'required',
-            'division' => 'required',
             'key' => 'required',
             'date_of_upload' => 'required',
             'upload_file' => 'nullable|array|min:1',
@@ -212,50 +198,48 @@ class GuidelineController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // return redirect()->route('admin.document.guideline.edit', ['id' => base64_encode($user_id)])
+            // return redirect()->route('admin.document.achievement.edit', ['id' => base64_encode($user_id)])
             //                  ->withErrors($validator)
             //                  ->withInput();
             return response()->json(['errors' => $validator->errors()], 422);
         }
         
-        $guideline = Guidelines::find($id);
+        $achievement = Achievement::find($id);
 
-    $guideline->update([
-        'computer_no' => $request->computer_no,
-        'file_no' => $request->file_no,
-        'date_of_issue' => $request->date_of_issue,
-        'subject' => $request->subject,
-        'issuer_name' => $request->issuer_name,
-        'issuer_designation' => $request->issuer_designation,
-        'file_type' => $request->file_type,
-        'division_id' => $request->division,
-        'date_of_upload' => $request->date_of_upload,
-        'keyword' => $request->key
-    ]);
+        $achievement->update([
+            'computer_no' => $request->computer_no,
+            'file_no' => $request->file_no,
+            'date_of_publication' => $request->date_of_publication,
+            'subject' => $request->subject,
+            'issuer_name' => $request->issuer_name,
+            'issuer_designation' => $request->issuer_designation,
+            'file_type' => $request->file_type,
+            'date_of_upload' => $request->date_of_upload,
+            'keyword' => $request->key
+        ]);
      
     //$user = $request->user;
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('guideline_uploads', 'public');
-                GuidelinesUpload::create([
+                $path = $file->store('achievenment_upload', 'public');
+                AchievementUpload::create([
                     'file_path' => $path,
-                    'user_id' => $guideline->user_id,
-                    'record_id' => $guideline->id,
+                    'user_id' => $achievement->user_id,
+                    'record_id' => $achievement->id,
                     'file_name' => $file->getClientOriginalName()
                 ]);
             }
         }
 
         DB::commit();
-        return response()->json('Guidelines Updated Successfully!');
-        //return redirect()->route('admin.document.guideline.index')->with('success', 'Guidelines Updated Successfully!');
+        return response()->json(['message' => 'Achievenment Updated successfully!']);
+        //return redirect()->route('admin.document.achievement.index')->with('success', 'achievementModel Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
 }
-
 
 public function deleteFile(Request $request)
 {
@@ -275,7 +259,7 @@ public function deleteFile(Request $request)
             }
         }
 
-        $file = GuidelinesUpload::find($fileId);
+        $file = AchievementUpload::find($fileId);
         if ($file) {
             $file->delete();
         }
@@ -286,13 +270,11 @@ public function deleteFile(Request $request)
     return response()->json(['error' => 'File not found'], 404);
 }
 
-    // function for deleting records of office memorandum
-
-    public function destroy(Request $request)
+public function destroy(Request $request)
     {  
         $user_id =base64_decode($request->id);
         $auth_id = Auth::user()->id;
-        $privacy = Guidelines::find($user_id);
+        $privacy = Achievement::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $auth_id;
         $privacy->deleted_at = date('Y-m-d H:i:s');
@@ -300,6 +282,5 @@ public function deleteFile(Request $request)
         return response()->json(['success'=>true]);
     }
 
-    
 }
 

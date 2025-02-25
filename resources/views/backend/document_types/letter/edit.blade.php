@@ -122,7 +122,7 @@
 
                             <div class="col-md-6">
                                 <label for="keyword" class="form-label">Keywords <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="key" name="key" value="{{ $letter->keyword }}" placeholder="">
+                                <input type="text" class="form-control" id="key" name="key" value="{{ str_replace(',', ' ',$letter->keyword) }}" placeholder="">
                                 @if ($errors->has('keyword'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('keyword') }}</strong>
@@ -238,8 +238,16 @@ $(document).ready(function() {
             processData: false,  
             contentType: false, 
             success: function(response) { 
-                    alert(response);
+                    // alert(response);
+                    // window.location.href = "{{ route('admin.document.letter.index') }}";
+                    Swal.fire({
+                    title: "Success!",
+                    text: response.message || "Data Updated successfully!",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
                     window.location.href = "{{ route('admin.document.letter.index') }}";
+                });
                 
             },
             error: function(xhr, status, error) {

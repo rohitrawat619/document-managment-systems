@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class RoleController extends Controller
 {
@@ -42,6 +43,16 @@ class RoleController extends Controller
             $roles = Role::where('is_deleted', 0)
                 ->orderBy('id', 'asc')
                 ->paginate(10);
+        }
+
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+
+        if ($role && !empty($role->permission_id)) {
+            $permissions = explode(',', $role->permission_id); // Convert CSV to array
+
+            Session::put('user_permissions', $permissions);
+            Session::save();
         }
 
         return view('backend.roles.index',compact('roles'));

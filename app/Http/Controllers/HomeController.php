@@ -33,7 +33,6 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $role = Role::find($user->role_id);
-
         if ($role && !empty($role->permission_id)) {
             $permissions = explode(',', $role->permission_id); // Convert CSV to array
 
@@ -43,19 +42,18 @@ class HomeController extends Controller
         } else {
             $permissions = []; // Default empty permissions array
         }
-        $totalUsers = User::count();
+            $totalUsers = User::count();
             $totaldivision = Division::count();
 
             $totalForms = TotalCountModel::getTotalSubmissions();
 
             return view('backend.index', compact('totalUsers', 'totaldivision', 'totalForms'));
-
-        //return view('backend.index');
     }
 
     public function error404()
     {
         return view('errors.404');
     }
+
 
 }

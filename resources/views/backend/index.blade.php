@@ -51,7 +51,6 @@
     </div>
 </div>
 
-
           </div>
             <!--end row-->
 <div class="container-fluid">
@@ -110,10 +109,6 @@
                 </div>
             </div>
             </div>
-
-
-
-
     </div>
 <!--end page wrapper -->
 @push('scripts')

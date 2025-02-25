@@ -70,7 +70,7 @@
                                     <td>{{ $r->subject }}</td>
                                     <td>{{ $r->issuer_name }}</td>
                                     <td>{{ $r->issuer_designation }}</td>
-                                    <td>{{$r->keyword}}</td>
+                                    <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                     <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
                                     <td>
                                         <div class="d-flex order-actions">

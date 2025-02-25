@@ -10,13 +10,13 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Letter</li>
+                        <li class="breadcrumb-item active" aria-current="page">Recruitment Rules</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.document.letter.create')}}" type="button" class="btn btn-primary">Add</a>
+                    <a href="{{route('admin.document.recruitment.create')}}" type="button" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -39,12 +39,12 @@
                 <div class="card">
                     <div class="card-body">
                     <div class="d-flex  mb-3">
-                    <form method="GET" action="{{ route('admin.document.letter.index') }}" class="form-inline" style="width: 100%;">
+                    <form method="GET" action="{{ route('admin.document.recruitment.index') }}" class="form-inline" style="width: 100%;">
                     <div class="d-flex mb-3">
                     <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
                     <button type="submit" class="btn btn-primary ms-2">Search</button>
-                    <a href="{{ route('admin.document.letter.index') }}" class="btn btn-secondary ms-2">Reset</a>
-                     </div>
+                    <a href="{{ route('admin.document.recruitment.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                    </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>
@@ -61,40 +61,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($letter as $k => $r)
-                                    <tr>
-                                        <th scope="row">{{$k + 1}}</th>
-                                        <td>{{$r->computer_no}}</td>
-                                        <td>{{$r->file_no}}</td>
-                                        <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
-                                        <td>{{$r->subject}}</td>
-                                        <td>{{$r->issuer_name}}</td>
-                                        <td>{{$r->issuer_designation}}</td>
-                                        <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
-                                        <!-- <td>{{$r->uploader_name.'('.$r->uploader_designation.')'}}</td> -->
-                                        <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="{{route('admin.document.letter.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                <!-- @if($r->is_active==1)
-                                                    <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @else
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status"  data-a="{{base64_encode($r->id)}}"  data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif -->
-											</div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <td class="text-center" colspan="9">No Records Found</td>
-                                @endforelse
+                            @forelse ($recruitment as $k => $r)
+                            <tr>
+                                <!-- Adjust numbering to be continuous across pages -->
+                                <th scope="row">{{ ($recruitment->currentPage() - 1) * $recruitment->perPage() + $k + 1 }}</th>
+                                <td>{{$r->computer_no}}</td>
+                                <td>{{$r->file_no}}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
+                                <td>{{$r->subject}}</td>
+                                <td>{{$r->issuer_name}}</td>
+                                <td>{{$r->issuer_designation}}</td>
+                                <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
+                                <td>
+                                    <div class="d-flex order-actions">
+                                        <a href="{{route('admin.document.recruitment.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <td class="text-center" colspan="9">No Records Found</td>
+                        @endforelse
                             </tbody>
                         </table>
-                        <!-- Pagination Links -->
                         <div class="d-flex justify-content-center mt-4">
-                            {{ $letter->links('pagination::bootstrap-4') }}
+                            {{ $recruitment->links('pagination::bootstrap-4') }}
                         </div>
                     </div>
                 </div>
@@ -124,7 +116,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.document.letter.status')}}",
+                        url: "{{route('admin.document.recruitment.status')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
@@ -176,7 +168,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.letter.delete')}}",
+                        url: "{{route('admin.recruitment.delete')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,

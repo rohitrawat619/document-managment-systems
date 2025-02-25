@@ -341,8 +341,16 @@ $(document).ready(function() {
             },
             success: function(response) {
                 $('.btn-primary1').prop('disabled', false).text('Submit');
-                    alert(response);
-                     window.location.href = "{{ route('admin.document.notification.index') }}";
+                    // alert(response);
+                    //  window.location.href = "{{ route('admin.document.notification.index') }}";
+                    Swal.fire({
+                    title: "Success!",
+                    text: response.message || "Data submitted successfully!",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    window.location.href = "{{ route('admin.document.guideline.index') }}";
+                });
             },
             error: function(xhr) {
                 console.log(xhr);
