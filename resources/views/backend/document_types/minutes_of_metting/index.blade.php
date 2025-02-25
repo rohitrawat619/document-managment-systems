@@ -4,19 +4,19 @@
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Users</div>
+            <div class="breadcrumb-title pe-3">Document Type</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Users</li>
+                        <li class="breadcrumb-item active" aria-current="page">Minutes of Meeting</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.users.create')}}" type="button" class="btn btn-primary">Add</a>
+                    <a href="{{route('admin.document.minutes_of_metting.create')}}" type="button" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -38,56 +38,51 @@
                 <hr/>
                 <div class="card">
                     <div class="card-body">
-                    <form method="GET" action="{{ route('admin.users.index') }}" class="form-inline">
-                    <div class="d-flex mb-2">
+                    <div class="d-flex  mb-3">
+                    <form method="GET" action="{{ route('admin.document.minutes_of_metting.index') }}" class="form-inline" style="width: 100%;">
+                    <div class="d-flex mb-3">
                     <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
                     <button type="submit" class="btn btn-primary ms-2">Search</button>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary ms-2">Reset</a>
-                    </div>
+                    <a href="{{ route('admin.document.minutes_of_metting.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                     </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Username</th>
-                                    <th scope="col">Division</th>
+                                    <th scope="col">Date of Metting</th>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Agenda</th>
                                     <th scope="col">Designation</th>
-                                    <th scope="col">NIC Email</th>
-                                    <th scope="col">Mobile No.</th>
+                                    <th scope="col">Keywords</th>
+                                    <th scope="col">Date of Upload</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @forelse ($users as $k => $r)
-                            <tr>
-                                <th scope="row">{{ ($users->currentPage() - 1) * $users->perPage() + $k + 1 }}</th>
-                                <td>{{$r->name}}</td>
-                                <td>{{$r->user_name}}</td>
-                                <td>{{$r->division_name}}</td>
-                                <td>{{$r->designation_name}}</td>
-                                <td>{{$r->email}}</td>
-                                <td>{{'+'.$r->phone_code.' '.$r->phone}}</td>
-                                <td>
-                                    <div class="d-flex order-actions">
-                                        <a href="{{route('admin.users.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                        @if($r->is_active==1)
-                                            <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                            <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                        @else
-                                            <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                            <a href="javascript:;" class="ms-3 status" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
+                            @forelse ($minutes_of_metting as $k => $r)
+                                <tr>
+                                    <th scope="row">{{ ($minutes_of_metting->currentPage() - 1) * $minutes_of_metting->perPage() + $k + 1 }}</th>
+                                    <td>{{ date('Y-m-d', strtotime($r->date_of_Meeting)) }}</td>
+                                    <td>{{ $r->subject }}</td>
+                                    <td>{{ $r->agenda }}</td>
+                                    <td>{{ $r->issuer_designation }}</td>
+                                    <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
+                                    <td>
+                                        <div class="d-flex order-actions">
+                                            <a href="{{ route('admin.document.minutes_of_metting.edit', ['id' => base64_encode($r->id)]) }}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+                                            <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}"><i class="bx bxs-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
                             @empty
-                                <td colspan="9">No Records Found</td>
+                                <td class="text-center" colspan="9">No Records Found</td>
                             @endforelse
                             </tbody>
                         </table>
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $users->links('pagination::bootstrap-4') }}
+                         <!-- Pagination Links -->
+                         <div class="d-flex justify-content-center mt-4">
+                            {{ $minutes_of_metting->links('pagination::bootstrap-4') }}
                         </div>
                     </div>
                 </div>
@@ -104,7 +99,7 @@
 
             // Correct way to call SweetAlert2
             Swal.fire({
-                title: "Are you Want to Change The Status of This User?",
+                title: "Are you Want to Change The Status of This Form?",
                 text: "",
                 icon: "warning",
                 showCancelButton: true,
@@ -117,7 +112,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.users.status')}}",
+                        url: "{{route('admin.document.minutes_of_metting.status')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
@@ -169,7 +164,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.users.delete')}}",
+                        url: "{{route('admin.minutes_of_metting.delete')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
@@ -177,7 +172,7 @@
                         success: function (response) {
 
                             if (response.success) {
-                                toastr.success('User Deleted Successfully');
+                                toastr.success('Form Deleted Successfully');
                                 window.setTimeout(function(){
                                     window.location.reload();
                                 },2000);
