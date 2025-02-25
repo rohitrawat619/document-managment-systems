@@ -234,7 +234,7 @@ class UserController extends Controller
             $rules = [
                 'first_name'=> 'required|regex:/^[a-zA-Z ]+$/u|min:1|max:255',
                 'last_name'=> 'nullable|regex:/^[a-zA-Z ]+$/u|min:0|max:255',
-                'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
+               // 'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
             ];
@@ -242,7 +242,7 @@ class UserController extends Controller
             $messages = [
                 'name.regex' => 'The name must be combination of letter',
                 'mobile.regex'=>'Mobile Number must be Valid !!',
-                'email.unique'  =>'Email id has already been taken',
+                // 'email.unique'  =>'Email id has already been taken',
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
