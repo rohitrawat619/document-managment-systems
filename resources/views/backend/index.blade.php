@@ -51,7 +51,6 @@
     </div>
 </div>
 
-
           </div>
             <!--end row-->
 <div class="container-fluid">

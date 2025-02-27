@@ -133,7 +133,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('view-pdf/{file}', [App\Http\Controllers\GuidelineController::class, 'viewPdf'])->name('view.pdf');
     Route::get('/admin/document/guideline/get-divisions-by-user', [App\Http\Controllers\GuidelineController::class, 'getDivisionsByUser'])->name('document.guideline.get-divisions-by-user');
     Route::delete('/admin/document/guideline/delete_file', [App\Http\Controllers\GuidelineController::class, 'deleteFile'])->name('document.guideline.delete_file');
-    
+
     //Recruitment Rules
 
     Route::get('/document/recruitment',[App\Http\Controllers\RecruitmentController::class, 'recruitment'])->name('document.recruitment.index');
@@ -179,6 +179,8 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/minutes_of_metting/get-divisions-by-user', [App\Http\Controllers\MinutesOfMetting::class, 'getDivisionsByUser'])->name('document.minutes_of_metting.get-divisions-by-user');
     Route::delete('/admin/document/minutes_of_metting/delete_file', [App\Http\Controllers\MinutesOfMetting::class, 'deleteFile'])->name('document.minutes_of_metting.delete_file');
 
+
+
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
@@ -186,3 +188,6 @@ Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::c
 Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
 
 Route::post('/report-counts', [App\Http\Controllers\ReportController::class, 'getCounts']);
+
+
+

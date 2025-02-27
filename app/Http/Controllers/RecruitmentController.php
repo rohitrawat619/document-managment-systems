@@ -279,6 +279,7 @@ public function deleteFile(Request $request)
     public function destroy(Request $request)
     {  
         $user_id =base64_decode($request->id);
+        echo $user_id; die;
         $auth_id = Auth::user()->id;
         $privacy = RecruitmentModel::find($user_id);
         $privacy->is_deleted = '1';
