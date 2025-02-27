@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\RecruitmentModel;
+use App\Models\PresentationsModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -11,39 +11,20 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use App\Models\RecruitmentUpload;
+use App\Models\PresentationUpload;
 
-
-class RecruitmentController extends Controller
+class PresentationController extends Controller
 {
+    //
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function recruitment(Request $request)
+    public function presentations(Request $request)
     {
-
-        $recruitment = RecruitmentModel::paginate(10); // Ya Recruitment::count()
-        return view('backend.document_types.recruitment.index', compact('recruitment'));
-                // $query = RecruitmentModel::from('recruitment as o')
-                // ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
-                // ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
-                // ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
-                // ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
-                // ->where('o.is_deleted', 0);
-
-                // Apply filter if 'computer_no' is provided
-                // if ($request->filled('search')) {
-                //     $computer_no = $request->get('search');
-                //     $query->where('o.computer_no', 'like', "%{$computer_no}%");
-                // }
-
-                // // Fetch the paginated result
-                // $recruitment = $query->orderBy('o.id', 'asc')->paginate(10);
-
-
-        // return view('backend.document_types.recruitment.index');
+        $presentations = PresentationsModel::paginate(10);                  
+        return view('backend.document_types.presentations.index',compact('presentations'));
     }
 
     public function create(Request $request)
@@ -55,7 +36,7 @@ class RecruitmentController extends Controller
 
             $users = User::all();
 
-            return view('backend.document_types.recruitment.create',compact('divisions','users'));
+            return view('backend.document_types.presentations.create',compact('divisions','users'));
         }
 
      
@@ -95,15 +76,16 @@ class RecruitmentController extends Controller
             }
             
             // if ($validator->fails()) {
-            //     return redirect()->route('admin.document.recruitment.create')->withErrors($validator)->withInput();
+            //     return redirect()->route('admin.document.presentations.create')->withErrors($validator)->withInput();
             // }
             
 
-            $new_user = RecruitmentModel::create([
+            $new_user = PresentationsModel::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => Auth::id(),
-                'date_of_issue' => $request->date_of_publication,
+                'date_of_publication' => $request->date_of_publication,
+                'approvedBy' => $request->approvedBy,
                 'subject' => $request->subject,
                 'issuer_name' => $request->issuer_name,
                 'issuer_designation' => $request->issuer_designation,
@@ -121,9 +103,9 @@ class RecruitmentController extends Controller
                 //dd($a);
                 foreach ($a as $file) {
                     
-                    $path = $file->store('recruitment_upload', 'public');
+                    $path = $file->store('presentations_upload', 'public');
 
-                    RecruitmentUpload::create([
+                    PresentationUpload::create([
                         'file_path' => $path,
                         'user_id' => Auth::id(),
                         'record_id' => $new_user->id, 
@@ -133,8 +115,9 @@ class RecruitmentController extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
-            //return redirect()->route('admin.document.recruitment.index')->with('success','Form Created Successfully !!');
+            return response()->json(['message' => 'Form Created Successfully !!']);
+           // return response()->json('Form Created Successfully !!');
+            //return redirect()->route('admin.document.presentations.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -153,17 +136,17 @@ class RecruitmentController extends Controller
 
     if($request->isMethod('get')) {
         
-        $recruitment = RecruitmentModel::where('id', $user_id)->first();
-        // dd($recruitment);
-        $data = $recruitment->id;
-        $div = $recruitment->user_id;
+        $presentations = PresentationsModel::where('id', $user_id)->first();
+        // dd($achievement);
+        $data = $presentations->id;
+        $div = $presentations->user_id;
 
-        $recruitment_upload = RecruitmentUpload::where('record_id', $data)->get()->toArray();
-        // dd($recruitment_upload);
-        //echo '<pre>'; print_r($recruitment); die;
+        $presentations_upload = PresentationUpload::where('record_id', $data)->get()->toArray();
+        // dd($achievement_upload);
+        //echo '<pre>'; print_r($achievement); die;
         $divisions = Division::where('id', $div)->first();
         // dd($divisions);
-        return view('backend.document_types.recruitment.edit', compact('divisions', 'recruitment', 'recruitment_upload'));
+        return view('backend.document_types.presentations.edit', compact('divisions', 'presentations', 'presentations_upload'));
     }
     
     
@@ -173,12 +156,9 @@ class RecruitmentController extends Controller
         $validator = Validator::make($request->all(), [
             'computer_no' => 'required',
             'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-            'date_of_issue' => 'required',
             'subject' => 'required|string',
             'issuer_name' => 'required|string',
             'issuer_designation' => 'required|string',
-            'file_type' => 'required',
-            'division' => 'required',
             'key' => 'required',
             'date_of_upload' => 'required',
             'upload_file' => 'nullable|array|min:1',
@@ -186,44 +166,44 @@ class RecruitmentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // return redirect()->route('admin.document.recruitment.edit', ['id' => base64_encode($user_id)])
+            // return redirect()->route('admin.document.achievement.edit', ['id' => base64_encode($user_id)])
             //                  ->withErrors($validator)
             //                  ->withInput();
             return response()->json(['errors' => $validator->errors()], 422);
         }
         
-        $recruitment = RecruitmentModel::find($id);
+        $achievement = PresentationsModel::find($id);
 
-    $recruitment->update([
-        'computer_no' => $request->computer_no,
-        'file_no' => $request->file_no,
-        'date_of_issue' => $request->date_of_issue,
-        'subject' => $request->subject,
-        'issuer_name' => $request->issuer_name,
-        'issuer_designation' => $request->issuer_designation,
-        'file_type' => $request->file_type,
-        'division_id' => $request->division,
-        'date_of_upload' => $request->date_of_upload,
-        'keyword' => $request->key
-    ]);
+        $achievement->update([
+            'computer_no' => $request->computer_no,
+            'file_no' => $request->file_no,
+            'date_of_publication' => $request->date_of_publication,
+            'subject' => $request->subject,
+            'approvedBy' => $request->approvedBy,
+            'issuer_name' => $request->issuer_name,
+            'issuer_designation' => $request->issuer_designation,
+            'file_type' => $request->file_type,
+            'date_of_upload' => $request->date_of_upload,
+            'keyword' => $request->key
+        ]);
      
     //$user = $request->user;
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('recruitment_upload', 'public');
-                RecruitmentUpload::create([
+                $path = $file->store('presentations_upload', 'public');
+                PresentationUpload::create([
                     'file_path' => $path,
-                    'user_id' => $recruitment->user_id,
-                    'record_id' => $recruitment->id,
+                    'user_id' => $achievement->user_id,
+                    'record_id' => $achievement->id,
                     'file_name' => $file->getClientOriginalName()
                 ]);
             }
         }
 
         DB::commit();
-        return response()->json('RecruitmentModel Updated Successfully!');
-        //return redirect()->route('admin.document.recruitment.index')->with('success', 'RecruitmentModel Updated Successfully!');
+        return response()->json(['message' => 'Presentation Updated successfully!']);
+        //return redirect()->route('admin.document.achievement.index')->with('success', 'achievementModel Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -248,7 +228,7 @@ public function deleteFile(Request $request)
             }
         }
 
-        $file = RecruitmentUpload::find($fileId);
+        $file = PresentationUpload::find($fileId);
         if ($file) {
             $file->delete();
         }
@@ -259,18 +239,15 @@ public function deleteFile(Request $request)
     return response()->json(['error' => 'File not found'], 404);
 }
 
-    // function for deleting records of office memorandum
-
-    public function destroy(Request $request)
+public function destroy(Request $request)
     {  
         $user_id =base64_decode($request->id);
         $auth_id = Auth::user()->id;
-        $privacy = RecruitmentModel::find($user_id);
+        $privacy = PresentationsModel::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $auth_id;
         $privacy->deleted_at = date('Y-m-d H:i:s');
         $privacy->save();
         return response()->json(['success'=>true]);
     }
-
 }

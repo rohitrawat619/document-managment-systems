@@ -10,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.document.records_of_discussion.index')}}">Record of Discussion </a>
+                        <li class="breadcrumb-item"><a href="{{route('admin.document.gazette_notification.index')}}">Gazette Notifications</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Create</li>
                     </ol>
@@ -22,7 +22,7 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                    <form id ="guidelineForm" action="{{route('admin.document.records_of_discussion.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
+                    <form id ="guidelineForm" action="{{route('admin.document.gazette_notification.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
                     @csrf
                                 <div class="col-md-6">
                                     <label for="User" class="form-label">User <span class="text-danger">*</span></label>
@@ -58,34 +58,44 @@
                                 </div>
                             @endif
                             <div class="col-md-6">
-                                <label for="agenda" class="form-label">Agenda <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="agenda" name="agenda" placeholder="">
-                                @if ($errors->has('agenda'))
+                                <label for="notification_no" class="form-label">Notification No.<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="notification_no" name="notification_no" placeholder="Notification no">
+                                @if ($errors->has('notification_no'))
                                     <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('agenda') }}</strong>
+                                        <strong>{{ $errors->first('notification_no') }}</strong>
                                     </span>
                                 @endif
-                                <div id="agenda1" style="color: red; display: none;"></div>
+                                <div id="notification_no1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="date_of_Meeting" class="form-label">Date of Meeting <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_Meeting" name="date_of_Meeting" placeholder="date of issue">
-                                @if ($errors->has('date_of_Meeting'))
+                                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="title" name="title" placeholder="">
+                                @if ($errors->has('title'))
                                     <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('date_of_Meeting') }}</strong>
+                                        <strong>{{ $errors->first('title') }}</strong>
                                     </span>
                                 @endif
-                                <div id="date_of_Meeting1" style="color: red; display: none;"></div>
+                                <div id="title1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="subject" name="subject" placeholder="">
-                                @if ($errors->has('subject'))
+                                <label for="date_of_notification" class="form-label">Date of Notification <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="date_of_notification" name="date_of_notification" placeholder="date of Notification">
+                                @if ($errors->has('date_of_notification'))
                                     <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('subject') }}</strong>
+                                        <strong>{{ $errors->first('date_of_notification') }}</strong>
                                     </span>
                                 @endif
-                                <div id="subject1" style="color: red; display: none;"></div>
+                                <div id="date_of_notification1" style="color: red; display: none;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" placeholder="">
+                                @if ($errors->has('issuer_name'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('issuer_name') }}</strong>
+                                    </span>
+                                @endif
+                                <div id="issuer_name1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
@@ -108,11 +118,6 @@
                                 <div id="date_of_upload1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="key" name="key" placeholder="">
-                                <div id="key_error" style="color: red; display: none;"></div>
-                            </div>
-                            <div class="col-md-6">
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
                                     <div class="field_wrapper">
                                         <div class="file-input-group d-flex align-items-center">
@@ -130,8 +135,11 @@
                                 @endif
                                 <div id="upload_file1" style="color: red; display: none;"></div>
                             </div>
-
-                           
+                            <div class="col-md-6">
+                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="key" name="key" placeholder="">
+                                <div id="key_error" style="color: red; display: none;"></div>
+                            </div>
                             <div class = "col-md-12">
                             <div id="pdf_viewer">
 
@@ -172,25 +180,31 @@
 					return false;
 				}
 
-
-                if($('#date_of_Meeting').val()=="")
+                if($('#notification_no').val()=="")
 				{
-                    $('#date_of_Meeting1').text("Please Enter Date of Meeting").show();
-					$('#date_of_Meeting').focus();
+                    $('#notification_no1').text("Please Enter Notification No").show();
+					$('#notification_no').focus();
+					return false;invalid-feedback
+				}
+
+                if($('#title').val()=="")
+				{
+                    $('#title1').text("Please Enter Titel").show();
+					$('#title').focus();
 					return false;
 				}
 
-                if($('#subject').val()=="")
+                if($('#date_of_notification').val()=="")
 				{
-                    $('#subject1').text("Please Enter Subject").show();
-					$('#subject').focus();
+                    $('#date_of_notification1').text("Please Enter Date of Notification").show();
+					$('#date_of_notification').focus();
 					return false;
 				}
 
-                if($('#agenda').val()=="")
+                if($('#issuer_name').val()=="")
 				{
-                    $('#agenda1').text("Please Enter Agenda").show();
-					$('#agenda').focus();
+                    $('#issuer_name1').text("Please Enter Issuer Name").show();
+					$('#issuer_name').focus();
 					return false;
 				}
 
@@ -205,13 +219,6 @@
 				{
                     $('#date_of_upload1').text("Please Enter Date of upload").show();
 					$('#date_of_upload').focus();
-					return false;
-				}
-
-                if($('#file_type').val()=="")
-				{
-                    $('#file_type1').text("Please Enter File Type").show();
-					$('#file_type').focus();
 					return false;
 				}
 
@@ -262,7 +269,7 @@ $(document).ready(function() {
         }
     });
 
-    var guidelineStoreUrl = "{{ url('admin/document/records_of_discussion/create') }}";
+    var guidelineStoreUrl = "{{ url('admin/document/gazette_notification/create') }}";
     $('#guidelineForm').on('submit', function(e) {
         e.preventDefault();
         
@@ -284,14 +291,14 @@ $(document).ready(function() {
             success: function(response) {
                 $('.btn-primary1').prop('disabled', false).text('Submit');
                 // alert(response);
-                //      window.location.href = "{{ route('admin.document.records_of_discussion.index') }}";
+                //      window.location.href = "{{ route('admin.document.gazette_notification.index') }}";
                 Swal.fire({
                 title: "Success!",
                 text: response.message || "Data submitted successfully!",
                 icon: "success",
                 confirmButtonText: "OK"
             }).then(() => {
-                window.location.href = "{{ route('admin.document.records_of_discussion.index') }}";
+                window.location.href = "{{ route('admin.document.gazette_notification.index') }}";
             });
             },
             error: function(xhr) {
@@ -367,7 +374,7 @@ $(document).ready(function() {
                 //console.log(userId);
                 // Make an AJAX request to get the corresponding divisions
                 $.ajax({
-                    url: "{{ route('admin.document.records_of_discussion.get-divisions-by-user') }}",
+                    url: "{{ route('admin.document.gazette_notification.get-divisions-by-user') }}",
                     type: 'GET',
                     data: { user_id: userId },
                     
