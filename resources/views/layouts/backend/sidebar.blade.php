@@ -76,10 +76,10 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('admin.document.letter.index') }}"><i class='bx bx-radio-circle'></i> Letters </a></li>
                 @endif
                 @if(in_array('12', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Record of Discussion (ROD) </a></li>
+                    <li><a href="{{ route('admin.document.records_of_discussion.index') }}"><i class='bx bx-radio-circle'></i> Record of Discussion (ROD) </a></li>
                 @endif
                 @if(in_array('13', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Minutes of Meeting (MoM) </a></li>
+                    <li><a href="{{ route('admin.document.minutes_of_metting.index') }}"><i class='bx bx-radio-circle'></i> Minutes of Meeting (MoM) </a></li>
                 @endif
                 @if(in_array('14', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> 	
