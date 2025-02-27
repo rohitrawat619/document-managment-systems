@@ -55,5 +55,4 @@ class HomeController extends Controller
         return view('errors.404');
     }
 
-
 }

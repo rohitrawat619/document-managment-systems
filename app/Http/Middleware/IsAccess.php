@@ -17,7 +17,6 @@ class IsAccess
         {
             if(Auth::user()->is_admin==1)
             {
-                Session::put('user_permissions', [2,3,3,54,54]);
                 return $next($request);
             }
             else

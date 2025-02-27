@@ -12,7 +12,7 @@
                         </li>
                         <li class="breadcrumb-item"><a href="{{route('admin.users.index')}}">Users</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Create</li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </nav>
             </div>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">NIC Email <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{$users->email}}">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{$users->email}}" readonly>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('email') }}</strong>
