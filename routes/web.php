@@ -77,8 +77,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::match(['get','post'],'/users/edit/{id}',[App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
         Route::post('/users/status',[App\Http\Controllers\UserController::class, 'status'])->name('users.status');
         Route::post('/users/delete',[App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
-
-
     });
 
     // Document Type
@@ -91,7 +89,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('view-pdf/{file}', [App\Http\Controllers\FormController::class, 'viewPdf'])->name('view.pdf');
     Route::get('/admin/document/office_memorandum/get-divisions-by-user', [App\Http\Controllers\FormController::class, 'getDivisionsByUser'])->name('document.office_memorandum.get-divisions-by-user');
     Route::delete('/admin/document/office_memorandum/delete_file', [App\Http\Controllers\FormController::class, 'deleteFile'])->name('document.office_memorandum.delete_file');
-
 
     //letter
 
@@ -159,7 +156,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
      Route::get('/admin/document/achievenment/get-divisions-by-user', [App\Http\Controllers\AchievementController::class, 'getDivisionsByUser'])->name('document.achievenment.get-divisions-by-user');
      Route::delete('/admin/document/achievenment/delete_file', [App\Http\Controllers\AchievementController::class, 'deleteFile'])->name('document.achievenment.delete_file');
 
-
      // Record of Discussion 
 
     Route::get('/document/records_of_discussion',[App\Http\Controllers\RecordController::class, 'records_of_discussion'])->name('document.records_of_discussion.index');
@@ -186,7 +182,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
-
 
 Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
 
