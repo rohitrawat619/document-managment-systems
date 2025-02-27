@@ -93,7 +93,7 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Gazette Notifications</a></li>
                 @endif
                 @if(in_array('17', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Recruitment Rules</a></li>
+                    <li><a href="{{ route('admin.document.recruitment.index') }}"><i class='bx bx-radio-circle'></i> Recruitment Rules</a></li>
                 @endif
                 @if(in_array('18', $userPermissions))
                     <li><a href="{{ route('admin.document.guideline.index') }}"><i class='bx bx-radio-circle'></i> Guidelines</a></li>
