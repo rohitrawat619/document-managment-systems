@@ -92,6 +92,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/office_memorandum/get-divisions-by-user', [App\Http\Controllers\FormController::class, 'getDivisionsByUser'])->name('document.office_memorandum.get-divisions-by-user');
     Route::delete('/admin/document/office_memorandum/delete_file', [App\Http\Controllers\FormController::class, 'deleteFile'])->name('document.office_memorandum.delete_file');
 
+
     //letter
 
     Route::get('/document/letter',[App\Http\Controllers\LetterController::class, 'letter'])->name('document.letter.index');
@@ -135,10 +136,57 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('view-pdf/{file}', [App\Http\Controllers\GuidelineController::class, 'viewPdf'])->name('view.pdf');
     Route::get('/admin/document/guideline/get-divisions-by-user', [App\Http\Controllers\GuidelineController::class, 'getDivisionsByUser'])->name('document.guideline.get-divisions-by-user');
     Route::delete('/admin/document/guideline/delete_file', [App\Http\Controllers\GuidelineController::class, 'deleteFile'])->name('document.guideline.delete_file');
+    
+    //Recruitment Rules
+
+    Route::get('/document/recruitment',[App\Http\Controllers\RecruitmentController::class, 'recruitment'])->name('document.recruitment.index');
+    Route::match(['get','post'],'/document/recruitment/create',[App\Http\Controllers\RecruitmentController::class, 'create'])->name('document.recruitment.create');
+    Route::match(['get','post'],'/document/recruitment/edit/{id}',[App\Http\Controllers\RecruitmentController::class, 'edit'])->name('document.recruitment.edit');
+    Route::post('/document/recruitment/status',[App\Http\Controllers\RecruitmentController::class, 'status'])->name('document.recruitment.status');
+    Route::post('/recruitment/delete',[App\Http\Controllers\RecruitmentController::class, 'destroy'])->name('recruitment.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\RecruitmentController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/recruitment/get-divisions-by-user', [App\Http\Controllers\RecruitmentController::class, 'getDivisionsByUser'])->name('document.recruitment.get-divisions-by-user');
+    Route::delete('/admin/document/recruitment/delete_file', [App\Http\Controllers\RecruitmentController::class, 'deleteFile'])->name('document.recruitment.delete_file');
+
+     //achievenment 
+
+     Route::get('/document/achievenment',[App\Http\Controllers\AchievementController::class, 'achievenment'])->name('document.achievenment.index');
+     Route::match(['get','post'],'/document/achievenment/create',[App\Http\Controllers\AchievementController::class, 'create'])->name('document.achievenment.create');
+     Route::match(['get','post'],'/document/achievenment/edit/{id}',[App\Http\Controllers\AchievementController::class, 'edit'])->name('document.achievenment.edit');
+     Route::post('/document/achievenment/status',[App\Http\Controllers\AchievementController::class, 'status'])->name('document.achievenment.status');
+     Route::post('/achievenment/delete',[App\Http\Controllers\AchievementController::class, 'destroy'])->name('achievenment.delete');
+     Route::get('view-pdf/{file}', [App\Http\Controllers\AchievementController::class, 'viewPdf'])->name('view.pdf');
+     Route::get('/admin/document/achievenment/get-divisions-by-user', [App\Http\Controllers\AchievementController::class, 'getDivisionsByUser'])->name('document.achievenment.get-divisions-by-user');
+     Route::delete('/admin/document/achievenment/delete_file', [App\Http\Controllers\AchievementController::class, 'deleteFile'])->name('document.achievenment.delete_file');
+
+
+     // Record of Discussion 
+
+    Route::get('/document/records_of_discussion',[App\Http\Controllers\RecordController::class, 'records_of_discussion'])->name('document.records_of_discussion.index');
+    Route::match(['get','post'],'/document/records_of_discussion/create',[App\Http\Controllers\RecordController::class, 'create'])->name('document.records_of_discussion.create');
+    Route::match(['get','post'],'/document/records_of_discussion/edit/{id}',[App\Http\Controllers\RecordController::class, 'edit'])->name('document.records_of_discussion.edit');
+    Route::post('/document/records_of_discussion/status',[App\Http\Controllers\RecordController::class, 'status'])->name('document.records_of_discussion.status');
+    Route::post('/records_of_discussion/delete',[App\Http\Controllers\RecordController::class, 'destroy'])->name('records_of_discussion.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\RecordController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/records_of_discussion/get-divisions-by-user', [App\Http\Controllers\RecordController::class, 'getDivisionsByUser'])->name('document.records_of_discussion.get-divisions-by-user');
+    Route::delete('/admin/document/records_of_discussion/delete_file', [App\Http\Controllers\RecordController::class, 'deleteFile'])->name('document.records_of_discussion.delete_file');
+
+
+    // Minutes of Meeting 
+
+    Route::get('/document/minutes_of_metting',[App\Http\Controllers\MinutesOfMetting::class, 'minutes_of_metting'])->name('document.minutes_of_metting.index');
+    Route::match(['get','post'],'/document/minutes_of_metting/create',[App\Http\Controllers\MinutesOfMetting::class, 'create'])->name('document.minutes_of_metting.create');
+    Route::match(['get','post'],'/document/minutes_of_metting/edit/{id}',[App\Http\Controllers\MinutesOfMetting::class, 'edit'])->name('document.minutes_of_metting.edit');
+    Route::post('/document/minutes_of_metting/status',[App\Http\Controllers\MinutesOfMetting::class, 'status'])->name('document.minutes_of_metting.status');
+    Route::post('/minutes_of_metting/delete',[App\Http\Controllers\MinutesOfMetting::class, 'destroy'])->name('minutes_of_metting.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\MinutesOfMetting::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/minutes_of_metting/get-divisions-by-user', [App\Http\Controllers\MinutesOfMetting::class, 'getDivisionsByUser'])->name('document.minutes_of_metting.get-divisions-by-user');
+    Route::delete('/admin/document/minutes_of_metting/delete_file', [App\Http\Controllers\MinutesOfMetting::class, 'deleteFile'])->name('document.minutes_of_metting.delete_file');
 
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
+
 
 Route::get('error404', [App\Http\Controllers\HomeController::class, 'error404'])->name('error404');
 
