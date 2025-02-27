@@ -53,7 +53,7 @@
                                         <strong>{{ $errors->first('date_of_publication') }}</strong>
                                     </span>
                                 @endif
-                                <div id="date_of_issue_error" style="color: red; display: none;"></div>
+                                <div id="date_of_publication_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
@@ -170,7 +170,12 @@
                     return false;
                 }
 
-                
+                if($('#date_of_publication').val()=="")
+				{
+                    $('#date_of_publication_error').text("Please Enter Date of Publication").show();
+					$('#date_of_publication').focus();
+					return false;
+				}
 
                 if($('#subject').val()=="")
 				{
@@ -200,12 +205,7 @@
 					return false;
 				}
 
-                if($('#file_type').val()=="")
-				{
-                    $('#file_type_error').text("Please Enter File Type").show();
-					$('#file_type').focus();
-					return false;
-				}
+                
 
                 if($('#upload_file').val()=="")
 				{

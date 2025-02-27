@@ -10,8 +10,8 @@ class ReportController  extends Controller
     public function getCounts()
     {
         try {
-            $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines','records_of_discussion','minutes_of_metting','achievenment','recruitment'];
-            $labels = ['office memorandum', 'office order', 'notification', 'letter', 'guidelines','Records of discussion','Minutes of Metting','Achievenment','Recruitment'];
+            $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines','records_of_discussion','minutes_of_metting','achievenment','recruitment','presentations','gazette_notification'];
+            $labels = ['office memorandum', 'office order', 'notification', 'letter', 'guidelines','Records of discussion','Minutes of Metting','Achievenment','Recruitment','Presentations','Gazette Notification'];
             
             $data = [];
             
