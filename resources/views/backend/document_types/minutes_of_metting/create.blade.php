@@ -108,6 +108,11 @@
                                 <div id="date_of_upload1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
+                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="key" name="key" placeholder="">
+                                <div id="key_error" style="color: red; display: none;"></div>
+                            </div>
+                            <div class="col-md-6">
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
                                     <div class="field_wrapper">
                                         <div class="file-input-group d-flex align-items-center">
@@ -126,11 +131,7 @@
                                 <div id="upload_file1" style="color: red; display: none;"></div>
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="key" name="key" placeholder="">
-                                <div id="key_error" style="color: red; display: none;"></div>
-                            </div>
+                            
                             <div class = "col-md-12">
                             <div id="pdf_viewer">
 

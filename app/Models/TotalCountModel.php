@@ -11,7 +11,7 @@ class TotalCountModel extends Model
 {
     public static function getTotalSubmissions()
     {
-        $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines']; 
+        $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines','records_of_discussion','minutes_of_metting','achievenment','recruitment','presentations','gazette_notification']; 
         $total = 0;
 
         foreach ($tables as $table) {

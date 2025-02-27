@@ -186,7 +186,29 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::delete('/admin/document/minutes_of_metting/delete_file', [App\Http\Controllers\MinutesOfMetting::class, 'deleteFile'])->name('document.minutes_of_metting.delete_file');
 
 
+    // Gazette Notifications
 
+    Route::get('/document/gazette_notification',[App\Http\Controllers\GazetteNotification::class, 'gazette_notification'])->name('document.gazette_notification.index');
+    Route::match(['get','post'],'/document/gazette_notification/create',[App\Http\Controllers\GazetteNotification::class, 'create'])->name('document.gazette_notification.create');
+    Route::match(['get','post'],'/document/gazette_notification/edit/{id}',[App\Http\Controllers\GazetteNotification::class, 'edit'])->name('document.gazette_notification.edit');
+    Route::post('/document/gazette_notification/status',[App\Http\Controllers\GazetteNotification::class, 'status'])->name('document.gazette_notification.status');
+    Route::post('/gazette_notification/delete',[App\Http\Controllers\GazetteNotification::class, 'destroy'])->name('gazette_notification.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\GazetteNotification::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/gazette_notification/get-divisions-by-user', [App\Http\Controllers\GazetteNotification::class, 'getDivisionsByUser'])->name('document.gazette_notification.get-divisions-by-user');
+    Route::delete('/admin/document/gazette_notification/delete_file', [App\Http\Controllers\GazetteNotification::class, 'deleteFile'])->name('document.gazette_notification.delete_file');
+
+
+    
+    // Presentations
+
+    Route::get('/document/presentations',[App\Http\Controllers\PresentationController::class, 'presentations'])->name('document.presentations.index');
+    Route::match(['get','post'],'/document/presentations/create',[App\Http\Controllers\PresentationController::class, 'create'])->name('document.presentations.create');
+    Route::match(['get','post'],'/document/presentations/edit/{id}',[App\Http\Controllers\PresentationController::class, 'edit'])->name('document.presentations.edit');
+    Route::post('/document/presentations/status',[App\Http\Controllers\PresentationController::class, 'status'])->name('document.presentations.status');
+    Route::post('/presentations/delete',[App\Http\Controllers\PresentationController::class, 'destroy'])->name('presentations.delete');
+    Route::get('view-pdf/{file}', [App\Http\Controllers\PresentationController::class, 'viewPdf'])->name('view.pdf');
+    Route::get('/admin/document/presentations/get-divisions-by-user', [App\Http\Controllers\PresentationController::class, 'getDivisionsByUser'])->name('document.presentations.get-divisions-by-user');
+    Route::delete('/admin/document/presentations/delete_file', [App\Http\Controllers\PresentationController::class, 'deleteFile'])->name('document.presentations.delete_file');
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
