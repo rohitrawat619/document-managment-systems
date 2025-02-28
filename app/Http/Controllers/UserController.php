@@ -120,8 +120,6 @@ class UserController extends Controller
             return view('backend.users.create',compact('divisions','designations','roles'));
         }
 
-        
-
         //echo "<pre>"; print_r($_POST); die;
 
         DB::beginTransaction();
