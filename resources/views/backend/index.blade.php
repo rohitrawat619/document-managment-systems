@@ -12,41 +12,40 @@ use Illuminate\Support\Facades\Session;
         <div class="page-content">
         <div class="container-fluid">
           <div class="row row-cols-1 row-cols-md-3 g-3">
-                <div class="col">
-                <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-info" style="min-height: 60px;">
-                    <div class="card-body d-flex flex-column justify-content-between ">
-                        <div>
-                            <p class="mb-0 text-secondary" style="font-size: 12px;">Total Divisions</p>
-                            <h4 class="my-1 text-info" style="font-size: 16px;">{{ $totaldivision }}</h4>
-                        </div>
-                        <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto" style="">
-                            <i class='bx bxs-business'></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-            <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-danger" style="min-height: 60px;">
-                <div class="card-body d-flex flex-column justify-content-between">
+          <div class="col">
+            <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-info" style="min-height: 60px;">
+                <div class="card-body d-flex flex-row justify-content-between align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary" style="font-size: 12px;">Total Users</p>
-                        <h4 class="my-1 text-danger" style="font-size: 16px;">{{ $totalUsers }}</h4>
+                        <p class="mb-0 text-secondary" style="font-size: 12px;">Total Divisions</p>
+                        <h4 class="my-1 text-info" style="font-size: 16px;">{{ $totaldivision }}</h4>
                     </div>
-                    <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto">
-                        <i class='bx bxs-group'></i>
+                    <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class='bx bxs-business'></i>
                     </div>
                 </div>
             </div>
+        </div>
+            <div class="col">
+                <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-danger" style="min-height: 60px;">
+                    <div class="card-body d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 text-secondary" style="font-size: 12px;">Total Users</p>
+                            <h4 class="my-1 text-danger" style="font-size: 16px;">{{ $totalUsers }}</h4>
+                        </div>
+                        <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class='bx bxs-group'></i>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col">
             <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-success" style="min-height: 60px;">
-                <div class="card-body d-flex flex-column justify-content-between">
+                <div class="card-body d-flex flex-row justify-content-between align-items-center">
                     <div>
                         <p class="mb-0 text-secondary" style="font-size: 12px;">Documents Submitted</p>
                         <h4 class="my-1 text-success" style="font-size: 16px;">{{ $totalForms }}</h4>
                     </div>
-                    <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
+                    <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                         <i class='bx bxs-file'></i>
                     </div>
                 </div>
