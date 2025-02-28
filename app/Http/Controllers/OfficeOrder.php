@@ -29,15 +29,23 @@ class OfficeOrder extends Controller
 
     public function officeOrder(Request $request)
     {
-        $office_order = OfficeOrders::from('office_order as o')
-                            ->select('o.*','u.name as uploader_name','d.name as division_name','ds.name as uploader_designation')
-                            ->leftJoin('users as u','u.id','=','o.uploaded_by')
-                            ->leftJoin('divisions as d','d.id','=','o.division_id')
-                            ->leftJoin('designations as ds','ds.id','=','u.designation')
-                            ->where('o.is_deleted',0)
-                            ->get();
+            $office_order = OfficeOrders::from('office_order as o')
+                ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
+                ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
+                ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
+                ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
+                ->where('o.is_deleted', 0);
 
-                            // dd($office_order);
+            // Apply filter if 'computer_no' is provided
+            if ($request->filled('search')) {
+                $computer_no = $request->get('search');
+                $office_order->where('o.computer_no', 'like', "%{$computer_no}%");
+            }
+
+            // Fetch the paginated result
+            $office_order = $office_order->orderBy('o.id', 'asc')->paginate(10);
+
+        
 
         return view('backend.document_types.office_order.index',compact('office_order'));
     }
@@ -104,8 +112,11 @@ class OfficeOrder extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.office_order.create')->withErrors($validator)->withInput();
+                dd($validator->errors()); 
             }
+            // if ($validator->fails()) {
+            //     return redirect()->route('admin.document.office_order.create')->withErrors($validator)->withInput();
+            // }
             
 
             $new_user = OfficeOrders::create([
@@ -119,7 +130,8 @@ class OfficeOrder extends Controller
                 'file_type' => $request->file_type,
                 'division_id' => $request->division,
                 'date_of_upload' => $request->date_of_upload,
-                'uploaded_by' => $roleId
+                'uploaded_by' => $roleId,
+                'keyword' => $request->key
             ]);
 
 
@@ -127,8 +139,8 @@ class OfficeOrder extends Controller
 
 
             if ($request->hasFile('upload_file')) {
-                $uploadedFiles = $request->file('upload_file');
-                foreach ($uploadedFiles as $file) {
+                $a = $request->file('upload_file');
+                foreach ($a as $file) {
                     
                     $path = $file->store('office_order_uploads', 'public');
 
@@ -142,8 +154,8 @@ class OfficeOrder extends Controller
             }
 
             DB::commit();
-
-            return redirect()->route('admin.document.office_order.index')->with('success','Form Created Successfully !!');
+            return response()->json('Form Created Successfully !!');
+            //return redirect()->route('admin.document.office_order.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -211,7 +223,8 @@ class OfficeOrder extends Controller
         'issuer_designation' => $request->issuer_designation,
         'file_type' => $request->file_type,
         'division_id' => $request->division,
-        'date_of_upload' => $request->date_of_upload
+        'date_of_upload' => $request->date_of_upload,
+        'keyword' => $request->key
     ]);
      
     //$user = $request->user;
@@ -229,7 +242,8 @@ class OfficeOrder extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.office_order.index')->with('success', 'Office Order Updated Successfully!');
+        return response()->json('Office Order Updated Successfully!');
+        //return redirect()->route('admin.document.office_order.index')->with('success', 'Office Order Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());

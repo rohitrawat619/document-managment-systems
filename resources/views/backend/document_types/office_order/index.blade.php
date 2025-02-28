@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Session;
+@endphp
+
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">
@@ -38,6 +42,13 @@
                 <hr/>
                 <div class="card">
                     <div class="card-body">
+                    <div class="d-flex  mb-3">
+                    <form method="GET" action="{{ route('admin.document.office_order.index') }}" class="form-inline" style="width: 100%;">
+                    <div class="d-flex mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    <a href="{{ route('admin.document.office_order.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                    </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>
@@ -48,41 +59,56 @@
                                     <th scope="col">Subject</th>
                                     <th scope="col">Issued by Name & Designation</th>
                                     <th scope="col">Uploaded By Name & Designation</th>
+                                    <th scope="col">Keywords</th>
                                     <th scope="col">Date of Upload</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($office_order as $k => $r)
-                                    <tr>
-                                        <th scope="row">{{$k + 1}}</th>
-                                        <td>{{$r->computer_no}}</td>
-                                        <td>{{$r->file_no}}</td>
-                                        <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
-                                        <td>{{$r->subject}}</td>
-                                        <td>{{$r->issuer_name}}</td>
-                                        <td>{{$r->issuer_designation}}</td>
-                                        <!-- <td>{{$r->uploader_name.'('.$r->uploader_designation.')'}}</td> -->
-                                        <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="{{route('admin.document.office_order.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                <!-- @if($r->is_active==1)
-                                                    <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @else
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status"  data-a="{{base64_encode($r->id)}}"  data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif -->
-											</div>
-                                        </td>
-                                    </tr>
-                                @empty
+                            @php
+                            $userPermissions = session::get('user_permissions');
+                            @endphp
+                            @forelse ($office_order as $k => $r)
+                                <tr>
+                                    <th scope="row">{{ $office_order->firstItem() + $k }}</th> 
+                                    <td>{{ $r->computer_no }}</td>
+                                    <td>{{ $r->file_no }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($r->date_of_issue)) }}</td>
+                                    <td>{{ $r->subject }}</td>
+                                    <td>{{ $r->issuer_name }}</td>
+                                    <td>{{ $r->issuer_designation }}</td>
+                                    <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
+                                    <td>
+                                    <div class="d-flex order-actions">
+                                            @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
+                                                <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <i class="bx bxs-edit"></i>
+                                                </a>
+                                                <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                    <i class="bx bxs-trash"></i>
+                                                </a>
+                                            @else
+                                                <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                                    <i class="bx bxs-edit text-muted"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                                    <i class="bx bxs-trash text-muted"></i>
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
                                     <td class="text-center" colspan="9">No Records Found</td>
-                                @endforelse
+                                </tr>
+                            @endforelse
                             </tbody>
-                        </table>
+                         </table>
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $office_order->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
                 </div>
             </div>

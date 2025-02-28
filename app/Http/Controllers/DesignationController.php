@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Designation;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class DesignationController extends Controller
 {
@@ -23,7 +25,29 @@ class DesignationController extends Controller
 
     public function index(Request $request)
     {
-        $designation = Designation::where('is_deleted',0)->get();
+        $search = $request->get('search'); // Get search query
+
+        if ($search) {
+            $designation = Designation::where('name', 'like', '%' . $search . '%')
+            ->where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+        } else {
+        // If no search query, just paginate all divisions
+        $designation = Designation::where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+        }
+
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+    
+            if ($role && !empty($role->permission_id)) {
+                $permissions = explode(',', $role->permission_id); // Convert CSV to array
+    
+                Session::put('user_permissions', $permissions);
+                Session::save();
+            }
 
         return view('backend.designation.index',compact('designation'));
     }

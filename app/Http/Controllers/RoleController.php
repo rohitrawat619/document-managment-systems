@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Designation;
+use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class RoleController extends Controller
 {
@@ -25,16 +28,45 @@ class RoleController extends Controller
     //
     public function index(Request $request)
     {
-        $roles = Role::where('is_deleted',0)->get();
+        // $roles = Role::where('is_deleted',0)->get();
+
+        $search = $request->get('search');
+
+        // If there's a search query, filter the divisions by name
+        if ($search) {
+            $roles = Role::where('name', 'like', '%' . $search . '%')
+                ->where('is_deleted', 0)
+                ->orderBy('id', 'asc')
+                ->paginate(10);
+        } else {
+        // If no search query, just paginate all divisions
+            $roles = Role::where('is_deleted', 0)
+                ->orderBy('id', 'asc')
+                ->paginate(10);
+        }
+
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+
+        if ($role && !empty($role->permission_id)) {
+            $permissions = explode(',', $role->permission_id); // Convert CSV to array
+
+            Session::put('user_permissions', $permissions);
+            Session::save();
+        }
 
         return view('backend.roles.index',compact('roles'));
+
     }
 
     public function create(Request $request)
     {
         if($request->isMethod('get'))
         {
-            return view('backend.roles.create');
+            $designations = Designation::all();
+            $permission = Permission::all();
+
+            return view('backend.roles.create',compact('designations','permission'));
         }
 
         DB::beginTransaction();
@@ -42,6 +74,7 @@ class RoleController extends Controller
 
             $rules = [
                 'name'=> 'required|regex:/^[a-zA-Z][a-zA-Z0-9]+$/u|min:1|max:255',
+                'designation' => 'required|array',
             ];
 
             $messages = [
@@ -61,7 +94,9 @@ class RoleController extends Controller
             }
 
             $new_role = new Role();
-            $new_role->name= $request->name;
+            $new_role->name = $request->name;
+            $new_role->permission_id = implode(",",$request->permissions); 
+            $new_role->designation_id = implode(",",$request->designation);
             $new_role->unique_key= Str::uuid()->toString();
             $new_role->save();
 
@@ -86,8 +121,23 @@ class RoleController extends Controller
         {
             $roles = Role::where('id', $role_id)->first();
 
-            return view('backend.roles.edit', compact('roles'));
-        }
+            /*** fetch for designation selected bu user */
+
+            $selectedDesignations = explode(',', $roles->designation_id); // Convert string to array
+
+            $designations = DB::table('designations')->get(); // Get all designations
+            
+            /*** fetch for particular permission given by the user */
+
+            $rolePermissions = explode(',', $roles->permission_id); 
+
+            $permissions = DB::table('permissions')
+                ->select('permissions.id', 'permissions.name')
+                ->get();
+        
+            return view('backend.roles.edit', compact('roles','rolePermissions','permissions','designations','selectedDesignations'));
+        } 
+
 
         DB::beginTransaction();
         try{
@@ -113,6 +163,8 @@ class RoleController extends Controller
 
             $new_role = Role::find($role_id);
             $new_role->name= $request->name;
+            $new_role->permission_id = implode(",",$request->permissions); 
+            $new_role->designation_id = implode(",",$request->designation);
             $new_role->save();
 
             DB::commit();

@@ -29,14 +29,22 @@ class FormController extends Controller
 
     public function officeMemorandum(Request $request)
     {
-        $office_memorandum = OfficeMemorandum::from('office_memorandum as o')
-                            ->select('o.*','u.name as uploader_name','d.name as division_name','ds.name as uploader_designation')
-                            ->leftJoin('users as u','u.id','=','o.uploaded_by')
-                            ->leftJoin('divisions as d','d.id','=','o.division_id')
-                            ->leftJoin('designations as ds','ds.id','=','u.designation')
-                            ->where('o.is_deleted',0)
-                            ->get();
+            $query = OfficeMemorandum::from('office_memorandum as o')
+            ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
+            ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
+            ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
+            ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
+            ->where('o.is_deleted', 0);
 
+            // Apply filter if 'computer_no' is provided
+            if ($request->filled('search')) {
+                $computer_no = $request->get('search');
+                $query->where('o.computer_no', 'like', "%{$computer_no}%");
+            }
+
+            // Fetch the paginated result
+            $office_memorandum = $query->orderBy('o.id', 'asc')->paginate(10);
+                            
         return view('backend.document_types.office_memorandum.index',compact('office_memorandum'));
     }
 
@@ -71,7 +79,7 @@ class FormController extends Controller
 
         $roleId = Auth::user()->role_id;
 
-     
+ 
         DB::beginTransaction();
         try{
 
@@ -102,8 +110,11 @@ class FormController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
+                dd($validator->errors()); 
             }
+            // if ($validator->fails()) {
+            //     return redirect()->route('admin.document.office_memorandum.create')->withErrors($validator)->withInput();
+            // }
             
 
             $new_user = OfficeMemorandum::create([
@@ -117,7 +128,8 @@ class FormController extends Controller
                 'file_type' => $request->file_type,
                 'division_id' => $request->division,
                 'date_of_upload' => $request->date_of_upload,
-                'uploaded_by' => $roleId
+                'uploaded_by' => $roleId,
+                'keyword' => $request->key
             ]);
 
 
@@ -140,8 +152,8 @@ class FormController extends Controller
             }
 
             DB::commit();
-
-            return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
+            return response()->json('Form Created Successfully !!');
+           // return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -170,7 +182,7 @@ class FormController extends Controller
          //dd($office_memorandum_upload);
         //echo '<pre>'; print_r($office_memorandum); die;
         $divisions = Division::where('id', $div)->first();
-        // dd($divisions);
+
         return view('backend.document_types.office_memorandum.edit', compact('divisions', 'office_memorandum', 'office_memorandum_upload'));
     }
     
@@ -209,7 +221,8 @@ class FormController extends Controller
         'issuer_designation' => $request->issuer_designation,
         'file_type' => $request->file_type,
         'division_id' => $request->division,
-        'date_of_upload' => $request->date_of_upload
+        'date_of_upload' => $request->date_of_upload,
+        'keyword' => $request->key
     ]);
      
     //$user = $request->user;
@@ -227,7 +240,8 @@ class FormController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
+        return response()->json('Office Memorandum Updated Successfully!');
+        //return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());

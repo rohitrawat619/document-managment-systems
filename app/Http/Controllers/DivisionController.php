@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Division;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class DivisionController extends Controller
 {
@@ -23,9 +25,32 @@ class DivisionController extends Controller
 
     public function index(Request $request)
     {
-        $division = Division::where('is_deleted',0)->get();
+    $search = $request->get('search'); // Get search query
 
-        return view('backend.division.index',compact('division'));
+    // If there's a search query, filter the divisions by name
+    if ($search) {
+        $division = Division::where('name', 'like', '%' . $search . '%')
+            ->where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+    } else {
+        // If no search query, just paginate all divisions
+        $division = Division::where('is_deleted', 0)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+    }
+
+    $user = Auth::user();
+            $role = Role::find($user->role_id);
+    
+            if ($role && !empty($role->permission_id)) {
+                $permissions = explode(',', $role->permission_id); // Convert CSV to array
+    
+                Session::put('user_permissions', $permissions);
+                Session::save();
+            }
+
+    return view('backend.division.index', compact('division'));
     }
 
     public function create(Request $request)
@@ -147,7 +172,3 @@ class DivisionController extends Controller
         //     ->with('success', 'Role deleted successfully');
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> rohitdev

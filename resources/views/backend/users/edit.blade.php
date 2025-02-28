@@ -12,7 +12,7 @@
                         </li>
                         <li class="breadcrumb-item"><a href="{{route('admin.users.index')}}">Users</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Create</li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </nav>
             </div>
@@ -44,39 +44,22 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                <select class="form-control" name="division">
-                                    <option value="">--Select--</option>
-                                    @if(count($divisions)>0)
-                                        @foreach ($divisions as $dv)
-                                            <option value="{{$dv->id}}" @if($dv->id==$users->division) selected @endif>{{$dv->name}}</option>
-                                        @endforeach
-                                    @endif
+                                <select class="form-control" id="multi-select" name="division[]" multiple="multiple">
+                                    @foreach ($divisions as $dv)
+                                        <option value="{{ $dv->id }}" {{ in_array($dv->id, $selectedDivision) ? 'selected' : '' }}>{{ $dv->name }}</option>
+                                    @endforeach
                                 </select>
+
                                 @if ($errors->has('division'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('division') }}</strong>
                                     </span>
                                 @endif
                             </div>
-                            <div class="col-md-6">
-                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-                                <select class="form-control" name="designation">
-                                    <option value="">--Select--</option>
-                                    @if(count($designations)>0)
-                                        @foreach ($designations as $dv)
-                                            <option value="{{$dv->id}}"  @if($dv->id==$users->designation) selected @endif>{{$dv->name}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                @if ($errors->has('designation'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('designation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                           
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
-                                <select class="form-control" name="role">
+                                <select class="form-control" name="role_id">
                                     <option value="">--Select--</option>
                                     @if(count($roles)>0)
                                         @foreach ($roles as $dv)
@@ -92,7 +75,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">NIC Email <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{$users->email}}">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{$users->email}}" readonly>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -158,6 +141,12 @@
           $('#code').val($(".mobile").intlTelInput("getSelectedCountryData").dialCode);
           $('#iso').val($(".mobile").intlTelInput("getSelectedCountryData").iso2);
       });
+  
+    /** select 2 multi select */
+    $(document).ready(function() {
+    $('#multi-select').select2();
+    });
+
     </script>
 @endpush
 @endsection

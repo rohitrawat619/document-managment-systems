@@ -10,6 +10,7 @@ use App\Models\Designation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -25,12 +26,22 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    //
     public function index(Request $request)
     {
-        $users = User::from('users as u')
-                ->select('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name as designation_name',DB::raw('GROUP_CONCAT(dv.name) as division_name'))
-                //->leftJoin('divisions as dv','u.division','=','dv.id')
+            $search = $request->get('search'); // Get search query
+
+            $users = User::from('users as u')
+                ->select(
+                    'u.id',
+                    'u.name',
+                    'u.email',
+                    'u.phone',
+                    'u.phone_code',
+                    'u.phone_iso',
+                    'ds.name as designation_name',
+                    DB::raw('GROUP_CONCAT(dv.name) as division_name')
+                )
+
                 ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
                 ->leftJoin('designations as ds','u.designation','=','ds.id')
                 ->where('u.is_deleted',0)
@@ -38,7 +49,61 @@ class UserController extends Controller
                 ->groupBy('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name')
                 ->get();
 
-        return view('backend.users.index',compact('users'));
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+
+        if ($role && !empty($role->permission_id)) {
+            $permissions = explode(',', $role->permission_id); // Convert CSV to array
+
+            Session::put('user_permissions', $permissions);
+            Session::save();
+
+        } else {
+            $permissions = []; // Default empty permissions array
+        }
+
+            /*** fetch designations from roles table */
+
+            $designation = Designation::all();
+
+            $desig = DB::table('roles')
+            ->join('users','roles.id','=','users.role_id')
+            ->join('designations','designations.id','=','roles.designation_id')
+            ->select('designations.name','designations.id')
+            ->get()->toArray();
+
+         //   echo '<pre>';print_r($desig); die;
+
+            $users = User::from('users as u')
+                ->select(
+                    'u.id',
+                    'u.name',
+                    'u.email',
+                    'u.phone',
+                    'u.user_name',
+                    'u.phone_code',
+                    'u.phone_iso',
+                    'ds.name as designation_name',
+                    DB::raw('GROUP_CONCAT(dv.name) as division_name')
+                )
+                ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
+                ->leftJoin('designations as ds', 'u.designation', '=', 'ds.id')
+                ->where('u.is_deleted', 0)
+                ->whereNotNull('u.role_id');
+
+            // Apply search filter if there is a search query
+            if ($search) {
+                $users->where(function ($users) use ($search) {
+                    $users->where('u.name', 'like', '%' . $search . '%') // Search by user name
+                        ->orWhere('dv.name', 'like', '%' . $search . '%'); // Search by division name
+                });
+            }
+
+            // Group and paginate results
+            $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone','u.user_name', 'u.phone_code', 'u.phone_iso', 'ds.name')
+                ->paginate(10);
+
+            return view('backend.users.index',compact('users'));
     }
 
 
@@ -55,17 +120,17 @@ class UserController extends Controller
             return view('backend.users.create',compact('divisions','designations','roles'));
         }
 
+        //echo "<pre>"; print_r($_POST); die;
+
         DB::beginTransaction();
         try{
 
             $rules = [
                 'first_name'=> 'required|regex:/^[a-zA-Z]+$/u|min:1|max:255',
                 'last_name'=> 'nullable|regex:/^[a-zA-Z]+$/u|min:0|max:255',
-                'email' => 'required|email:dns,rfc|unique:users,email',
+                'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required|array',
-                'designation' => 'required',
-                'role' => 'required',
                 'password' => 'required|same:confirm_password|min:10',
                 'confirm_password' => 'required|string'
             ];
@@ -78,6 +143,7 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
+                //dd($validator);
                 return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
             }
 
@@ -101,20 +167,16 @@ class UserController extends Controller
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",", $request->division),
-                'designation' => $request->designation,
-                'role_id' => $request->role,
+                'designation' => $request->designation_id,
+                'role_id' => $request->role_id,
                 'password' => bcrypt($request->password)
             ]);
-
-            
-
-            $user_name = 'omms_'.$request->first_name.($new_user->id+1);
-
-            User::where('id',$new_user->id)->update([
+           
+            $email_username = explode('@', $request->email)[0];
+            $user_name = $email_username . ($new_user->id + 1);
+            User::where('id', $new_user->id)->update([
                 'user_name' => $user_name
             ]);
-
-            //echo '<pre>'; print_r($new_user); die;
 
             DB::commit();
 
@@ -129,6 +191,23 @@ class UserController extends Controller
 
     }
 
+    public function getDesignations($roleId)
+    {
+        $role = Role::find($roleId);
+        if (!$role) {
+            return response()->json([]);
+        }
+
+        // Convert comma-separated IDs to an array
+        $designationIds = explode(',', $role->designation_id);
+
+        // Fetch matching designations
+        $designations = Designation::whereIn('id', $designationIds)->get();
+
+        return response()->json($designations);
+
+    }
+
     public function edit(Request $request){
 
         $user_id = base64_decode($request->id);
@@ -137,13 +216,15 @@ class UserController extends Controller
         {
             $users = User::where('id', $user_id)->first();
 
-            $divisions = Division::all();
+            $selectedDivision = explode(',', $users->division); // Convert string to array
+
+            $divisions = DB::table('divisions')->get();
 
             $designations = Designation::all();
 
             $roles = Role::all();
 
-            return view('backend.users.edit', compact('users','divisions','designations','roles'));
+            return view('backend.users.edit', compact('users','divisions','designations','roles','selectedDivision'));
         }
 
         DB::beginTransaction();
@@ -151,16 +232,15 @@ class UserController extends Controller
             $rules = [
                 'first_name'=> 'required|regex:/^[a-zA-Z ]+$/u|min:1|max:255',
                 'last_name'=> 'nullable|regex:/^[a-zA-Z ]+$/u|min:0|max:255',
-                'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
+               // 'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
-                'designation' => 'required'
             ];
 
             $messages = [
                 'name.regex' => 'The name must be combination of letter',
                 'mobile.regex'=>'Mobile Number must be Valid !!',
-                'email.unique'  =>'Email id has already been taken',
+                // 'email.unique'  =>'Email id has already been taken',
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
@@ -178,10 +258,11 @@ class UserController extends Controller
                 'name' => $name,
                 'email' => $request->email,
                 'phone' => $mobile,
+                'role_id' => $request->role_id,
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
-                'division' => $request->division,
-                'designation' => $request->designation,
+                'division' => implode(",",$request->division),
+
             ]);
 
             DB::commit();
@@ -229,9 +310,9 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         $user_id =base64_decode($request->id);
-        // $id = $request->id;
-        $user_id = Auth::user()->id;
+        $id = $request->id;
 
+        $user = Auth::user()->id;
         $privacy = User::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $user_id;

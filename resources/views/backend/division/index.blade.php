@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Session;
+@endphp
+
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">
@@ -38,6 +42,12 @@
                 <hr/>
                 <div class="card">
                     <div class="card-body">
+                    <form method="GET" action="{{ route('admin.division.index') }}" class="form-inline">
+                    <div class="d-flex mb-2">
+                    <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    <a href="{{ route('admin.division.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                    </div>
                         <table class="table mb-0 table-hover table-bordered roleTable">
                             <thead class="table-dark">
                                 <tr>
@@ -47,29 +57,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($division as $k => $r)
+                                @forelse ($division as $r)
                                     <tr>
-                                        <th scope="row">{{$k + 1}}</th>
-                                        <td>{{$r->name}}</td>
+                                        <!-- Display ID in Order Across Pages -->
+                                        <th scope="row">{{ ($division->currentPage() - 1) * $division->perPage() + $loop->iteration }}</th>
+                                        <td>{{ $r->name }}</td>
                                         <td>
                                             <div class="d-flex order-actions">
-												<a href="{{route('admin.division.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                {{-- @if($r->is_active==1)
-                                                    <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @else
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif --}}
-											</div>
+                                                <a href="{{ route('admin.division.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <i class="bx bxs-edit"></i>
+                                                </a>
+                                                <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                    <i class="bx bxs-trash"></i>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
-                                    <td colspan="5">No Records Found</td>
+                                    <tr>
+                                        <td colspan="5">No Records Found</td>
+                                    </tr>
                                 @endforelse
-                            </tbody>
+                        </tbody>
                         </table>
+                        <!-- Pagination Links -->
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $division->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
                 </div>
             </div>

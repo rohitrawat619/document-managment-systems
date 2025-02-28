@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Session;
+@endphp
+
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">
@@ -38,11 +42,18 @@
                 <hr/>
                 <div class="card">
                     <div class="card-body">
+                    <form method="GET" action="{{ route('admin.users.index') }}" class="form-inline">
+                    <div class="d-flex mb-2">
+                    <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                    </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Username</th>
                                     <th scope="col">Division</th>
                                     <th scope="col">Designation</th>
                                     <th scope="col">NIC Email</th>
@@ -51,33 +62,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($users as $k => $r)
-                                    <tr>
-                                        <th scope="row">{{$k + 1}}</th>
-                                        <td>{{$r->name}}</td>
-                                        <td>{{$r->division_name}}</td>
-                                        <td>{{$r->designation_name}}</td>
-                                        <td>{{$r->email}}</td>
-                                        <td>{{'+'.$r->phone_code.' '.$r->phone}}</td>
-                                        <td>
-                                            <div class="d-flex order-actions">
-												<a href="{{route('admin.users.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                @if($r->is_active==1)
-                                                    <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @else
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status"  data-a="{{base64_encode($r->id)}}"  data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif
-											</div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <td colspan="9">No Records Found</td>
-                                @endforelse
+                            @forelse ($users as $k => $r)
+                            <tr>
+                                <th scope="row">{{ ($users->currentPage() - 1) * $users->perPage() + $k + 1 }}</th>
+                                <td>{{$r->name}}</td>
+                                <td>{{$r->user_name}}</td>
+                                <td>{{$r->division_name}}</td>
+                                <td>{{$r->designation_name}}</td>
+                                <td>{{$r->email}}</td>
+                                <td>{{'+'.$r->phone_code.' '.$r->phone}}</td>
+                                <td>
+                                    <div class="d-flex order-actions">
+                                        <a href="{{route('admin.users.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
+                                        @if($r->is_active==1)
+                                            <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
+                                            <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
+                                        @else
+                                            <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
+                                            <a href="javascript:;" class="ms-3 status" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                                <td colspan="9">No Records Found</td>
+                            @endforelse
                             </tbody>
                         </table>
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $users->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
                 </div>
             </div>
