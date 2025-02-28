@@ -23,8 +23,7 @@ class RecruitmentController extends Controller
 
     public function recruitment(Request $request)
     {
-
-        $recruitment = RecruitmentModel::paginate(10); // Ya Recruitment::count()
+        $recruitment = RecruitmentModel::where('is_deleted', 0)->paginate(10); 
         return view('backend.document_types.recruitment.index', compact('recruitment'));
                 // $query = RecruitmentModel::from('recruitment as o')
                 // ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')

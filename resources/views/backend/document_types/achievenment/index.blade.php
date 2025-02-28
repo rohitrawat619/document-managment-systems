@@ -51,7 +51,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Computer No.</th>
                                     <th scope="col">File No.</th>
-                                    <th scope="col">Date of Issue</th>
+                                    <th scope="col">Date of Publication</th>
                                     <th scope="col">Subject</th>
                                     <th scope="col">Issued by Name & Designation</th>
                                     <th scope="col">Uploaded By Name & Designation</th>
@@ -67,17 +67,17 @@
                                 <th scope="row">{{ ($achievenment->currentPage() - 1) * $achievenment->perPage() + $k + 1 }}</th>
                                 <td>{{$r->computer_no}}</td>
                                 <td>{{$r->file_no}}</td>
-                                <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_publication))}}</td>
                                 <td>{{$r->subject}}</td>
                                 <td>{{$r->issuer_name}}</td>
                                 <td>{{$r->issuer_designation}}</td>
                                 <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                 <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                 <td>
-                                    <div class="d-flex order-actions">
-                                        <a href="{{route('admin.document.achievenment.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                    </div>
+                                <div class="d-flex order-actions">
+                                    <a href="{{route('admin.document.achievenment.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+                                    <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
+                                </div>
                                 </td>
                             </tr>
                         @empty
@@ -177,7 +177,8 @@
 
                             if (response.success) {
                                 toastr.success('Form Deleted Successfully');
-                                window.setTimeout(function(){
+                                
+                                  window.setTimeout(function(){
                                     window.location.reload();
                                 },2000);
                             }
@@ -185,7 +186,8 @@
                             Swal.close();
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            // handle error
+                    console.error("Error deleting:", textStatus, errorThrown);
+                
                         }
                     });
                 } else {

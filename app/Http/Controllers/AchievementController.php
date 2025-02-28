@@ -21,28 +21,11 @@ class AchievementController extends Controller
     }
 
     public function achievenment(Request $request)
-    {
-        $achievenment = Achievement::paginate(10); // Ya achievement::count()
-        return view('backend.document_types.achievenment.index', compact('achievenment'));
-        //         $query = Achievement::from('achievenment as o')
-        //         ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
-        //         ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
-        //         ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
-        //         ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
-        //         ->where('o.is_deleted', 0);
+{
+    $achievenment = Achievement::where('is_deleted', 0)->paginate(10); 
+    return view('backend.document_types.achievenment.index', compact('achievenment'));
+}
 
-        //         // Apply filter if 'computer_no' is provided
-        //         if ($request->filled('search')) {
-        //             $computer_no = $request->get('search');
-        //             $query->where('o.computer_no', 'like', "%{$computer_no}%");
-        //         }
-
-        //         // Fetch the paginated result
-        //         $achievenment = $query->orderBy('o.id', 'asc')->paginate(10);
-
-
-        // return view('backend.document_types.achievenment.index',compact('achievenment'));
-    }
 
     public function getDivisionsByUser(Request $request)
     { 
@@ -120,7 +103,6 @@ class AchievementController extends Controller
                 'subject' => $request->subject,
                 'issuer_name' => $request->issuer_name,
                 'issuer_designation' => $request->issuer_designation,
-                'file_type' => $request->file_type,
                 'date_of_upload' => $request->date_of_upload,
                 'uploaded_by' => $roleId,
                 'keyword' => $request->key
@@ -213,7 +195,6 @@ class AchievementController extends Controller
             'subject' => $request->subject,
             'issuer_name' => $request->issuer_name,
             'issuer_designation' => $request->issuer_designation,
-            'file_type' => $request->file_type,
             'date_of_upload' => $request->date_of_upload,
             'keyword' => $request->key
         ]);
@@ -260,14 +241,17 @@ public function deleteFile(Request $request)
         }
 
         $file = AchievementUpload::find($fileId);
-        if ($file) {
-            $file->delete();
+        // if ($file) {
+        //     $file->delete();
+        // }
+        if (!$file) {
+            return response()->json(['error' => 'Record not found'], 404);
         }
 
-        return response()->json(['message' => 'File deleted successfully']);
+       // return response()->json(['message' => 'File deleted successfully']);
     }
 
-    return response()->json(['error' => 'File not found'], 404);
+   // return response()->json(['error' => 'File not found'], 404);
 }
 
 public function destroy(Request $request)
