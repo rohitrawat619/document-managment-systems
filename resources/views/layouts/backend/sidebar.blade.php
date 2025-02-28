@@ -90,7 +90,7 @@ use Illuminate\Support\Facades\Session;
                     </a></li>
                 @endif
                 @if(in_array('16', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Gazette Notifications</a></li>
+                    <li><a href="{{ route('admin.document.gazette_notification.index') }}"><i class='bx bx-radio-circle'></i> Gazette Notifications</a></li>
                 @endif
                 @if(in_array('17', $userPermissions))
                     <li><a href="{{ route('admin.document.recruitment.index') }}"><i class='bx bx-radio-circle'></i> Recruitment Rules</a></li>
@@ -105,7 +105,7 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Rebuttals</a></li>
                 @endif
                 @if(in_array('21', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Presentations</a></li>
+                    <li><a href="{{ route('admin.document.presentations.index') }}"><i class='bx bx-radio-circle'></i> Presentations</a></li>
                 @endif
                 @if(in_array('22', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Parliament Questions (Lok Sabha)</a></li>
