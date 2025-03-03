@@ -81,14 +81,18 @@ use Illuminate\Support\Facades\Session;
                                 <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                 <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                 <td>
+                             
                                 <div class="d-flex order-actions">
+                                    <a href="{{route('admin.document.recruitment.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+                                    <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
+                                </div>
                                             @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
-                                                <a href="{{ route('admin.document.recruitment.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                <!-- <a href="{{ route('admin.document.recruitment.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                                     <i class="bx bxs-edit"></i>
                                                 </a>
                                                 <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
                                                     <i class="bx bxs-trash"></i>
-                                                </a>
+                                                </a> -->
                                             @else
                                                 <a href="javascript:void(0);" class="disabled-link" title="No Permission">
                                                     <i class="bx bxs-edit text-muted"></i>
