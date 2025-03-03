@@ -180,11 +180,6 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::delete('/admin/document/minutes_of_metting/delete_file', [App\Http\Controllers\MinutesOfMetting::class, 'deleteFile'])->name('document.minutes_of_metting.delete_file');
 
 
-    /*** routes for change password */
-    Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'showChangePasswordForm'])->name('password.change');
-    Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('password.update');
-
-
 
 });
 
