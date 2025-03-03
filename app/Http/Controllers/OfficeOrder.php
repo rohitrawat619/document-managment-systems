@@ -68,15 +68,30 @@ class OfficeOrder extends Controller
     public function create(Request $request)
     {
        
-        if($request->isMethod('get'))
-        {
-            $divisions = Division::all();
 
-            $users = User::all();
+        if ($request->isMethod('get')) {
+            $authUser = Auth::user();
+            
+            $designation = DB::table('users')
+           ->join('designations','designations.id','=','users.designation')
+           ->select('designations.name','designations.id')
+           ->where('users.designation','=',$authUser->designation)
+          ->first();
 
-            return view('backend.document_types.office_order.create',compact('divisions','users'));
+            //echo '<pre>'; print_r($designation); die;
+    
+            if ($authUser->id == 1) {
+              
+                $divisions = Division::all();
+                $users = User::all();
+            } else {
+               
+                $divisions = Division::where('id', $authUser->id)->get();
+                $users = User::where('id', $authUser->id)->get();
+            }
+    
+            return view('backend.document_types.office_order.create', compact('divisions', 'users','designation'));
         }
-
         
 
         $roleId = Auth::user()->role_id;

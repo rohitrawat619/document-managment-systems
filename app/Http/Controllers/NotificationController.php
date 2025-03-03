@@ -59,13 +59,36 @@ class NotificationController extends Controller
     public function create(Request $request)
     {
        
-        if($request->isMethod('get'))
-        {
-            $divisions = Division::all();
+        // if($request->isMethod('get') )
+        // {
+        //     $divisions = Division::all();
 
-            $users = User::all();
+        //     $users = User::all();
 
-            return view('backend.document_types.notification.create',compact('divisions','users'));
+        //     return view('backend.document_types.notification.create',compact('divisions','users'));
+        // }
+
+        if ($request->isMethod('get')) {
+            $authUser = Auth::user(); 
+
+            $designation = DB::table('users')
+           ->join('designations','designations.id','=','users.designation')
+           ->select('designations.name','designations.id')
+           ->where('users.designation','=',$authUser->designation)
+          ->first();
+
+    
+            if ($authUser->id == 1) {
+                
+                $divisions = Division::all();
+                $users = User::all();
+            } else {
+               
+                $divisions = Division::where('user_id', $authUser->id)->get();
+                $users = User::where('id', $authUser->id)->get();
+            }
+    
+            return view('backend.document_types.notification.create', compact('divisions', 'users'));
         }
 
         
@@ -88,8 +111,8 @@ class NotificationController extends Controller
                 'file_type' => 'required',
                 'division' => 'required',
                 'date_of_upload' => 'required',
-                'upload_file' => 'required|array|min:1', 
-                'upload_file.*' => 'mimes:pdf|max:20480' 
+                // 'upload_file' => 'required|array|min:1', 
+                // 'upload_file.*' => 'mimes:pdf|max:20480' 
                
             ];
 
@@ -145,7 +168,8 @@ class NotificationController extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
+            return response()->json(['message' => 'Form Created Successfully !!']);
+           
            // return redirect()->route('admin.document.notification.index')->with('success','Form Created Successfully !!');
 
         }

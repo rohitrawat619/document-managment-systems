@@ -23,8 +23,7 @@ class RecruitmentController extends Controller
 
     public function recruitment(Request $request)
     {
-
-        $recruitment = RecruitmentModel::paginate(10); // Ya Recruitment::count()
+        $recruitment = RecruitmentModel::where('is_deleted', 0)->paginate(10); 
         return view('backend.document_types.recruitment.index', compact('recruitment'));
                 // $query = RecruitmentModel::from('recruitment as o')
                 // ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
@@ -49,13 +48,37 @@ class RecruitmentController extends Controller
     public function create(Request $request)
     {
      
-        if($request->isMethod('get'))
-        {
-            $divisions = Division::all();
+        // if($request->isMethod('get'))
+        // {
+        //     $divisions = Division::all();
 
-            $users = User::all();
+        //     $users = User::all();
 
-            return view('backend.document_types.recruitment.create',compact('divisions','users'));
+        //     return view('backend.document_types.recruitment.create',compact('divisions','users'));
+        // }
+
+        if ($request->isMethod('get')) {
+            $authUser = Auth::user();
+            
+            $designation = DB::table('users')
+           ->join('designations','designations.id','=','users.designation')
+           ->select('designations.name','designations.id')
+           ->where('users.designation','=',$authUser->designation)
+          ->first();
+
+            //echo '<pre>'; print_r($designation); die;
+    
+            if ($authUser->id == 1) {
+              
+                $divisions = Division::all();
+                $users = User::all();
+            } else {
+               
+                $divisions = Division::where('id', $authUser->id)->get();
+                $users = User::where('id', $authUser->id)->get();
+            }
+    
+            return view('backend.document_types.recruitment.create', compact('divisions', 'users','designation'));
         }
 
      
@@ -177,7 +200,6 @@ class RecruitmentController extends Controller
             'subject' => 'required|string',
             'issuer_name' => 'required|string',
             'issuer_designation' => 'required|string',
-            'file_type' => 'required',
             'division' => 'required',
             'key' => 'required',
             'date_of_upload' => 'required',
@@ -197,11 +219,10 @@ class RecruitmentController extends Controller
     $recruitment->update([
         'computer_no' => $request->computer_no,
         'file_no' => $request->file_no,
-        'date_of_issue' => $request->date_of_issue,
+        'date_of_issue' => $request->date_of_publication,
         'subject' => $request->subject,
         'issuer_name' => $request->issuer_name,
         'issuer_designation' => $request->issuer_designation,
-        'file_type' => $request->file_type,
         'division_id' => $request->division,
         'date_of_upload' => $request->date_of_upload,
         'keyword' => $request->key

@@ -42,7 +42,7 @@
                                     <div id="error-message" style="color: red; display: none;"></div>
                                 </div>
                             
-                            @if(Auth::user()->is_admin == 1)
+                           
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" id="division" name="division">
@@ -56,7 +56,7 @@
                                     @endif
                                     <div id="division1" style="color: red; display: none;"></div>
                                 </div>
-                            @endif
+                           
                             <div class="col-md-6">
                                 <label for="agenda" class="form-label">Agenda <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="agenda" name="agenda" placeholder="">

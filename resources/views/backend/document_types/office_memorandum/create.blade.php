@@ -42,7 +42,6 @@
                                     <div id="error-message" style="color: red; display: none;"></div>
                                 </div>
                             
-                            @if(Auth::user()->is_admin == 1)
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" id="division" name="division">
@@ -56,7 +55,7 @@
                                     @endif
                                     <div id="division1" style="color: red; display: none;"></div>
                                 </div>
-                            @endif
+                           
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="computer_no" name="computer_no" placeholder="computer no">
@@ -99,7 +98,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" placeholder="">
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name"  value="{{$users[0]->name}}" placeholder="" readonly>
                                 @if ($errors->has('issuer_name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
@@ -109,7 +108,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" placeholder="">
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation"  value="{{$designation->name}}" placeholder="" readonly>
                                 @if ($errors->has('issuer_designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>

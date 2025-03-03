@@ -61,13 +61,37 @@ class GazetteNotification extends Controller
     public function create(Request $request)
     {
        
-        if($request->isMethod('get'))
-        {
-            $divisions = Division::all();
+        // if($request->isMethod('get'))
+        // {
+        //     $divisions = Division::all();
 
-            $users = User::all();
+        //     $users = User::all();
 
-            return view('backend.document_types.gazette_notification.create',compact('divisions','users'));
+        //     return view('backend.document_types.gazette_notification.create',compact('divisions','users'));
+        // }
+
+        if ($request->isMethod('get')) {
+            $authUser = Auth::user();
+            
+            $designation = DB::table('users')
+           ->join('designations','designations.id','=','users.designation')
+           ->select('designations.name','designations.id')
+           ->where('users.designation','=',$authUser->designation)
+          ->first();
+
+            //echo '<pre>'; print_r($designation); die;
+    
+            if ($authUser->id == 1) {
+              
+                $divisions = Division::all();
+                $users = User::all();
+            } else {
+               
+                $divisions = Division::where('id', $authUser->id)->get();
+                $users = User::where('id', $authUser->id)->get();
+            }
+    
+            return view('backend.document_types.gazette_notification.create', compact('divisions', 'users','designation'));
         }
 
         
