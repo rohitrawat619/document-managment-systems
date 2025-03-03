@@ -203,6 +203,12 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('view-pdf/{file}', [App\Http\Controllers\PresentationController::class, 'viewPdf'])->name('view.pdf');
     Route::get('/admin/document/presentations/get-divisions-by-user', [App\Http\Controllers\PresentationController::class, 'getDivisionsByUser'])->name('document.presentations.get-divisions-by-user');
     Route::delete('/admin/document/presentations/delete_file', [App\Http\Controllers\PresentationController::class, 'deleteFile'])->name('document.presentations.delete_file');
+
+    /*** routes for change password */
+    
+    Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('password.update');
+
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
