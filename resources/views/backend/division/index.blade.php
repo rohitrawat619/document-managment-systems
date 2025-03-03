@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Session;
+@endphp
+
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">

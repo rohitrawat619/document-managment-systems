@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Session;
+@endphp
+
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">
@@ -61,6 +65,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @php
+                            $userPermissions = session::get('user_permissions');
+                            @endphp
                             @forelse ($achievenment as $k => $r)
                             <tr>
                                 <!-- Adjust numbering to be continuous across pages -->
@@ -78,6 +85,22 @@
                                     <a href="{{route('admin.document.achievenment.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
                                     <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
                                 </div>
+                                            @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
+                                                <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <i class="bx bxs-edit"></i>
+                                                </a>
+                                                <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                    <i class="bx bxs-trash"></i>
+                                                </a>
+                                            @else
+                                                <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                                    <i class="bx bxs-edit text-muted"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                                    <i class="bx bxs-trash text-muted"></i>
+                                                </a>
+                                            @endif
+                                        </div>
                                 </td>
                             </tr>
                         @empty

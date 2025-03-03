@@ -88,8 +88,8 @@ class NotificationController extends Controller
                 'file_type' => 'required',
                 'division' => 'required',
                 'date_of_upload' => 'required',
-                'upload_file' => 'required|array|min:1', 
-                'upload_file.*' => 'mimes:pdf|max:20480' 
+                // 'upload_file' => 'required|array|min:1', 
+                // 'upload_file.*' => 'mimes:pdf|max:20480' 
                
             ];
 
@@ -145,7 +145,8 @@ class NotificationController extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
+            return response()->json(['message' => 'Form Created Successfully !!']);
+           
            // return redirect()->route('admin.document.notification.index')->with('success','Form Created Successfully !!');
 
         }

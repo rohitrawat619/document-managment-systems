@@ -345,11 +345,11 @@ $(document).ready(function() {
                     //  window.location.href = "{{ route('admin.document.notification.index') }}";
                     Swal.fire({
                     title: "Success!",
-                    text: response.message || "Data submitted successfully!",
+                    text: response.message ,
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {
-                    window.location.href = "{{ route('admin.document.guideline.index') }}";
+                    window.location.href = "{{ route('admin.document.notification.index') }}";
                 });
             },
             error: function(xhr) {

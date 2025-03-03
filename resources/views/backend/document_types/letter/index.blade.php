@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Session;
+@endphp
+
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">
@@ -61,6 +65,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @php
+                            $userPermissions = session::get('user_permissions');
+                            @endphp
                                 @forelse ($letter as $k => $r)
                                     <tr>
                                         <th scope="row">{{$k + 1}}</th>
@@ -74,17 +81,23 @@
                                         <!-- <td>{{$r->uploader_name.'('.$r->uploader_designation.')'}}</td> -->
                                         <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                         <td>
-                                            <div class="d-flex order-actions">
-												<a href="{{route('admin.document.letter.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-												<a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                                <!-- @if($r->is_active==1)
-                                                    <a href="javascript:;" class="ms-3 status" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-a="{{base64_encode($r->id)}}" data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @else
-                                                    <a href="javascript:;" class="ms-3 status d-none" data-d="{{base64_encode($r->id)}}" data-dc="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('disable')}}" title="Inactive"><i class="bx bx-x-circle"></i></a>
-                                                    <a href="javascript:;" class="ms-3 status"  data-a="{{base64_encode($r->id)}}"  data-ac="{{base64_encode($r->id)}}" data-id="{{base64_encode($r->id)}}" data-type="{{base64_encode('enable')}}" title="Active"><i class="bx bxs-check-circle"></i></a>
-                                                @endif -->
-											</div>
+                                        <div class="d-flex order-actions">
+                                            @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
+                                                <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <i class="bx bxs-edit"></i>
+                                                </a>
+                                                <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                    <i class="bx bxs-trash"></i>
+                                                </a>
+                                            @else
+                                                <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                                    <i class="bx bxs-edit text-muted"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                                    <i class="bx bxs-trash text-muted"></i>
+                                                </a>
+                                            @endif
+                                        </div>
                                         </td>
                                     </tr>
                                 @empty
