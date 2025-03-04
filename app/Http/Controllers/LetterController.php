@@ -175,7 +175,7 @@ class LetterController extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
+            return response()->json(['message' => 'Form created successfully!']);
            // return redirect()->route('admin.document.letter.index')->with('success','Form Created Successfully !!');
 
         }
@@ -260,7 +260,7 @@ class LetterController extends Controller
         }
 
         DB::commit();
-        return response()->json('Letters Updated Successfully!');
+        return response()->json(['message' => 'Letters Updated successfully!']);
        // return redirect()->route('admin.document.letter.index')->with('success', 'Letters Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();

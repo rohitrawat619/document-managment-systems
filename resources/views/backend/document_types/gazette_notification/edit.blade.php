@@ -184,12 +184,20 @@
 					return false;
 				}
 
+                var keyValue = $('#key').val()
                 if($('#key').val()=="")
 				{
-                    $('#key1').text("Please Enter Keywords").show();
+                    $('#key_error').text("Please Enter Keywords").show();
 					$('#key').focus();
 					return false;
 				}
+
+                else if (keyValue.length < 5)
+                 {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                } 
         });
     });
 </script>
@@ -219,7 +227,7 @@ $(document).ready(function() {
                     // window.location.href = "{{ route('admin.document.gazette_notification.index') }}";
                     Swal.fire({
                     title: "Success!",
-                    text: response.message || "Data Updated successfully!",
+                    text: response.message,
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {

@@ -175,7 +175,7 @@ class FormController extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
+            return response()->json(['message' => 'Form created successfully!']);
            // return redirect()->route('admin.document.office_memorandum.index')->with('success','Form Created Successfully !!');
 
         }
@@ -263,7 +263,7 @@ class FormController extends Controller
         }
 
         DB::commit();
-        return response()->json('Office Memorandum Updated Successfully!');
+        return response()->json(['message' => 'Office Memorandum Updated successfully!']);
         //return redirect()->route('admin.document.office_memorandum.index')->with('success', 'Office Memorandum Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();

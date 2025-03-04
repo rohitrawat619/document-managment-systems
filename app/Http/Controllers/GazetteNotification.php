@@ -167,7 +167,7 @@ class GazetteNotification extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
+            return response()->json(['message' => 'Form created successfully!']);
            // return redirect()->route('admin.document.gazette_notification.index')->with('success','Form Created Successfully !!');
 
         }
@@ -250,7 +250,7 @@ class GazetteNotification extends Controller
         }
 
         DB::commit();
-        return response()->json('Gazette Notifications Updated Successfully!');
+        return response()->json(['message' => 'Gazette Notifications Updated Successfully!']);
         //return redirect()->route('admin.document.gazette_notification.index')->with('success', 'Office Memorandum Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();

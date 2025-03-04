@@ -120,7 +120,7 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Court Case</a></li>
                 @endif
                 @if(in_array('26', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> PM Reference</a></li>
+                    <li><a href="{{ route('admin.document.pm_reference.index') }}"><i class='bx bx-radio-circle'></i> PM Reference</a></li>
                 @endif
                 @if(in_array('27', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> VIP Reference</a></li>

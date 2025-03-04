@@ -128,7 +128,7 @@
                                         <strong>{{ $errors->first('keyword') }}</strong>
                                     </span>
                                 @endif
-                                <div id="key1" style="color: red; display: none;"></div>
+                                <div id="key_error" style="color: red; display: none;"></div>
                             </div>
 
                             <div class="col-md-6">
@@ -195,8 +195,6 @@
 
 @push('scripts')
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
         $('#sub').click(function(e){
@@ -213,13 +211,20 @@
                     $('#file_no').focus();
                     return false;
                 }
-
+                var keyValue = $('#key').val()
                 if($('#key').val()=="")
 				{
-                    $('#key1').text("Please Enter Keywords").show();
+                    $('#key_error').text("Please Enter Keywords").show();
 					$('#key').focus();
 					return false;
 				}
+
+                else if (keyValue.length < 5)
+                 {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                } 
         });
     });
 </script>
@@ -249,7 +254,7 @@ $(document).ready(function() {
                     // window.location.href = "{{ route('admin.document.office_memorandum.index') }}";
                     Swal.fire({
                     title: "Success!",
-                    text: response.message || "Data Updated successfully!",
+                    text: response.message,
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {

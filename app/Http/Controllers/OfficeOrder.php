@@ -169,7 +169,7 @@ class OfficeOrder extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
+            return response()->json(['message' => 'Form created successfully!']);
             //return redirect()->route('admin.document.office_order.index')->with('success','Form Created Successfully !!');
 
         }
@@ -257,7 +257,7 @@ class OfficeOrder extends Controller
         }
 
         DB::commit();
-        return response()->json('Office Order Updated Successfully!');
+        return response()->json(['message' => 'Office Order Updated Successfully!']);
         //return redirect()->route('admin.document.office_order.index')->with('success', 'Office Order Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();

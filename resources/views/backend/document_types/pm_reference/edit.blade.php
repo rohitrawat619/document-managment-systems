@@ -10,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.document.office_order.index')}}">Office Memorandum</a>
+                        <li class="breadcrumb-item"><a href="{{route('admin.document.pm_reference.index')}}">PM Reference</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
@@ -22,28 +22,11 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                        <form id ="officeOrderForm" action="{{ route('admin.document.office_order.edit', $office_order->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
+                        <form id="pm_referenceForm" action="{{ route('admin.document.pm_reference.edit', $pm_reference->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            @if(Auth::user()->is_admin==1)
-                                <div class="col-md-6">
-                                    <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="division">
-                                        <option value="">--Select--</option>
-                                 
-                                           
-                                              <option value="{{$divisions->id}}"  selected>{{$divisions->name}}</option>
-                            
-                                    </select>
-                                    @if ($errors->has('division'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('division') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $office_order->computer_no }}" placeholder="computer no">
+                                <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $pm_reference->computer_no }}" placeholder="computer no">
                                 @if ($errors->has('computer_no'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('computer_no') }}</strong>
@@ -52,7 +35,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="file_no" class="form-label">File No. <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="file_no" name="file_no" value="{{ $office_order->file_no }}" placeholder="L-1222/1/2024-IA-I-(R)">
+                                <input type="text" class="form-control" id="file_no" name="file_no" value="{{ $pm_reference->file_no }}" placeholder="L-1222/1/2024-IA-I-(R)">
                                 @if ($errors->has('file_no'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('file_no') }}</strong>
@@ -61,17 +44,17 @@
                                 <div id="file_no1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_issue" name="date_of_issue" value="{{ $office_order->date_of_issue }}" placeholder="date of issue">
-                                @if ($errors->has('date_of_issue'))
+                                <label for="date_of_receipt" class="form-label">Date of Receipt <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="date_of_receipt" name="date_of_receipt" value="{{ $pm_reference->date_of_receipt }}" placeholder="date of issue">
+                                @if ($errors->has('date_of_receipt'))
                                     <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('date_of_issue') }}</strong>
+                                        <strong>{{ $errors->first('date_of_receipt') }}</strong>
                                     </span>
                                 @endif
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="subject" name="subject" value="{{ $office_order->subject }}" placeholder="">
+                                <input type="text" class="form-control" id="subject" name="subject" value="{{ $pm_reference->subject }}" placeholder="">
                                 @if ($errors->has('subject'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('subject') }}</strong>
@@ -79,8 +62,14 @@
                                 @endif
                             </div>
                             <div class="col-md-6">
+                                <label for="action" class="form-label">Action Taken <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="action" name="action" value="{{ $pm_reference->action }}" >
+                                <div id="action_error" style="color: red; display: none;"></div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ $office_order->issuer_name }}" placeholder="">
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ $pm_reference->issuer_name }}" placeholder="">
                                 @if ($errors->has('issuer_name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
@@ -89,7 +78,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ $office_order->issuer_designation }}" placeholder="">
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ $pm_reference->issuer_designation }}" placeholder="">
                                 @if ($errors->has('issuer_designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
@@ -105,24 +94,10 @@
                                     </span>
                                 @endif
                             </div>
-
-                            <div class="col-md-6">
-                                <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
-                                <select class="form-control" name="file_type">
-                                    <option value="0" @if($office_order->file_type == 0) selected @endif>Confidential</option>
-                                    <option value="1" @if($office_order->file_type == 1) selected @endif>Non-Confidential</option>
-                                </select>
-
-                                @if ($errors->has('file_type'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('file_type') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
+                            
                             <div class="col-md-6">
                                 <label for="keyword" class="form-label">Keywords <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="key" name="key" value="{{ str_replace(',', ' ',$office_order->keyword) }}" placeholder="">
+                                <input type="text" class="form-control" id="key" name="key" value="{{ str_replace(',', ' ', $pm_reference->keyword) }}" placeholder="">
                                 @if ($errors->has('keyword'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('keyword') }}</strong>
@@ -135,7 +110,7 @@
                                 <label for="upload_file" class="form-label">Upload File <small>(In PDF Format, Max: 20MB)</small> <span class="text-danger">*</span></label>
 
                                 <div class="field_wrapper">
-                                    @if(count($office_order_upload) == 0)
+                                    @if(count($pm_reference_upload) == 0)
                                         <div class="file-input-group d-flex align-items-center">
                                             <input type="file" class="form-control" name="upload_file[]">
                                             <a href="javascript:void(0);" class="remove_button ms-2" style="display:none;">
@@ -143,7 +118,7 @@
                                             </a>
                                         </div>
                                     @else
-                                        @foreach($office_order_upload as $key => $omu)
+                                        @foreach($pm_reference_upload as $key => $omu)
                                         <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}" >
                                             <input type="file" class="form-control" name="upload_file[]" disabled>
                                             <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">
@@ -194,8 +169,6 @@
 
 @push('scripts')
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
         $('#sub').click(function(e){
@@ -212,6 +185,7 @@
                     $('#file_no').focus();
                     return false;
                 }
+
                 var keyValue = $('#key').val()
                 if($('#key').val()=="")
 				{
@@ -225,20 +199,20 @@
                     $('#key_error').text("Minimum 5 characters required.").show();
                     $('#key').focus();
                     return false; 
-                }
+                } 
         });
     });
 </script>
 
 <script>
+
 $(document).ready(function() { 
-    $('#officeOrderForm').on('submit', function(e) {
+    $('#pm_referenceForm').on('submit', function(e) {
         e.preventDefault();  
 
         var keywords = $('#key').val();
         var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
         $('#key').val(formattedKeywords);
-
 
         var formData = new FormData(this);  
 
@@ -250,25 +224,29 @@ $(document).ready(function() {
             contentType: false, 
             success: function(response) { 
                     // alert(response);
-                    // window.location.href = "{{ route('admin.document.office_order.index') }}";
-
+                    // window.location.href = "{{ route('admin.document.pm_reference.index') }}";
                     Swal.fire({
                     title: "Success!",
-                    text: response.message || "Data Updated successfully!",
+                    text: response.message,
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {
-                    window.location.href = "{{ route('admin.document.office_order.index') }}";
+                    window.location.href = "{{ route('admin.document.pm_reference.index') }}";
                 });
-                
             },
             error: function(xhr, status, error) {
               
-                alert('An error occurred. Please try again.');
+                Swal.fire({
+                title: "Error!",
+                text: "An error occurred. Please try again.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
             }
         });
     });
 });
+
 
 $(document).ready(function() {
     var maxField = 5; 
@@ -318,7 +296,7 @@ $(document).ready(function() {
         if (confirm('Are you sure you want to delete this file?')) {
             var $currentElement = $(this).closest('.file-input-group'); 
             $.ajax({
-                url: "{{ route('admin.document.office_order.delete_file') }}", 
+                url: "{{ route('admin.document.pm_reference.delete_file') }}", 
                 type: 'DELETE',
                 data: {
                     _token: "{{ csrf_token() }}",
