@@ -55,7 +55,7 @@ use Illuminate\Support\Facades\Session;
                                     <th scope="col">#</th>
                                     <th scope="col">Computer No.</th>
                                     <th scope="col">File No.</th>
-                                    <th scope="col">Date of Publication</th>
+                                    <th scope="col">Date of Issue</th>
                                     <th scope="col">Subject</th>
                                     <th scope="col">Issued by Name & Designation</th>
                                     <th scope="col">Uploaded By Name & Designation</th>
@@ -74,7 +74,7 @@ use Illuminate\Support\Facades\Session;
                                 <th scope="row">{{ ($achievenment->currentPage() - 1) * $achievenment->perPage() + $k + 1 }}</th>
                                 <td>{{$r->computer_no}}</td>
                                 <td>{{$r->file_no}}</td>
-                                <td>{{date('Y-m-d',strtotime($r->date_of_publication))}}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
                                 <td>{{$r->subject}}</td>
                                 <td>{{$r->issuer_name}}</td>
                                 <td>{{$r->issuer_designation}}</td>
@@ -82,25 +82,26 @@ use Illuminate\Support\Facades\Session;
                                 <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                 <td>
                                 <div class="d-flex order-actions">
-                                    <a href="{{route('admin.document.achievenment.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-                                    <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                </div>
-                                            @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
-                                                <!-- <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
-                                                    <i class="bx bxs-edit"></i>
-                                                </a>
-                                                <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
-                                                    <i class="bx bxs-trash"></i>
-                                                </a> -->
-                                            @else
-                                                <a href="javascript:void(0);" class="disabled-link" title="No Permission">
-                                                    <i class="bx bxs-edit text-muted"></i>
-                                                </a>
-                                                <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
-                                                    <i class="bx bxs-trash text-muted"></i>
-                                                </a>
-                                            @endif
-                                        </div>
+                                @if(in_array(42, $userPermissions))
+                                    <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                        <i class="bx bxs-edit"></i>
+                                    </a>
+                                @else
+                                    <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                        <i class="bx bxs-edit text-muted"></i>
+                                    </a>
+                                @endif
+
+                                @if(in_array(43, $userPermissions))
+                                    <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                        <i class="bx bxs-trash"></i>
+                                    </a>
+                                @else
+                                    <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                        <i class="bx bxs-trash text-muted"></i>
+                                    </a>
+                                @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -200,8 +201,7 @@ use Illuminate\Support\Facades\Session;
 
                             if (response.success) {
                                 toastr.success('Form Deleted Successfully');
-                                
-                                  window.setTimeout(function(){
+                                window.setTimeout(function(){
                                     window.location.reload();
                                 },2000);
                             }
@@ -209,8 +209,7 @@ use Illuminate\Support\Facades\Session;
                             Swal.close();
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                    console.error("Error deleting:", textStatus, errorThrown);
-                
+                            // handle error
                         }
                     });
                 } else {
