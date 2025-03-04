@@ -22,8 +22,8 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                        <form action="{{route('admin.users.create')}}" method="post" class="row g-3">
-                            @csrf
+                        <form id = "userFrom" action="" method="post" class="row g-3">
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
                             <div class="col-md-6">
                                 <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name">
@@ -32,6 +32,7 @@
                                         <strong>{{ $errors->first('first_name') }}</strong>
                                     </span>
                                 @endif
+                                <div id="first_name_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="last_name" class="form-label">Last Name</label>
@@ -41,10 +42,11 @@
                                         <strong>{{ $errors->first('last_name') }}</strong>
                                     </span>
                                 @endif
+                                <div id="last_name_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                             <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                            <select class="form-control" id="multi-select" name="division[]" multiple="multiple">
+                            <select class="form-control" id="division" name="division[]" multiple="multiple">
                             <option value="">--Select--</option>
                                     @if(count($divisions)>0)
                                         @foreach ($divisions as $dv)
@@ -57,6 +59,7 @@
                                         <strong>{{ $errors->first('division') }}</strong>
                                     </span>
                             @endif
+                            <div id="division_error" style="color: red; display: none;"></div>
                             </div>  
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
@@ -71,6 +74,7 @@
                                         <strong>{{ $errors->first('role') }}</strong>
                                     </span>
                                 @endif
+                                <div id="role_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                             <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
@@ -86,6 +90,7 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
+                                <div id="email_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="mobile" class="form-label">Mobile <span class="text-danger">*</span></label><br>
@@ -97,6 +102,7 @@
                                         <strong>{{ $errors->first('mobile') }}</strong>
                                     </span>
                                 @endif
+                                <div id="mobile_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
@@ -106,6 +112,7 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
+                                <div id="password_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="confirm_password" class="form-label">Confirm Password</label>
@@ -115,10 +122,11 @@
                                         <strong>{{ $errors->first('confirm_password') }}</strong>
                                     </span>
                                 @endif
+                                <div id="confirm_password_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <button type="submit" id="submit" class="btn btn-primary px-4">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -131,6 +139,8 @@
     </div>
 </div>
 @push('scripts')
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
     <script>
       $(".mobile").intlTelInput({
           initialCountry: "in",
@@ -169,7 +179,7 @@
     /** select 2 multi select */
     
     $(document).ready(function() {
-    $('#multi-select').select2();
+    $('#division').select2();
     });
 
     /*** Dependent dropdown for auto selected designations */
@@ -195,6 +205,127 @@
         }
     });
 });
+
+/** code for jquery errors */
+
+$(document).ready(function () {
+        $('#submit').click(function(e){
+
+                if($('#first_name').val()=="")
+				{
+					$('#first_name_error').text("Please Enter First Name").show();
+					$('#first_name').focus();
+					return false;
+				}
+
+                if($('#last_name').val()=="")
+				{
+                    $('#last_name_error').text("Please Enter last name").show();
+					$('#last_name').focus();
+					return false;invalid-feedback
+				}
+
+                if($('#division').val()=="")
+				{
+                    $('#division_error').text("Please Select Division").show();
+					$('#division').focus();
+					return false;
+				}
+
+                if($('#role').val()=="")
+				{
+                    $('#role_error').text("Please Select Role").show();
+					$('#role').focus();
+					return false;
+				}
+
+                if($('#email').val()=="")
+				{
+                    $('#email_error').text("Please Enter Email").show();
+					$('#email').focus();
+					return false;
+				}
+
+                if($('#mobile').val()=="")
+				{
+                    $('#mobile_error').text("Please Enter Mobile No.").show();
+					$('#mobile').focus();
+					return false;
+                }
+                if($('#password').val()=="")
+				{
+                    $('#password_error').text("Please Enter Password").show();
+					$('#password').focus();
+					return false;
+                }
+                if($('#confirm_password').val()=="")
+				{
+                    $('#confirm_password_error').text("Please Enter Confirm Password").show();
+					$('#confirm_password').focus();
+					return false;
+                }
+        });
+   
+
+
+    /**  code for submitting form using ajax */
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    var userFormUrl = "{{ url('admin/users/create') }}";
+    $('#userFrom').on('submit', function(e) {
+        e.preventDefault();
+        
+        let formData = new FormData(this); 
+
+        $.ajax({
+            url: userFormUrl, 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                $('.btn-primary1').prop('disabled', true).text('Submitting...');
+            },
+            success: function(response) {
+                $('.btn-primary1').prop('disabled', false).text('Submit');
+                // alert(response);
+                //      window.location.href = "{{ route('admin.users.index') }}";
+                Swal.fire({
+                title: "Success!",
+                text: response.message,
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                window.location.href = "{{ route('admin.users.index') }}";
+            });
+            },
+            error: function(xhr) {
+                console.log(xhr);
+                $('.btn-primary1').prop('disabled', false).text('Submit');
+                
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    var errors = xhr.responseJSON.errors;
+                    $.each(errors, function(key, value) {
+                        $('#' + key + '_error').text(value[0]).show(); 
+                    });
+                } else {
+                Swal.fire({
+                title: "Error!",
+                text: "An error occurred. Please try again.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+                }
+            }
+        });
+    });
+});
+
    
     </script>
     

@@ -143,8 +143,9 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
                 //dd($validator);
-                return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
+               // return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
             }
 
             $mobile = preg_replace('/\D/', '', $request->input('mobile'));
@@ -179,8 +180,8 @@ class UserController extends Controller
             ]);
 
             DB::commit();
-
-            return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
+            return response()->json(['message' => 'User Created Successfully']);
+            //return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
 
         }
         catch (\Exception $e) {
