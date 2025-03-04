@@ -188,8 +188,6 @@
 </div>
 @push('scripts')
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
         $('#sub').click(function(e){
@@ -278,12 +276,20 @@
 					return false;
 				}
 
+                var keyValue = $('#key').val()
                 if($('#key').val()=="")
 				{
                     $('#key_error').text("Please Enter Keywords").show();
 					$('#key').focus();
 					return false;
 				}
+
+                else if (keyValue.length < 5)
+                 {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                }
                 
             var fileInput2 = document.getElementById('upload_file');
             var file2 = fileInput2.files[0];
@@ -345,7 +351,7 @@ $(document).ready(function() {
                 //      window.location.href = "{{ route('admin.document.office_order.index') }}";
                     Swal.fire({
                     title: "Success!",
-                    text: response.message || "Data submitted successfully!",
+                    text: response.message,
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {

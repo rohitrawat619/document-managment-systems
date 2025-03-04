@@ -164,18 +164,24 @@
 
 @push('scripts')
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
         $('#sub').click(function(e){
 
+            var keyValue = $('#key').val()
                 if($('#key').val()=="")
 				{
-                    $('#key1').text("Please Enter Keywords").show();
+                    $('#key_error').text("Please Enter Keywords").show();
 					$('#key').focus();
 					return false;
 				}
+
+                else if (keyValue.length < 5)
+                 {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                } 
         });
     });
 </script>

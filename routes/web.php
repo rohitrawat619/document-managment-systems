@@ -209,6 +209,16 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'showChangePasswordForm'])->name('password.change');
     Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('password.update');
 
+     //  PM Reference
+
+     Route::get('/document/pm_reference',[App\Http\Controllers\PmReferenceController::class, 'pm_reference'])->name('document.pm_reference.index');
+     Route::match(['get','post'],'/document/pm_reference/create',[App\Http\Controllers\PmReferenceController::class, 'create'])->name('document.pm_reference.create');
+     Route::match(['get','post'],'/document/pm_reference/edit/{id}',[App\Http\Controllers\PmReferenceController::class, 'edit'])->name('document.pm_reference.edit');
+     Route::post('/document/pm_reference/status',[App\Http\Controllers\PmReferenceController::class, 'status'])->name('document.pm_reference.status');
+     Route::post('/pm_reference/delete',[App\Http\Controllers\PmReferenceController::class, 'destroy'])->name('pm_reference.delete');
+     Route::get('view-pdf/{file}', [App\Http\Controllers\PmReferenceController::class, 'viewPdf'])->name('view.pdf');
+     Route::get('/admin/document/pm_reference/get-divisions-by-user', [App\Http\Controllers\PmReferenceController::class, 'getDivisionsByUser'])->name('document.pm_reference.get-divisions-by-user');
+     Route::delete('/admin/document/pm_reference/delete_file', [App\Http\Controllers\PmReferenceController::class, 'deleteFile'])->name('document.pm_reference.delete_file');
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);

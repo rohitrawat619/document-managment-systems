@@ -77,7 +77,7 @@ class NotificationController extends Controller
            ->where('users.designation','=',$authUser->designation)
           ->first();
 
-    
+    //echo '<pre>'; print_r($designation); die;
             if ($authUser->id == 1) {
                 
                 $divisions = Division::all();
