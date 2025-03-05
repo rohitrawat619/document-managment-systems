@@ -20,7 +20,15 @@ use Illuminate\Support\Facades\Session;
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.document.achievenment.create')}}" type="button" class="btn btn-primary">Add</a>
+                @if(in_array(41, $userPermissions))
+                    <a href="{{ route('admin.document.office_memorandum.create') }}" title="Add">
+                        <i class="bx bxs-plus-circle"></i>
+                    </a>
+                @else
+                    <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                        <i class="bx bxs-plus-circle text-muted"></i>
+                    </a>
+                @endif
                 </div>
             </div>
         </div>
@@ -55,7 +63,7 @@ use Illuminate\Support\Facades\Session;
                                     <th scope="col">#</th>
                                     <th scope="col">Computer No.</th>
                                     <th scope="col">File No.</th>
-                                    <th scope="col">Date of Publication</th>
+                                    <th scope="col">Date of Issue</th>
                                     <th scope="col">Subject</th>
                                     <th scope="col">Issued by Name & Designation</th>
                                     <th scope="col">Uploaded By Name & Designation</th>
@@ -74,33 +82,49 @@ use Illuminate\Support\Facades\Session;
                                 <th scope="row">{{ ($achievenment->currentPage() - 1) * $achievenment->perPage() + $k + 1 }}</th>
                                 <td>{{$r->computer_no}}</td>
                                 <td>{{$r->file_no}}</td>
-                                <td>{{date('Y-m-d',strtotime($r->date_of_publication))}}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
                                 <td>{{$r->subject}}</td>
                                 <td>{{$r->issuer_name}}</td>
                                 <td>{{$r->issuer_designation}}</td>
                                 <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                 <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                 <td>
+                                        <!-- Button to Open Modal -->
+                                        <button class="btn btn-primary viewDetails" 
+                                            data-id="{{$r->id}}" 
+                                            data-computer_no="{{$r->computer_no}}" 
+                                            data-file_no="{{$r->file_no}}" 
+                                            data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
+                                            data-subject="{{$r->subject}}" 
+                                            data-issuer_name="{{$r->issuer_name}}" 
+                                            data-issuer_designation="{{$r->issuer_designation}}" 
+                                            data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
+                                            data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
+                                            View
+                                        </button>
+                                </td>
+                                <td>
                                 <div class="d-flex order-actions">
-                                    <a href="{{route('admin.document.achievenment.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-                                    <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
-                                </div>
-                                            @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
-                                                <!-- <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
-                                                    <i class="bx bxs-edit"></i>
-                                                </a>
-                                                <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
-                                                    <i class="bx bxs-trash"></i>
-                                                </a> -->
-                                            @else
-                                                <a href="javascript:void(0);" class="disabled-link" title="No Permission">
-                                                    <i class="bx bxs-edit text-muted"></i>
-                                                </a>
-                                                <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
-                                                    <i class="bx bxs-trash text-muted"></i>
-                                                </a>
-                                            @endif
-                                        </div>
+                                @if(in_array(42, $userPermissions))
+                                        <a href="{{ route('admin.document.achievenment.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                            <i class="bx bxs-edit"></i>
+                                        </a>
+                                    @else
+                                        <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                            <i class="bx bxs-edit text-muted"></i>
+                                        </a>
+                                    @endif
+
+                                    @if(in_array(43, $userPermissions))
+                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                            <i class="bx bxs-trash"></i>
+                                        </a>
+                                    @else
+                                        <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                            <i class="bx bxs-trash text-muted"></i>
+                                        </a>
+                                    @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -118,6 +142,35 @@ use Illuminate\Support\Facades\Session;
         <!--end row-->
     </div>
 </div>
+
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Recruitment Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tr><th>Computer No</th><td id="modalComputerNo"></td></tr>
+                    <tr><th>File No</th><td id="modalFileNo"></td></tr>
+                    <tr><th>Date of Issue</th><td id="modalDateOfIssue"></td></tr>
+                    <tr><th>Subject</th><td id="modalSubject"></td></tr>
+                    <tr><th>Issuer Name</th><td id="modalIssuerName"></td></tr>
+                    <tr><th>Issuer Designation</th><td id="modalIssuerDesignation"></td></tr>
+                    <tr><th>Keywords</th><td id="modalKeyword"></td></tr>
+                    <tr><th>Date of Upload</th><td id="modalDateOfUpload"></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @push('scripts')
     <script>
        $(document).on('click', '.status', function (event) {
@@ -200,8 +253,7 @@ use Illuminate\Support\Facades\Session;
 
                             if (response.success) {
                                 toastr.success('Form Deleted Successfully');
-                                
-                                  window.setTimeout(function(){
+                                window.setTimeout(function(){
                                     window.location.reload();
                                 },2000);
                             }
@@ -209,8 +261,7 @@ use Illuminate\Support\Facades\Session;
                             Swal.close();
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                    console.error("Error deleting:", textStatus, errorThrown);
-                
+                            // handle error
                         }
                     });
                 } else {
@@ -219,6 +270,24 @@ use Illuminate\Support\Facades\Session;
                 }
             });
        });
+
+       $(document).ready(function(){
+        $('.viewDetails').click(function(){
+            // Get Data from Button Attributes
+            $('#modalComputerNo').text($(this).data('computer_no'));
+            $('#modalFileNo').text($(this).data('file_no'));
+            $('#modalDateOfIssue').text($(this).data('date_of_issue'));
+            $('#modalSubject').text($(this).data('subject'));
+            $('#modalIssuerName').text($(this).data('issuer_name'));
+            $('#modalIssuerDesignation').text($(this).data('issuer_designation'));
+            $('#modalKeyword').text($(this).data('keyword'));
+            $('#modalDateOfUpload').text($(this).data('date_of_upload'));
+
+            // Open Modal
+            $('#detailsModal').modal('show');
+        });
+    });
+    
     </script>
 @endpush
 @endsection
