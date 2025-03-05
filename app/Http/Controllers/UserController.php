@@ -174,7 +174,7 @@ class UserController extends Controller
             ]);
            
             $email_username = explode('@', $request->email)[0];
-            $user_name = $email_username . ($new_user->id + 1);
+            $user_name = $email_username;
             User::where('id', $new_user->id)->update([
                 'user_name' => $user_name
             ]);
