@@ -106,7 +106,6 @@ class UserController extends Controller
             return view('backend.users.index',compact('users'));
     }
 
-
     public function create(Request $request)
     {
         if($request->isMethod('get'))
