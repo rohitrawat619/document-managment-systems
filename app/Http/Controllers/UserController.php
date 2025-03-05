@@ -106,7 +106,6 @@ class UserController extends Controller
             return view('backend.users.index',compact('users'));
     }
 
-
     public function create(Request $request)
     {
         if($request->isMethod('get'))
@@ -174,7 +173,7 @@ class UserController extends Controller
             ]);
            
             $email_username = explode('@', $request->email)[0];
-            $user_name = $email_username . ($new_user->id + 1);
+            $user_name = $email_username;
             User::where('id', $new_user->id)->update([
                 'user_name' => $user_name
             ]);
