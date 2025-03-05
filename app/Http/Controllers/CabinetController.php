@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PmReference;
+use App\Models\CabinateNote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -11,19 +11,20 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use App\Models\PmReferenceUpload;
+use App\Models\CabinateNoteUpload;
 
-class PmReferenceController extends Controller
+
+class CabinetController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function pm_reference(Request $request)
+    public function cabinet_note(Request $request)
 {
-    $pm_reference = PmReference::where('is_deleted', 0)->paginate(10); 
-    return view('backend.document_types.pm_reference.index', compact('pm_reference'));
+    $cabinet_note = CabinateNote::where('is_deleted', 0)->paginate(10); 
+    return view('backend.document_types.cabinet_note.index', compact('cabinet_note'));
 }
 
 public function create(Request $request)
@@ -50,7 +51,7 @@ public function create(Request $request)
                 $users = User::where('id', $authUser->id)->get();
             }
     
-            return view('backend.document_types.pm_reference.create', compact('divisions', 'users','designation'));
+            return view('backend.document_types.cabinet_note.create', compact('divisions', 'users','designation'));
         }
      
 
@@ -67,10 +68,10 @@ public function create(Request $request)
                 'subject' => 'required|string',
                 'action' => 'required|string',
                 'issuer_name' => 'required|string',
+                'cabinet' => 'required|string',
                 'issuer_designation' => 'required|string',
                 'date_of_upload' => 'required',
                 'date_of_receipt' => 'required',
-                'date_of_sent' => 'required',
                 'upload_file' => 'required|array|min:1', 
                 'upload_file.*' => 'mimes:pdf|max:20480',
                 'key' => 'required',
@@ -87,19 +88,18 @@ public function create(Request $request)
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                 //dd($validator->errors()); 
-                 return response()->json(['errors' => $validator->errors()], 422);
-              
+                // dd($validator->errors()); 
+                return response()->json(['errors' => $validator->errors()], 422);
             }
             
 
-            $new_user = PmReference::create([
+            $new_user = CabinateNote::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => Auth::id(),
                 'date_of_receipt' => $request->date_of_receipt,
-                'date_of_sent' => $request->date_of_sent,
                 'subject' => $request->subject,
+                'cabinet' => $request->cabinet,
                 'action' => $request->action,
                 'issuer_name' => $request->issuer_name,
                 'issuer_designation' => $request->issuer_designation,
@@ -117,9 +117,9 @@ public function create(Request $request)
                 //dd($a);
                 foreach ($a as $file) {
                     
-                    $path = $file->store('pm_reference_upload', 'public');
+                    $path = $file->store('cabinet_note_upload', 'public');
 
-                    PmReferenceUpload::create([
+                    CabinateNoteUpload::create([
                         'file_path' => $path,
                         'user_id' => Auth::id(),
                         'record_id' => $new_user->id, 
@@ -148,17 +148,17 @@ public function create(Request $request)
 
     if($request->isMethod('get')) {
         
-        $pm_reference = PmReference::where('id', $user_id)->first();
-        // dd($PmReference);
-        $data = $pm_reference->id;
-        $div = $pm_reference->user_id;
+        $cabinet_note = CabinateNote::where('id', $user_id)->first();
+        // dd($CabinateNote);
+        $data = $cabinet_note->id;
+        $div = $cabinet_note->user_id;
 
-        $pm_reference_upload = PmReferenceUpload::where('record_id', $data)->get()->toArray();
-        // dd($PmReference_upload);
-        //echo '<pre>'; print_r($PmReference); die;
+        $cabinet_note_upload = CabinateNoteUpload::where('record_id', $data)->get()->toArray();
+        // dd($CabinateNote_upload);
+        //echo '<pre>'; print_r($CabinateNote); die;
         $divisions = Division::where('id', $div)->first();
         // dd($divisions);
-        return view('backend.document_types.pm_reference.edit', compact('divisions', 'pm_reference', 'pm_reference_upload'));
+        return view('backend.document_types.cabinet_note.edit', compact('divisions', 'cabinet_note', 'cabinet_note_upload'));
     }
     
     
@@ -178,15 +178,15 @@ public function create(Request $request)
         ]);
 
         if ($validator->fails()) {
-            // return redirect()->route('admin.document.PmReference.edit', ['id' => base64_encode($user_id)])
+            // return redirect()->route('admin.document.CabinateNote.edit', ['id' => base64_encode($user_id)])
             //                  ->withErrors($validator)
             //                  ->withInput();
             return response()->json(['errors' => $validator->errors()], 422);
         }
         
-        $PmReference = PmReference::find($id);
+        $CabinateNote = CabinateNote::find($id);
 
-        $PmReference->update([
+        $CabinateNote->update([
             'computer_no' => $request->computer_no,
             'file_no' => $request->file_no,
             'date_of_receipt' => $request->date_of_receipt,
@@ -202,66 +202,23 @@ public function create(Request $request)
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('pm_reference_upload', 'public');
-                PmReferenceUpload::create([
+                $path = $file->store('cabinet_note_upload', 'public');
+                CabinateNoteUpload::create([
                     'file_path' => $path,
-                    'user_id' => $PmReference->user_id,
-                    'record_id' => $PmReference->id,
+                    'user_id' => $CabinateNote->user_id,
+                    'record_id' => $CabinateNote->id,
                     'file_name' => $file->getClientOriginalName()
                 ]);
             }
         }
 
         DB::commit();
-        return response()->json(['message' => 'PM Reference Updated successfully!']);
-        //return redirect()->route('admin.document.PmReference.index')->with('success', 'PmReferenceModel Updated Successfully!');
+        return response()->json(['message' => 'Cabinet Note Updated successfully!']);
+        //return redirect()->route('admin.document.CabinateNote.index')->with('success', 'CabinateNoteModel Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
 }
 
-public function deleteFile(Request $request)
-{
-    $filePath = $request->file_path;
-    $fileId = $request->file_id;
-    $deleteFromStorage = $request->delete_from_storage; 
-
-    if ($filePath) {
-        
-        if ($deleteFromStorage) {
-           
-            if (Storage::disk('public')->exists($filePath)) {
-                Storage::disk('public')->delete($filePath);
-                
-            } else {
-                
-            }
-        }
-
-        $file = PmReferenceUpload::find($fileId);
-        // if ($file) {
-        //     $file->delete();
-        // }
-        if (!$file) {
-            return response()->json(['error' => 'Record not found'], 404);
-        }
-
-      
-    }
-
-  
-}
-
-public function destroy(Request $request)
-    {  
-        $user_id =base64_decode($request->id);
-        $auth_id = Auth::user()->id;
-        $privacy = PmReference::find($user_id);
-        $privacy->is_deleted = '1';
-        $privacy->deleted_by = $auth_id;
-        $privacy->deleted_at = date('Y-m-d H:i:s');
-        $privacy->save();
-        return response()->json(['success'=>true]);
-    }
 }

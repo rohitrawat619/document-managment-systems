@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Session;
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Record of Discussion</li>
+                        <li class="breadcrumb-item active" aria-current="page">VIP Reference</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.document.records_of_discussion.create')}}" type="button" class="btn btn-primary">Add</a>
+                    <a href="{{route('admin.document.vip_reference.create')}}" type="button" class="btn btn-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -43,20 +43,24 @@ use Illuminate\Support\Facades\Session;
                 <div class="card">
                     <div class="card-body">
                     <div class="d-flex  mb-3">
-                    <form method="GET" action="{{ route('admin.document.records_of_discussion.index') }}" class="form-inline" style="width: 100%;">
+                    <form method="GET" action="{{ route('admin.document.vip_reference.index') }}" class="form-inline" style="width: 100%;">
                     <div class="d-flex mb-3">
                     <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
                     <button type="submit" class="btn btn-primary ms-2">Search</button>
-                    <a href="{{ route('admin.document.records_of_discussion.index') }}" class="btn btn-secondary ms-2">Reset</a>
-                     </div>
+                    <a href="{{ route('admin.document.vip_reference.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                    </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Date of Metting</th>
+                                    <th scope="col">Computer No.</th>
+                                    <th scope="col">File No.</th>
+                                    <th scope="col">Date of Receipt</th>
+                                    <th scope="col">Date of Reply Sent</th>
+                                    <th scope="col">Action</th>
                                     <th scope="col">Subject</th>
-                                    <th scope="col">Agenda</th>
-                                    <th scope="col">Designation</th>
+                                    <th scope="col">Issued by Name & Designation</th>
+                                    <th scope="col">Uploaded By Name & Designation</th>
                                     <th scope="col">Keywords</th>
                                     <th scope="col">Date of Upload</th>
                                     <th scope="col">Action</th>
@@ -66,24 +70,32 @@ use Illuminate\Support\Facades\Session;
                             @php
                             $userPermissions = session::get('user_permissions');
                             @endphp
-                            @forelse ($records_of_discussion as $k => $r)
-                                <tr>
-                                    <th scope="row">{{ ($records_of_discussion->currentPage() - 1) * $records_of_discussion->perPage() + $k + 1 }}</th>
-                                    <td>{{ date('Y-m-d', strtotime($r->date_of_Meeting)) }}</td>
-                                    <td>{{ $r->subject }}</td>
-                                    <td>{{ $r->agenda }}</td>
-                                    <td>{{ $r->issuer_designation }}</td>
-                                    <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
-                                    <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
-                                    <td>
-                                    <div class="d-flex order-actions">
+                            @forelse ($vip_reference as $k => $r)
+                            <tr>
+                                <!-- Adjust numbering to be continuous across pages -->
+                                <th scope="row">{{ ($vip_reference->currentPage() - 1) * $vip_reference->perPage() + $k + 1 }}</th>
+                                <td>{{$r->computer_no}}</td>
+                                <td>{{$r->file_no}}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_receipt))}}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_sent))}}</td>
+                                <td>{{$r->action}}</td>
+                                <td>{{$r->subject}}</td>
+                                <td>{{$r->issuer_name}}</td>
+                                <td>{{$r->issuer_designation}}</td>
+                                <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
+                                <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
+                                <td>
+                                <div class="d-flex order-actions">
+                                    <a href="{{route('admin.document.vip_reference.edit',['id'=>base64_encode($r->id)])}}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
+                                    <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{base64_encode($r->id)}}"><i class="bx bxs-trash"></i></a>
+                                </div>
                                             @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
-                                                <a href="{{ route('admin.document.records_of_discussion.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                <!-- <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                                     <i class="bx bxs-edit"></i>
                                                 </a>
                                                 <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
                                                     <i class="bx bxs-trash"></i>
-                                                </a>
+                                                </a> -->
                                             @else
                                                 <a href="javascript:void(0);" class="disabled-link" title="No Permission">
                                                     <i class="bx bxs-edit text-muted"></i>
@@ -93,16 +105,15 @@ use Illuminate\Support\Facades\Session;
                                                 </a>
                                             @endif
                                         </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <td class="text-center" colspan="9">No Records Found</td>
-                            @endforelse
+                                </td>
+                            </tr>
+                        @empty
+                            <td class="text-center" colspan="9">No Records Found</td>
+                        @endforelse
                             </tbody>
                         </table>
-                         <!-- Pagination Links -->
-                         <div class="d-flex justify-content-center mt-4">
-                            {{ $records_of_discussion->links('pagination::bootstrap-4') }}
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $vip_reference->links('pagination::bootstrap-4') }}
                         </div>
                     </div>
                 </div>
@@ -132,7 +143,7 @@ use Illuminate\Support\Facades\Session;
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.document.records_of_discussion.status')}}",
+                        url: "{{route('admin.document.vip_reference.status')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
@@ -184,7 +195,7 @@ use Illuminate\Support\Facades\Session;
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.records_of_discussion.delete')}}",
+                        url: "{{route('admin.vip_reference.delete')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
@@ -193,7 +204,8 @@ use Illuminate\Support\Facades\Session;
 
                             if (response.success) {
                                 toastr.success('Form Deleted Successfully');
-                                window.setTimeout(function(){
+                                
+                                  window.setTimeout(function(){
                                     window.location.reload();
                                 },2000);
                             }
@@ -201,7 +213,8 @@ use Illuminate\Support\Facades\Session;
                             Swal.close();
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            // handle error
+                    console.error("Error deleting:", textStatus, errorThrown);
+                
                         }
                     });
                 } else {
