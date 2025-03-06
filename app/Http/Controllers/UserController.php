@@ -106,7 +106,6 @@ class UserController extends Controller
             return view('backend.users.index',compact('users'));
     }
 
-
     public function create(Request $request)
     {
         if($request->isMethod('get'))
@@ -143,8 +142,9 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
                 //dd($validator);
-                return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
+               // return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
             }
 
             $mobile = preg_replace('/\D/', '', $request->input('mobile'));
@@ -173,16 +173,14 @@ class UserController extends Controller
             ]);
            
             $email_username = explode('@', $request->email)[0];
-            $user_name = $email_username . ($new_user->id + 1);
+            $user_name = $email_username;
             User::where('id', $new_user->id)->update([
                 'user_name' => $user_name
             ]);
 
             DB::commit();
-
-            return response()->json(['message' => 'Form created successfully!']);
-
-           // return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
+            return response()->json(['message' => 'User Created Successfully']);
+            //return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
 
         }
         catch (\Exception $e) {

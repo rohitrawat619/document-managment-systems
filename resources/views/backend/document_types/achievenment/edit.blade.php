@@ -24,23 +24,6 @@
                     <div class="card-body p-4">
                         <form id="achievenmentForm" action="{{ route('admin.document.achievenment.edit', $achievenment->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            @if(Auth::user()->is_admin==1)
-                                <div class="col-md-6">
-                                    <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="division">
-                                        <option value="">--Select--</option>
-                                 
-                                           
-                                              <option value="{{$divisions->id}}"  selected>{{$divisions->name}}</option>
-                            
-                                    </select>
-                                    @if ($errors->has('division'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('division') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $achievenment->computer_no }}" placeholder="computer no">
@@ -128,7 +111,7 @@
                                         <strong>{{ $errors->first('keyword') }}</strong>
                                     </span>
                                 @endif
-                                <div id="key1" style="color: red; display: none;"></div>
+                                <div id="key_error" style="color: red; display: none;"></div>
                             </div>
 
                             <div class="col-md-6">

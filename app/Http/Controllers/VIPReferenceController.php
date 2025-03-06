@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\VIPReference;
 use Illuminate\Http\Request;
-use App\Models\RecruitmentModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -11,52 +11,24 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use App\Models\RecruitmentUpload;
+use App\Models\VIPReferenceUpload;
 
-
-class RecruitmentController extends Controller
+class VIPReferenceController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function recruitment(Request $request)
-    {
-        $recruitment = RecruitmentModel::where('is_deleted', 0)->paginate(10); 
-        return view('backend.document_types.recruitment.index', compact('recruitment'));
-                // $query = RecruitmentModel::from('recruitment as o')
-                // ->select('o.*', 'u.name as uploader_name', 'd.name as division_name', 'ds.name as uploader_designation')
-                // ->leftJoin('users as u', 'u.id', '=', 'o.uploaded_by')
-                // ->leftJoin('divisions as d', 'd.id', '=', 'o.division_id')
-                // ->leftJoin('designations as ds', 'ds.id', '=', 'u.designation')
-                // ->where('o.is_deleted', 0);
+    public function vip_reference(Request $request)
+{
+    $vip_reference = VIPReference::where('is_deleted', 0)->paginate(10); 
+    return view('backend.document_types.vip_reference.index', compact('vip_reference'));
+}
 
-                // Apply filter if 'computer_no' is provided
-                // if ($request->filled('search')) {
-                //     $computer_no = $request->get('search');
-                //     $query->where('o.computer_no', 'like', "%{$computer_no}%");
-                // }
-
-                // // Fetch the paginated result
-                // $recruitment = $query->orderBy('o.id', 'asc')->paginate(10);
-
-
-        // return view('backend.document_types.recruitment.index');
-    }
-
-    public function create(Request $request)
+public function create(Request $request)
     {
      
-        // if($request->isMethod('get'))
-        // {
-        //     $divisions = Division::all();
-
-        //     $users = User::all();
-
-        //     return view('backend.document_types.recruitment.create',compact('divisions','users'));
-        // }
-
         if ($request->isMethod('get')) {
             $authUser = Auth::user();
             
@@ -78,9 +50,8 @@ class RecruitmentController extends Controller
                 $users = User::where('id', $authUser->id)->get();
             }
     
-            return view('backend.document_types.recruitment.create', compact('divisions', 'users','designation'));
+            return view('backend.document_types.vip_reference.create', compact('divisions', 'users','designation'));
         }
-
      
 
         $roleId = Auth::user()->role_id;
@@ -94,9 +65,13 @@ class RecruitmentController extends Controller
                 'computer_no' => 'required',
                 'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
                 'subject' => 'required|string',
+                'action' => 'required|string',
                 'issuer_name' => 'required|string',
+                'vip' => 'required|string',
                 'issuer_designation' => 'required|string',
                 'date_of_upload' => 'required',
+                'date_of_receipt' => 'required',
+                'date_of_sent' => 'required',
                 'upload_file' => 'required|array|min:1', 
                 'upload_file.*' => 'mimes:pdf|max:20480',
                 'key' => 'required',
@@ -113,21 +88,20 @@ class RecruitmentController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                // dd($validator->errors()); // Yeh validation errors show karega
+                // dd($validator->errors()); 
                 return response()->json(['errors' => $validator->errors()], 422);
             }
             
-            // if ($validator->fails()) {
-            //     return redirect()->route('admin.document.recruitment.create')->withErrors($validator)->withInput();
-            // }
-            
 
-            $new_user = RecruitmentModel::create([
+            $new_user = VIPReference::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => Auth::id(),
-                'date_of_issue' => $request->date_of_publication,
+                'date_of_receipt' => $request->date_of_receipt,
+                'date_of_sent' => $request->date_of_sent,
                 'subject' => $request->subject,
+                'vip' => $request->vip,
+                'action' => $request->action,
                 'issuer_name' => $request->issuer_name,
                 'issuer_designation' => $request->issuer_designation,
                 'date_of_upload' => $request->date_of_upload,
@@ -144,9 +118,9 @@ class RecruitmentController extends Controller
                 //dd($a);
                 foreach ($a as $file) {
                     
-                    $path = $file->store('recruitment_upload', 'public');
+                    $path = $file->store('vip_reference_upload', 'public');
 
-                    RecruitmentUpload::create([
+                    VIPReferenceUpload::create([
                         'file_path' => $path,
                         'user_id' => Auth::id(),
                         'record_id' => $new_user->id, 
@@ -156,13 +130,11 @@ class RecruitmentController extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
-            //return redirect()->route('admin.document.recruitment.index')->with('success','Form Created Successfully !!');
-
+            return response()->json(['message' => 'Form created successfully!']);
+            
         }
         catch (\Exception $e) {
             DB::rollback();
-            // something went wrong
             return $e;
         }
 
@@ -176,17 +148,17 @@ class RecruitmentController extends Controller
 
     if($request->isMethod('get')) {
         
-        $recruitment = RecruitmentModel::where('id', $user_id)->first();
-        // dd($recruitment);
-        $data = $recruitment->id;
-        $div = $recruitment->user_id;
+        $vip_reference = VIPReference::where('id', $user_id)->first();
+        // dd($VIPReference);
+        $data = $vip_reference->id;
+        $div = $vip_reference->user_id;
 
-        $recruitment_upload = RecruitmentUpload::where('record_id', $data)->get()->toArray();
-        // dd($recruitment_upload);
-        //echo '<pre>'; print_r($recruitment); die;
+        $vip_reference_upload = VIPReferenceUpload::where('record_id', $data)->get()->toArray();
+        // dd($VIPReference_upload);
+        //echo '<pre>'; print_r($VIPReference); die;
         $divisions = Division::where('id', $div)->first();
         // dd($divisions);
-        return view('backend.document_types.recruitment.edit', compact('divisions', 'recruitment', 'recruitment_upload'));
+        return view('backend.document_types.vip_reference.edit', compact('divisions', 'vip_reference', 'vip_reference_upload'));
     }
     
     
@@ -196,7 +168,6 @@ class RecruitmentController extends Controller
         $validator = Validator::make($request->all(), [
             'computer_no' => 'required',
             'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-            'date_of_publication' => 'required',
             'subject' => 'required|string',
             'issuer_name' => 'required|string',
             'issuer_designation' => 'required|string',
@@ -207,43 +178,43 @@ class RecruitmentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // return redirect()->route('admin.document.recruitment.edit', ['id' => base64_encode($user_id)])
+            // return redirect()->route('admin.document.VIPReference.edit', ['id' => base64_encode($user_id)])
             //                  ->withErrors($validator)
             //                  ->withInput();
             return response()->json(['errors' => $validator->errors()], 422);
         }
         
-        $recruitment = RecruitmentModel::find($id);
+        $VIPReference = VIPReference::find($id);
 
-    $recruitment->update([
-        'computer_no' => $request->computer_no,
-        'file_no' => $request->file_no,
-        'date_of_issue' => $request->date_of_publication,
-        'subject' => $request->subject,
-        'issuer_name' => $request->issuer_name,
-        'issuer_designation' => $request->issuer_designation,
-        'division_id' => $request->division,
-        'date_of_upload' => $request->date_of_upload,
-        'keyword' => $request->key
-    ]);
+        $VIPReference->update([
+            'computer_no' => $request->computer_no,
+            'file_no' => $request->file_no,
+            'date_of_receipt' => $request->date_of_receipt,
+            'subject' => $request->subject,
+            'action' => $request->action,
+            'issuer_name' => $request->issuer_name,
+            'issuer_designation' => $request->issuer_designation,
+            'date_of_upload' => $request->date_of_upload,
+            'keyword' => $request->key
+        ]);
      
     //$user = $request->user;
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('recruitment_upload', 'public');
-                RecruitmentUpload::create([
+                $path = $file->store('vip_reference_upload', 'public');
+                VIPReferenceUpload::create([
                     'file_path' => $path,
-                    'user_id' => $recruitment->user_id,
-                    'record_id' => $recruitment->id,
+                    'user_id' => $VIPReference->user_id,
+                    'record_id' => $VIPReference->id,
                     'file_name' => $file->getClientOriginalName()
                 ]);
             }
         }
 
         DB::commit();
-        return response()->json(['message' => 'RecruitmentModel Updated Successfully!']);
-        //return redirect()->route('admin.document.recruitment.index')->with('success', 'RecruitmentModel Updated Successfully!');
+        return response()->json(['message' => 'VIP Reference Updated successfully!']);
+        //return redirect()->route('admin.document.VIPReference.index')->with('success', 'VIPReferenceModel Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -268,29 +239,26 @@ public function deleteFile(Request $request)
             }
         }
 
-        $file = RecruitmentUpload::find($fileId);
-        if ($file) {
-            $file->delete();
+        $file = VIPReferenceUpload::find($fileId);
+        // if ($file) {
+        //     $file->delete();
+        // }
+        if (!$file) {
+            return response()->json(['error' => 'Record not found'], 404);
         }
 
-        return response()->json(['message' => 'File deleted successfully']);
+      
     }
-
-    return response()->json(['error' => 'File not found'], 404);
 }
-
-    // function for deleting records of office memorandum
-
-    public function destroy(Request $request)
+public function destroy(Request $request)
     {  
         $user_id =base64_decode($request->id);
         $auth_id = Auth::user()->id;
-        $privacy = RecruitmentModel::find($user_id);
+        $privacy = VIPReference::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $auth_id;
         $privacy->deleted_at = date('Y-m-d H:i:s');
         $privacy->save();
         return response()->json(['success'=>true]);
     }
-
 }

@@ -24,7 +24,7 @@
                     <div class="card-body p-4">
                         <form id ="memorandumForm" action="{{ route('admin.document.gazette_notification.edit', $gazette_notification->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            @if(Auth::user()->is_admin==1)
+                           
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" name="division">
@@ -40,7 +40,7 @@
                                         </span>
                                     @endif
                                 </div>
-                            @endif
+                           
                             <div class="col-md-6">
                                 <label for="notification_no" class="form-label">Notification No.<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="notification_no" name="notification_no" value="{{ $gazette_notification->notification_no }}" placeholder="computer no">
