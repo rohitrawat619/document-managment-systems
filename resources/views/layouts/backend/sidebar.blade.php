@@ -102,7 +102,7 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('admin.document.achievenment.index') }}"><i class='bx bx-radio-circle'></i> Achievements</a></li>
                 @endif
                 @if(in_array('20', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Rebuttals</a></li>
+                    <li><a href="{{ route('admin.document.rebuttals.index') }}"><i class='bx bx-radio-circle'></i> Rebuttals</a></li>
                 @endif
                 @if(in_array('21', $userPermissions))
                     <li><a href="{{ route('admin.document.presentations.index') }}"><i class='bx bx-radio-circle'></i> Presentations</a></li>

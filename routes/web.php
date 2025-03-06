@@ -252,6 +252,17 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
       Route::get('view-pdf/{file}', [App\Http\Controllers\CabinetController::class, 'viewPdf'])->name('view.pdf');
       Route::get('/admin/document/cabinet_note/get-divisions-by-user', [App\Http\Controllers\CabinetController::class, 'getDivisionsByUser'])->name('document.cabinet_note.get-divisions-by-user');
       Route::delete('/admin/document/cabinet_note/delete_file', [App\Http\Controllers\CabinetController::class, 'deleteFile'])->name('document.cabinet_note.delete_file');
+
+      //  Rebuttals
+
+      Route::get('/document/rebuttals',[App\Http\Controllers\RebuttalsController::class, 'rebuttals'])->name('document.rebuttals.index');
+      Route::match(['get','post'],'/document/rebuttals/create',[App\Http\Controllers\RebuttalsController::class, 'create'])->name('document.rebuttals.create');
+      Route::match(['get','post'],'/document/rebuttals/edit/{id}',[App\Http\Controllers\RebuttalsController::class, 'edit'])->name('document.rebuttals.edit');
+      Route::post('/document/rebuttals/status',[App\Http\Controllers\RebuttalsController::class, 'status'])->name('document.rebuttals.status');
+      Route::post('/rebuttals/delete',[App\Http\Controllers\RebuttalsController::class, 'destroy'])->name('rebuttals.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\RebuttalsController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/rebuttals/get-divisions-by-user', [App\Http\Controllers\RebuttalsController::class, 'getDivisionsByUser'])->name('document.rebuttals.get-divisions-by-user');
+      Route::delete('/admin/document/rebuttals/delete_file', [App\Http\Controllers\RebuttalsController::class, 'deleteFile'])->name('document.rebuttals.delete_file');
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
