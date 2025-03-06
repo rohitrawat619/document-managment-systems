@@ -211,20 +211,22 @@
                     return false;
                 }
 
-                var keyValue = $('#key').val()
-                if($('#key').val()=="")
-				{
-                    $('#key_error').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
 
-                else if (keyValue.length < 5)
-                 {
+                if (keyValue === "") {
+                    $('#key_error').text("Please Enter Keywords").show();
+                    $('#key').focus();
+                    return false;
+                }
+
+                var characterCount = keyValue.replace(/\s/g, '').length;
+
+                if (characterCount < 5) {
                     $('#key_error').text("Minimum 5 characters required.").show();
                     $('#key').focus();
                     return false; 
-                } 
+                }
+
         });
     });
 </script>

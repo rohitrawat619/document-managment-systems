@@ -214,12 +214,21 @@
 					return false;
 				}
 
-                if($('#key').val()=="")
-				{
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
+
+                if (keyValue === "") {
                     $('#key_error').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                    $('#key').focus();
+                    return false;
+                }
+
+                var characterCount = keyValue.replace(/\s/g, '').length;
+
+                if (characterCount < 5) {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                }
                 
             var fileInput2 = document.getElementById('upload_file');
             var file2 = fileInput2.files[0];

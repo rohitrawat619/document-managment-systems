@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Session;
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Achievenment Rules</li>
+                        <li class="breadcrumb-item active" aria-current="page">Rebuttals</li>
                     </ol>
                 </nav>
             </div>
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Session;
                 @php
                 $userPermissions = session::get('user_permissions');
                 @endphp
-                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.achievenment.create') : 'javascript:void(0);' }}" 
+                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.rebuttals.create') : 'javascript:void(0);' }}" 
                 class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}" 
                 title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
                 </div>
@@ -48,20 +48,23 @@ use Illuminate\Support\Facades\Session;
                 <div class="card">
                     <div class="card-body">
                     <div class="d-flex  mb-3">
-                    <form method="GET" action="{{ route('admin.document.achievenment.index') }}" class="form-inline" style="width: 100%;">
+                    <form method="GET" action="{{ route('admin.document.rebuttals.index') }}" class="form-inline" style="width: 100%;">
                     <div class="d-flex mb-3">
                     <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
                     <button type="submit" class="btn btn-primary ms-2">Search</button>
-                    <a href="{{ route('admin.document.achievenment.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                    <a href="{{ route('admin.document.rebuttals.index') }}" class="btn btn-secondary ms-2">Reset</a>
                     </div>
                         <table class="table mb-0 table-hover table-bordered userTable">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Computer No.</th>
-                                    <th scope="col">File No.</th>
-                                    <th scope="col">Date of Issue</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Receipt No.</th>
+                                    <th scope="col">Title/Subject</th>
+                                    <th scope="col">Case No.</th>
+                                    <th scope="col">Court/Tribunal Name </th>
+                                    <th scope="col">Petitioner</th>
+                                    <th scope="col">Respondent</th>
                                     <th scope="col">Issued by Name & Designation</th>
                                     <th scope="col">Uploaded By Name & Designation</th>
                                     <th scope="col">Keywords</th>
@@ -74,14 +77,17 @@ use Illuminate\Support\Facades\Session;
                             @php
                             $userPermissions = session::get('user_permissions');
                             @endphp
-                            @forelse ($achievenment as $k => $r)
+                            @forelse ($rebuttals as $k => $r)
                             <tr>
                                 <!-- Adjust numbering to be continuous across pages -->
-                                <th scope="row">{{ ($achievenment->currentPage() - 1) * $achievenment->perPage() + $k + 1 }}</th>
+                                <th scope="row">{{ ($rebuttals->currentPage() - 1) * $rebuttals->perPage() + $k + 1 }}</th>
                                 <td>{{$r->computer_no}}</td>
-                                <td>{{$r->file_no}}</td>
-                                <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
+                                <td>{{$r->receipt_no}}</td>
                                 <td>{{$r->subject}}</td>
+                                <td>{{$r->case_no}}</td>
+                                <td>{{$r->court_name}}</td>
+                                <td>{{$r->petitioner}}</td>
+                                <td>{{$r->respondent}}</td>
                                 <td>{{$r->issuer_name}}</td>
                                 <td>{{$r->issuer_designation}}</td>
                                 <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
@@ -104,7 +110,7 @@ use Illuminate\Support\Facades\Session;
                                 <td>
                                 <div class="d-flex order-actions">
                                 @if(in_array(42, $userPermissions))
-                                        <a href="{{ route('admin.document.achievenment.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                        <a href="{{ route('admin.document.rebuttals.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                             <i class="bx bxs-edit"></i>
                                         </a>
                                     @else
@@ -131,7 +137,7 @@ use Illuminate\Support\Facades\Session;
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center mt-4">
-                            {{ $achievenment->links('pagination::bootstrap-4') }}
+                            {{ $rebuttals->links('pagination::bootstrap-4') }}
                         </div>
                     </div>
                 </div>
@@ -190,7 +196,7 @@ use Illuminate\Support\Facades\Session;
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.document.achievenment.status')}}",
+                        url: "{{route('admin.document.rebuttals.status')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,
@@ -242,7 +248,7 @@ use Illuminate\Support\Facades\Session;
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('admin.achievenment.delete')}}",
+                        url: "{{route('admin.rebuttals.delete')}}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             'id': id,

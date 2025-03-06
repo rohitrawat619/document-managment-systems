@@ -137,7 +137,7 @@
 </div>
 @push('scripts')
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 	$(document).ready(function () {
         $('#sub').click(function(e){
 
@@ -224,45 +224,46 @@
 					$('#upload_file').focus();
 					return false;
 				}
-                var keyValue = $('#key').val()
-                if($('#key').val()=="")
-				{
-                    $('#key_error').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
 
-                else if (keyValue.length < 5)
-                 {
+                if (keyValue === "") {
+                    $('#key_error').text("Please Enter Keywords").show();
+                    $('#key').focus();
+                    return false;
+                }
+
+                var characterCount = keyValue.replace(/\s/g, '').length;
+
+                if (characterCount < 5) {
                     $('#key_error').text("Minimum 5 characters required.").show();
                     $('#key').focus();
                     return false; 
-                } 
+                }
                 
-            var fileInput2 = document.getElementById('upload_file');
-            var file2 = fileInput2.files[0];
-            var fileSize2 = file2.size; 
-            var fileType2 = file2.type;
-            var allowedTypes1 = ['application/pdf'];
-            if (fileSize2 > "20000000" ) {
-                $('#upload_file1').text("File size must be less then 20MB").show();
-                //alert('File size must be less then 20MB');
-				$('#upload_file').focus();
-                return false;
-            }
+            // var fileInput2 = document.getElementById('upload_file');
+            // var file2 = fileInput2.files[0];
+            // var fileSize2 = file2.size; 
+            // var fileType2 = file2.type;
+            // var allowedTypes1 = ['application/pdf'];
+            // if (fileSize2 > "20000000" ) {
+            //     $('#upload_file1').text("File size must be less then 20MB").show();
+            //     //alert('File size must be less then 20MB');
+			// 	$('#upload_file').focus();
+            //     return false;
+            // }
 
-            if (!allowedTypes1.includes(fileType2)) {
-                $('#upload_file1').text("Invalid file type. Allowed types are: PDF.").show();
-               // alert('Invalid file type. Allowed types are: PDF.');
-				$('#upload_file').focus();
-                return false;
-            }
+            // if (!allowedTypes1.includes(fileType2)) {
+            //     $('#upload_file1').text("Invalid file type. Allowed types are: PDF.").show();
+            //    // alert('Invalid file type. Allowed types are: PDF.');
+			// 	$('#upload_file').focus();
+            //     return false;
+            // }
 
 
                 
         });
     });
-</script> -->
+</script>
 
 
 <script>

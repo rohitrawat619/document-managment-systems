@@ -10,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.document.minutes_of_metting.index')}}">Minutes of Meeting  </a>
+                        <li class="breadcrumb-item"><a href="{{route('admin.document.rebuttals.index')}}">Rebuttals</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Create</li>
                     </ol>
@@ -22,80 +22,55 @@
             <div class="col-xl-12 mx-auto">
                 <div class="card">
                     <div class="card-body p-4">
-                    <form id ="guidelineForm" action="{{route('admin.document.minutes_of_metting.create')}}" method="post" class="row g-3" enctype="multipart/form-data">
-                    @csrf
-                                <div class="col-md-6">
-                                    <label for="User" class="form-label">User <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="user" name="user">
-                                        <option value="">--Select--</option>
-                                        @if(count($users)>0)
-                                            @foreach ($users as $user)
-                                                <option value="{{$user->id}}">{{$user->name}}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    @if ($errors->has('user'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('user') }}</strong>
-                                        </span>
-                                    @endif
-                                    <div id="error-message" style="color: red; display: none;"></div>
-                                </div>
-                            
-                           
-                                <div class="col-md-6">
-                                    <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="division" name="division">
-                                        <option value="">--Select--</option>
-                                        <!-- Divisions will be populated dynamically based on the selected user -->
-                                    </select>
-                                    @if ($errors->has('division'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('division') }}</strong>
-                                        </span>
-                                    @endif
-                                    <div id="division1" style="color: red; display: none;"></div>
-                                </div>
-                           
+                        <form action="" id ="rebuttalsForm" method="post" class="row g-3" enctype="multipart/form-data">
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                               
                             <div class="col-md-6">
-                                <label for="agenda" class="form-label">Agenda <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="agenda" name="agenda" placeholder="">
-                                @if ($errors->has('agenda'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('agenda') }}</strong>
-                                    </span>
-                                @endif
-                                <div id="agenda1" style="color: red; display: none;"></div>
+                                <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="computer_no" name="computer_no" placeholder="computer no">
+                                <div id="computer_no_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="date_of_Meeting" class="form-label">Date of Meeting <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_Meeting" name="date_of_Meeting" placeholder="date of issue">
-                                @if ($errors->has('date_of_Meeting'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('date_of_Meeting') }}</strong>
-                                    </span>
-                                @endif
-                                <div id="date_of_Meeting1" style="color: red; display: none;"></div>
+                                <label for="receipt_no" class="form-label">Receipt No. <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="receipt_no" name="receipt_no" placeholder="L-1222/1/2024-IA-I-(R)">
+                                <div id="receipt_no_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="subject" name="subject" placeholder="">
-                                @if ($errors->has('subject'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('subject') }}</strong>
-                                    </span>
-                                @endif
-                                <div id="subject1" style="color: red; display: none;"></div>
+                                <label for="case_no" class="form-label">Case No. <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="case_no" name="case_no" placeholder="Case no">
+                                <div id="case_no_error" style="color: red; display: none;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="subject" class="form-label">Title/Subject <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="subject" name="subject" placeholder="Title/Subject">
+                                <div id="subject_error" style="color: red; display: none;"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="court_name" class="form-label">Court/Tribunal Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="court_name" name="court_name"  placeholder="Court/Tribunal Name" >
+                                <div id="court_name_error" style="color: red; display: none;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petitioner" class="form-label">Petitioner <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="petitioner" name="petitioner"  placeholder="petitioner" >
+                                <div id="petitioner_error" style="color: red; display: none;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="respondent" class="form-label">Respondent <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="respondent" name="respondent"  placeholder="respondent" >
+                                <div id="respondent_error" style="color: red; display: none;"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{$users[0]->name}}" placeholder="" readonly>
+                                <div id="issuer_name_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" placeholder="">
-                                @if ($errors->has('issuer_designation'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('issuer_designation') }}</strong>
-                                    </span>
-                                @endif
-                                <div id="issuer_designation1" style="color: red; display: none;"></div>
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{$designation->name}}" placeholder="" readonly>
+                                <div id="issuer_designation_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="date_of_upload" class="form-label">Date of Upload <span class="text-danger">*</span></label>
@@ -105,7 +80,7 @@
                                         <strong>{{ $errors->first('date_of_upload') }}</strong>
                                     </span>
                                 @endif
-                                <div id="date_of_upload1" style="color: red; display: none;"></div>
+                                <div id="date_of_upload_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="keywords" class="form-label">Keywords <span class="text-danger">*</span></label>
@@ -128,10 +103,9 @@
                                         <strong>{{ $errors->first('upload_file') }}</strong>
                                     </span>
                                 @endif
-                                <div id="upload_file1" style="color: red; display: none;"></div>
+                                <div id="upload_file_error" style="color: red; display: none;"></div>
                             </div>
 
-                            
                             <div class = "col-md-12">
                             <div id="pdf_viewer">
 
@@ -157,66 +131,95 @@
 	$(document).ready(function () {
         $('#sub').click(function(e){
 
-            if($('#user').val()=="")
+            
+
+                if($('#computer_no').val()=="")
 				{
-					$('#error-message').text("Please Enter User").show();
-					$('#user').focus();
-					return false;
+                    $('#computer_no_error').text("Please Enter Computer No").show();
+					$('#computer_no').focus();
+					return false;invalid-feedback
 				}
 
-                if($('#division').val()=="")
+                if($('#receipt_no').val()=="")
 				{
-					$('#division1').text("Please Enter Division").show();
-					$('#division').focus();
+                    $('#receipt_no_error').text("Please Enter File No").show();
+					$('#receipt_no').focus();
 					return false;
 				}
+                var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
 
+                if (!fileNoRegex.test($('#receipt_no').val())) {
+                    $('#receipt_no_error').text("Invalid File No format. Please follow the correct format").show();
+                    $('#receipt_no').focus();
+                    return false;
+                }
 
-                if($('#date_of_Meeting').val()=="")
+                if($('#case_no').val()=="")
 				{
-                    $('#date_of_Meeting1').text("Please Enter Date of Meeting").show();
-					$('#date_of_Meeting').focus();
+                    $('#case_no_error').text("Please Enter Date of Publication").show();
+					$('#case_no').focus();
 					return false;
 				}
+                
 
                 if($('#subject').val()=="")
 				{
-                    $('#subject1').text("Please Enter Subject").show();
+                    $('#subject_error').text("Please Enter Subject").show();
 					$('#subject').focus();
 					return false;
 				}
 
-                if($('#agenda').val()=="")
+                if($('#court_name').val()=="")
 				{
-                    $('#agenda1').text("Please Enter Agenda").show();
-					$('#agenda').focus();
+                    $('#court_name_error').text("Please Enter Court/Tribunal Name").show();
+					$('#court_name').focus();
+					return false;
+				}
+
+                if($('#petitioner').val()=="")
+				{
+                    $('#petitioner_error').text("Please Enter Petitioner").show();
+					$('#petitioner').focus();
+					return false;
+				}
+                if($('#respondent').val()=="")
+				{
+                    $('#respondent_error').text("Please Enter Respondent").show();
+					$('#respondent').focus();
+					return false;
+				}
+
+                if($('#issuer_name').val()=="")
+				{
+                    $('#issuer_name_error').text("Please Enter Issuer Name").show();
+					$('#issuer_name').focus();
 					return false;
 				}
 
                 if($('#issuer_designation').val()=="")
 				{
-                    $('#issuer_designation1').text("Please Enter Issuer Designation").show();
+                    $('#issuer_designation_error').text("Please Enter Issuer Designation").show();
 					$('#issuer_designation').focus();
 					return false;
 				}
 
                 if($('#date_of_upload').val()=="")
 				{
-                    $('#date_of_upload1').text("Please Enter Date of upload").show();
+                    $('#date_of_upload_error').text("Please Enter Date of upload").show();
 					$('#date_of_upload').focus();
 					return false;
 				}
 
                 if($('#file_type').val()=="")
 				{
-                    $('#file_type1').text("Please Enter File Type").show();
+                    $('#file_type_error').text("Please Enter File Type").show();
 					$('#file_type').focus();
 					return false;
 				}
 
                 if($('#upload_file').val()=="")
 				{
-                    $('#upload_file1').text("Please Upload File").show();
+                    $('#upload_file_error').text("Please Upload File").show();
 					$('#upload_file').focus();
 					return false;
 				}
@@ -238,30 +241,32 @@
                 }
 
                 
-            var fileInput2 = document.getElementById('upload_file');
-            var file2 = fileInput2.files[0];
-            var fileSize2 = file2.size; 
-            var fileType2 = file2.type;
-            var allowedTypes1 = ['application/pdf'];
-            if (fileSize2 > "20000000" ) {
-                $('#upload_file1').text("File size must be less then 20MB").show();
-                //alert('File size must be less then 20MB');
-				$('#upload_file').focus();
-                return false;
-            }
+            // var fileInput2 = document.getElementById('upload_file');
+            // var file2 = fileInput2.files[0];
+            // var fileSize2 = file2.size; 
+            // var fileType2 = file2.type;
+            // var allowedTypes1 = ['application/pdf'];
+            // if (fileSize2 > "20000000" ) {
+            //     $('#upload_file1').text("File size must be less then 20MB").show();
+            //     //alert('File size must be less then 20MB');
+			// 	$('#upload_file').focus();
+            //     return false;
+            // }
 
-            if (!allowedTypes1.includes(fileType2)) {
-                $('#upload_file1').text("Invalid file type. Allowed types are: PDF.").show();
-               // alert('Invalid file type. Allowed types are: PDF.');
-				$('#upload_file').focus();
-                return false;
-            }
+            // if (!allowedTypes1.includes(fileType2)) {
+            //     $('#upload_file1').text("Invalid file type. Allowed types are: PDF.").show();
+            //    // alert('Invalid file type. Allowed types are: PDF.');
+			// 	$('#upload_file').focus();
+            //     return false;
+            // }
 
 
                 
         });
     });
 </script>
+
+
 <script>
 
 $(document).ready(function() {
@@ -271,58 +276,69 @@ $(document).ready(function() {
         }
     });
 
-    var guidelineStoreUrl = "{{ url('admin/document/minutes_of_metting/create') }}";
-    $('#guidelineForm').on('submit', function(e) {
+    var rebuttalsStoreUrl = "{{ url('admin/document/rebuttals/create') }}";
+    $('#rebuttalsForm').on('submit', function(e) {
         e.preventDefault();
-        
+
         var keywords = $('#key').val();
         var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
         $('#key').val(formattedKeywords);
-        
+
         let formData = new FormData(this); 
+        formData.append('user_id', "{{ auth()->id() }}");
+        $('.invalid-feedback').text('').hide(); 
 
         $.ajax({
-            url: guidelineStoreUrl, 
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            beforeSend: function() {
-                $('.btn-primary1').prop('disabled', true).text('Submitting...');
-            },
-            success: function(response) {
-                $('.btn-primary1').prop('disabled', false).text('Submit');
-                // alert(response);
-                //      window.location.href = "{{ route('admin.document.minutes_of_metting.index') }}";
-                Swal.fire({
-                title: "Success!",
-                text: response.message,
-                icon: "success",
-                confirmButtonText: "OK"
-            }).then(() => {
-                window.location.href = "{{ route('admin.document.minutes_of_metting.index') }}";
-            });
-            },
-            error: function(xhr) {
-                console.log(xhr);
-                $('.btn-primary1').prop('disabled', false).text('Submit'); 
-                
-                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessage = "";
-                    $.each(errors, function(key, value) {
-                        errorMessage += value[0] + "\n";
-                    });
-                    alert(errorMessage);
-                } else {
-                    alert("An error occurred. Please try again.");
-                }
+    url: rebuttalsStoreUrl, 
+    type: "POST",
+    data: formData,
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+        $('.btn-primary1').prop('disabled', true).text('Submitting...');
+    },
+    success: function(response) {
+        $('.btn-primary1').prop('disabled', false).text('Submit');
+        //  alert(response);
+        // window.location.href = "{{ route('admin.document.rebuttals.index') }}";
+        Swal.fire({
+            title: "Success!",
+            text: response.message, 
+            icon: "success",
+            confirmButtonText: "OK"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('admin.document.rebuttals.index') }}";
             }
         });
+    },
+    error: function(xhr) {
+        console.log(xhr);
+        $('.btn-primary1').prop('disabled', false).text('Submit');
+
+        if (xhr.responseJSON && xhr.responseJSON.errors) {
+            var errors = xhr.responseJSON.errors;
+            $.each(errors, function(key, value) {
+                $('#' + key + '_error').text(value[0]).show(); 
+            });
+        } else {
+            Swal.fire({
+                title: "Error!",
+                text: xhr.responseJSON?.message || "An error occurred. Please try again.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    }
+});
+
     });
 });
 
 </script>
+
+
+
 
 <script>
     $(document).ready(function(){
@@ -360,7 +376,8 @@ $(document).ready(function() {
                 var fileURL = URL.createObjectURL(file);
                 var iframe = '<iframe src="' + fileURL + '" width="100%" height="600px" style="border: none;"></iframe>';
                 $('#pdf_viewer').html(iframe);
-            } else {
+            }
+             else {
                 alert("Please upload a valid PDF file to view.");
             }
         });
@@ -376,7 +393,7 @@ $(document).ready(function() {
                 //console.log(userId);
                 // Make an AJAX request to get the corresponding divisions
                 $.ajax({
-                    url: "{{ route('admin.document.minutes_of_metting.get-divisions-by-user') }}",
+                    url: "{{ route('admin.document.rebuttals.get-divisions-by-user') }}",
                     type: 'GET',
                     data: { user_id: userId },
                     
@@ -412,3 +429,7 @@ $(document).ready(function() {
 </script>
 @endpush
 @endsection
+
+
+
+

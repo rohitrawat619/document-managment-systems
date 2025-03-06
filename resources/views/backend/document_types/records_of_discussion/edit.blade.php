@@ -97,7 +97,7 @@
                                         <strong>{{ $errors->first('keyword') }}</strong>
                                     </span>
                                 @endif
-                                <div id="key1" style="color: red; display: none;"></div>
+                                <div id="key_error" style="color: red; display: none;"></div>
                             </div>
 
                             <div class="col-md-6">
@@ -170,12 +170,22 @@
 	$(document).ready(function () {
         $('#sub').click(function(e){
 
-                if($('#key').val()=="")
-				{
-                    $('#key1').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+            var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
+
+if (keyValue === "") {
+    $('#key_error').text("Please Enter Keywords").show();
+    $('#key').focus();
+    return false;
+}
+
+var characterCount = keyValue.replace(/\s/g, '').length;
+
+if (characterCount < 5) {
+    $('#key_error').text("Minimum 5 characters required.").show();
+    $('#key').focus();
+    return false; 
+}
+
         });
     });
 </script>
