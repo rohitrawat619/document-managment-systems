@@ -54,7 +54,7 @@ use Illuminate\Support\Facades\Session;
         <li class="menu-label">File Managemant</li>
         
         @php
-         $userPermissions = session('user_permissions');
+         $userPermissions = session::get('user_permissions');
          @endphp
 
         <li>
@@ -76,10 +76,10 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('admin.document.letter.index') }}"><i class='bx bx-radio-circle'></i> Letters </a></li>
                 @endif
                 @if(in_array('12', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Record of Discussion (ROD) </a></li>
+                    <li><a href="{{ route('admin.document.records_of_discussion.index') }}"><i class='bx bx-radio-circle'></i> Record of Discussion (ROD) </a></li>
                 @endif
                 @if(in_array('13', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Minutes of Meeting (MoM) </a></li>
+                    <li><a href="{{ route('admin.document.minutes_of_metting.index') }}"><i class='bx bx-radio-circle'></i> Minutes of Meeting (MoM) </a></li>
                 @endif
                 @if(in_array('14', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> 	
@@ -90,22 +90,22 @@ use Illuminate\Support\Facades\Session;
                     </a></li>
                 @endif
                 @if(in_array('16', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Gazette Notifications</a></li>
+                    <li><a href="{{ route('admin.document.gazette_notification.index') }}"><i class='bx bx-radio-circle'></i> Gazette Notifications</a></li>
                 @endif
                 @if(in_array('17', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Recruitment Rules</a></li>
+                    <li><a href="{{ route('admin.document.recruitment.index') }}"><i class='bx bx-radio-circle'></i> Recruitment Rules</a></li>
                 @endif
                 @if(in_array('18', $userPermissions))
                     <li><a href="{{ route('admin.document.guideline.index') }}"><i class='bx bx-radio-circle'></i> Guidelines</a></li>
                 @endif
                 @if(in_array('19', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Achievements</a></li>
+                    <li><a href="{{ route('admin.document.achievenment.index') }}"><i class='bx bx-radio-circle'></i> Achievements</a></li>
                 @endif
                 @if(in_array('20', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Rebuttals</a></li>
+                    <li><a href="{{ route('admin.document.rebuttals.index') }}"><i class='bx bx-radio-circle'></i> Rebuttals</a></li>
                 @endif
                 @if(in_array('21', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Presentations</a></li>
+                    <li><a href="{{ route('admin.document.presentations.index') }}"><i class='bx bx-radio-circle'></i> Presentations</a></li>
                 @endif
                 @if(in_array('22', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Parliament Questions (Lok Sabha)</a></li>
@@ -120,13 +120,13 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Court Case</a></li>
                 @endif
                 @if(in_array('26', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> PM Reference</a></li>
+                    <li><a href="{{ route('admin.document.pm_reference.index') }}"><i class='bx bx-radio-circle'></i> PM Reference</a></li>
                 @endif
                 @if(in_array('27', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> VIP Reference</a></li>
+                    <li><a href="{{ route('admin.document.vip_reference.index') }}"><i class='bx bx-radio-circle'></i> VIP Reference</a></li>
                 @endif
                 @if(in_array('28', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Cabinet Note</a></li>
+                    <li><a href="{{ route('admin.document.cabinet_note.index') }}"><i class='bx bx-radio-circle'></i> Cabinet Note</a></li>
                 @endif
                 @if(in_array('29', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Pragati</a></li>

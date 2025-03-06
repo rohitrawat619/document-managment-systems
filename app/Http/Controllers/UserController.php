@@ -10,6 +10,7 @@ use App\Models\Designation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -31,22 +32,35 @@ class UserController extends Controller
 
             $users = User::from('users as u')
                 ->select(
-                    'u.id', 
-                    'u.name', 
-                    'u.email', 
-                    'u.phone', 
-                    'u.phone_code', 
-                    'u.phone_iso', 
-                    'ds.name as designation_name', 
+                    'u.id',
+                    'u.name',
+                    'u.email',
+                    'u.phone',
+                    'u.phone_code',
+                    'u.phone_iso',
+                    'ds.name as designation_name',
                     DB::raw('GROUP_CONCAT(dv.name) as division_name')
                 )
-                
+
                 ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
                 ->leftJoin('designations as ds','u.designation','=','ds.id')
                 ->where('u.is_deleted',0)
                 ->whereNotNull('u.role_id')
                 ->groupBy('u.id','u.name','u.email','u.phone','u.phone_code','u.phone_iso','ds.name')
                 ->get();
+
+        $user = Auth::user();
+        $role = Role::find($user->role_id);
+
+        if ($role && !empty($role->permission_id)) {
+            $permissions = explode(',', $role->permission_id); // Convert CSV to array
+
+            Session::put('user_permissions', $permissions);
+            Session::save();
+
+        } else {
+            $permissions = []; // Default empty permissions array
+        }
 
             /*** fetch designations from roles table */
 
@@ -59,16 +73,17 @@ class UserController extends Controller
             ->get()->toArray();
 
          //   echo '<pre>';print_r($desig); die;
-            
+
             $users = User::from('users as u')
                 ->select(
-                    'u.id', 
-                    'u.name', 
-                    'u.email', 
-                    'u.phone', 
-                    'u.phone_code', 
-                    'u.phone_iso', 
-                    'ds.name as designation_name', 
+                    'u.id',
+                    'u.name',
+                    'u.email',
+                    'u.phone',
+                    'u.user_name',
+                    'u.phone_code',
+                    'u.phone_iso',
+                    'ds.name as designation_name',
                     DB::raw('GROUP_CONCAT(dv.name) as division_name')
                 )
                 ->leftJoin('divisions as dv', DB::raw("FIND_IN_SET(dv.id, u.division)"), ">", DB::raw('"0"'))
@@ -85,12 +100,11 @@ class UserController extends Controller
             }
 
             // Group and paginate results
-            $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone', 'u.phone_code', 'u.phone_iso', 'ds.name')
+            $users = $users->groupBy('u.id', 'u.name', 'u.email', 'u.phone','u.user_name', 'u.phone_code', 'u.phone_iso', 'ds.name')
                 ->paginate(10);
 
             return view('backend.users.index',compact('users'));
     }
-
 
     public function create(Request $request)
     {
@@ -113,7 +127,7 @@ class UserController extends Controller
             $rules = [
                 'first_name'=> 'required|regex:/^[a-zA-Z]+$/u|min:1|max:255',
                 'last_name'=> 'nullable|regex:/^[a-zA-Z]+$/u|min:0|max:255',
-                'email' => 'required|email:dns,rfc|unique:users,email',
+                'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required|array',
                 'password' => 'required|same:confirm_password|min:10',
@@ -128,8 +142,9 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
                 //dd($validator);
-                return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
+               // return redirect()->route('admin.users.create')->withErrors($validator)->withInput();
             }
 
             $mobile = preg_replace('/\D/', '', $request->input('mobile'));
@@ -156,15 +171,16 @@ class UserController extends Controller
                 'role_id' => $request->role_id,
                 'password' => bcrypt($request->password)
             ]);
-            $user_name = 'omms_'.$request->first_name.($new_user->id+1);
-
-            User::where('id',$new_user->id)->update([
+           
+            $email_username = explode('@', $request->email)[0];
+            $user_name = $email_username;
+            User::where('id', $new_user->id)->update([
                 'user_name' => $user_name
             ]);
 
             DB::commit();
-
-            return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
+            return response()->json(['message' => 'User Created Successfully']);
+            //return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
 
         }
         catch (\Exception $e) {
@@ -216,16 +232,15 @@ class UserController extends Controller
             $rules = [
                 'first_name'=> 'required|regex:/^[a-zA-Z ]+$/u|min:1|max:255',
                 'last_name'=> 'nullable|regex:/^[a-zA-Z ]+$/u|min:0|max:255',
-                'email' => 'required|email:dns,rfc|unique:users,email,'.$user_id,
+               // 'email' => ['required','email:dns,rfc','regex:/^[a-zA-Z0-9._%+-]+@(gov\.in|nic\.in|govcontractor\.in)$/','unique:users,email',],
                 'mobile' => 'required|regex:/^((?!(0))[0-9\s\-\+\(\)]{5,})$/',
                 'division' => 'required',
-                
             ];
 
             $messages = [
                 'name.regex' => 'The name must be combination of letter',
                 'mobile.regex'=>'Mobile Number must be Valid !!',
-                'email.unique'  =>'Email id has already been taken',
+                // 'email.unique'  =>'Email id has already been taken',
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
@@ -247,7 +262,7 @@ class UserController extends Controller
                 'phone_code' => $request->input('mobile_code'),
                 'phone_iso' => $request->input('mobile_iso'),
                 'division' => implode(",",$request->division),
-               
+
             ]);
 
             DB::commit();
@@ -296,7 +311,7 @@ class UserController extends Controller
     {
         $user_id =base64_decode($request->id);
         $id = $request->id;
-        
+
         $user = Auth::user()->id;
         $privacy = User::find($user_id);
         $privacy->is_deleted = '1';

@@ -10,13 +10,15 @@ class ReportController  extends Controller
     public function getCounts()
     {
         try {
-            $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines'];
+            $tables = ['office_memorandum', 'office_order', 'notification', 'letter', 'guidelines','records_of_discussion','minutes_of_metting','achievenment','recruitment','presentations','gazette_notification'];
+            $labels = ['office memorandum', 'office order', 'notification', 'letter', 'guidelines','Records of discussion','Minutes of Metting','Achievenment','Recruitment','Presentations','Gazette Notification'];
+            
             $data = [];
-
-            foreach ($tables as $table) {
+            
+            foreach ($tables as $index => $table) {
                 $count = DB::table($table)->count();
                 $data[] = [
-                    "label" => ucfirst($table),
+                    "label" => ucfirst($labels[$index]), // Use the corresponding label
                     "value" => $count
                 ];
             }

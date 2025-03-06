@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Session;
+@endphp
+
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">
@@ -16,7 +20,12 @@
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.document.notification.create')}}" type="button" class="btn btn-primary">Add</a>
+                @php
+                $userPermissions = session::get('user_permissions');
+                @endphp
+                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.notification.create') : 'javascript:void(0);' }}" 
+                class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}" 
+                title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
                 </div>
             </div>
         </div>
@@ -57,10 +66,14 @@
                                     <th scope="col">Uploaded By Name & Designation</th>
                                     <th scope="col">Keywords</th>
                                     <th scope="col">Date of Upload</th>
+                                    <th scope="col">View</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            @php
+                            $userPermissions = session::get('user_permissions');
+                            @endphp
                             @foreach ($notification as $k => $r)
                             <tr>
                                 <th scope="row">{{ $notification->firstItem() + $k }}</th>
@@ -73,9 +86,42 @@
                                 <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                 <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
                                 <td>
-                                    <div class="d-flex order-actions">
-                                        <a href="{{ route('admin.document.notification.edit', ['id' => base64_encode($r->id)]) }}" class="" title="Edit"><i class="bx bxs-edit"></i></a>
-                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}"><i class="bx bxs-trash"></i></a>
+                                        <!-- Button to Open Modal -->
+                                        <button type="button" class="btn btn-primary viewDetails" 
+                                        data-bs-toggle="modal" data-bs-target="#detailsModal"
+                                        data-id="{{$r->id}}" 
+                                        data-computer_no="{{$r->computer_no}}" 
+                                        data-file_no="{{$r->file_no}}" 
+                                        data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
+                                        data-subject="{{$r->subject}}" 
+                                        data-issuer_name="{{$r->issuer_name}}" 
+                                        data-issuer_designation="{{$r->issuer_designation}}" 
+                                        data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
+                                        data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
+                                        View
+                                        </button>
+                                </td>
+                                <td>
+                                <div class="d-flex order-actions">
+                                @if(in_array(42, $userPermissions))
+                                        <a href="{{ route('admin.document.notification.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                            <i class="bx bxs-edit"></i>
+                                        </a>
+                                    @else
+                                        <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                            <i class="bx bxs-edit text-muted"></i>
+                                        </a>
+                                    @endif
+
+                                    @if(in_array(43, $userPermissions))
+                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                            <i class="bx bxs-trash"></i>
+                                        </a>
+                                    @else
+                                        <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                            <i class="bx bxs-trash text-muted"></i>
+                                        </a>
+                                    @endif
                                     </div>
                                 </td>
                             </tr>
@@ -92,6 +138,32 @@
         <!--end row-->
     </div>
 </div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Recruitment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tr><th>Computer No</th><td id="modalComputerNo"></td></tr>
+                    <tr><th>File No</th><td id="modalFileNo"></td></tr>
+                    <tr><th>Date of Issue</th><td id="modalDateOfIssue"></td></tr>
+                    <tr><th>Subject</th><td id="modalSubject"></td></tr>
+                    <tr><th>Issuer Name</th><td id="modalIssuerName"></td></tr>
+                    <tr><th>Issuer Designation</th><td id="modalIssuerDesignation"></td></tr>
+                    <tr><th>Keywords</th><td id="modalKeyword"></td></tr>
+                    <tr><th>Date of Upload</th><td id="modalDateOfUpload"></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @push('scripts')
     <script>
        $(document).on('click', '.status', function (event) {
@@ -191,6 +263,27 @@
                 }
             });
        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".viewDetails").forEach(button => {
+                button.addEventListener("click", function() {
+                    document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
+                    document.getElementById("modalFileNo").textContent = this.dataset.file_no;
+                    document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
+                    document.getElementById("modalSubject").textContent = this.dataset.subject;
+                    document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
+                    document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
+                    document.getElementById("modalKeyword").textContent = this.dataset.keyword;
+                    document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
+
+                    // Ensure modal opens (if data-bs-toggle doesn't work)
+                    var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                    modal.show();
+                });
+            });
+        });
+
+
     </script>
 @endpush
 @endsection
