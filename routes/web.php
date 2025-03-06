@@ -219,6 +219,28 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
      Route::get('view-pdf/{file}', [App\Http\Controllers\PmReferenceController::class, 'viewPdf'])->name('view.pdf');
      Route::get('/admin/document/pm_reference/get-divisions-by-user', [App\Http\Controllers\PmReferenceController::class, 'getDivisionsByUser'])->name('document.pm_reference.get-divisions-by-user');
      Route::delete('/admin/document/pm_reference/delete_file', [App\Http\Controllers\PmReferenceController::class, 'deleteFile'])->name('document.pm_reference.delete_file');
+
+      //  VIP Reference
+
+      Route::get('/document/vip_reference',[App\Http\Controllers\VIPReferenceController::class, 'vip_reference'])->name('document.vip_reference.index');
+      Route::match(['get','post'],'/document/vip_reference/create',[App\Http\Controllers\VIPReferenceController::class, 'create'])->name('document.vip_reference.create');
+      Route::match(['get','post'],'/document/vip_reference/edit/{id}',[App\Http\Controllers\VIPReferenceController::class, 'edit'])->name('document.vip_reference.edit');
+      Route::post('/document/vip_reference/status',[App\Http\Controllers\VIPReferenceController::class, 'status'])->name('document.vip_reference.status');
+      Route::post('/vip_reference/delete',[App\Http\Controllers\VIPReferenceController::class, 'destroy'])->name('vip_reference.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\VIPReferenceController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/vip_reference/get-divisions-by-user', [App\Http\Controllers\VIPReferenceController::class, 'getDivisionsByUser'])->name('document.vip_reference.get-divisions-by-user');
+      Route::delete('/admin/document/vip_reference/delete_file', [App\Http\Controllers\VIPReferenceController::class, 'deleteFile'])->name('document.vip_reference.delete_file');
+
+      //  Cabinet Note
+
+      Route::get('/document/cabinet_note',[App\Http\Controllers\CabinetController::class, 'cabinet_note'])->name('document.cabinet_note.index');
+      Route::match(['get','post'],'/document/cabinet_note/create',[App\Http\Controllers\CabinetController::class, 'create'])->name('document.cabinet_note.create');
+      Route::match(['get','post'],'/document/cabinet_note/edit/{id}',[App\Http\Controllers\CabinetController::class, 'edit'])->name('document.cabinet_note.edit');
+      Route::post('/document/cabinet_note/status',[App\Http\Controllers\CabinetController::class, 'status'])->name('document.cabinet_note.status');
+      Route::post('/cabinet_note/delete',[App\Http\Controllers\CabinetController::class, 'destroy'])->name('cabinet_note.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\CabinetController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/cabinet_note/get-divisions-by-user', [App\Http\Controllers\CabinetController::class, 'getDivisionsByUser'])->name('document.cabinet_note.get-divisions-by-user');
+      Route::delete('/admin/document/cabinet_note/delete_file', [App\Http\Controllers\CabinetController::class, 'deleteFile'])->name('document.cabinet_note.delete_file');
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);

@@ -24,23 +24,6 @@
                     <div class="card-body p-4">
                         <form id="recruitmentForm" action="{{ route('admin.document.recruitment.edit', $recruitment->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            <!-- @if(Auth::user()->is_admin==1)
-                                <div class="col-md-6">
-                                    <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="division">
-                                        <option value="">--Select--</option>
-                                 
-                                           
-                                              <option value="{{$divisions->id}}"  selected>{{$divisions->name}}</option>
-                            
-                                    </select>
-                                    @if ($errors->has('division'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('division') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif -->
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $recruitment->computer_no }}" placeholder="computer no">
@@ -61,11 +44,11 @@
                                 <div id="file_no1" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="date_of_issue" class="form-label">Date of Issue <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="date_of_issue" name="date_of_issue" value="{{ $recruitment->date_of_issue }}" placeholder="date of issue">
-                                @if ($errors->has('date_of_issue'))
+                                <label for="date_of_publication" class="form-label">Date of Publication <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="date_of_publication" name="date_of_publication" value="{{ $recruitment->date_of_issue }}" placeholder="date of issue">
+                                @if ($errors->has('date_of_publication'))
                                     <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('date_of_issue') }}</strong>
+                                        <strong>{{ $errors->first('date_of_publication') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -128,7 +111,7 @@
                                         <strong>{{ $errors->first('keyword') }}</strong>
                                     </span>
                                 @endif
-                                <div id="key1" style="color: red; display: none;"></div>
+                                <div id="key_error" style="color: red; display: none;"></div>
                             </div>
 
                             <div class="col-md-6">
@@ -213,12 +196,21 @@
                     return false;
                 }
 
+                var keyValue = $('#key').val()
                 if($('#key').val()=="")
 				{
-                    $('#key1').text("Please Enter Keywords").show();
+                    $('#key_error').text("Please Enter Keywords").show();
 					$('#key').focus();
 					return false;
 				}
+
+                else if (keyValue.length < 5)
+                 {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                } 
+                
         });
     });
 </script>
@@ -253,15 +245,24 @@ $(document).ready(function() {
                     window.location.href = "{{ route('admin.document.recruitment.index') }}";
                 });
             },
-            error: function(xhr, status, error) {
-              
-                Swal.fire({
+            error: function(xhr) {
+        console.log(xhr);
+        $('.btn-primary1').prop('disabled', false).text('Submit');
+
+        if (xhr.responseJSON && xhr.responseJSON.errors) {
+            var errors = xhr.responseJSON.errors;
+            $.each(errors, function(key, value) {
+                $('#' + key + '_error').text(value[0]).show(); 
+            });
+        } else {
+            Swal.fire({
                 title: "Error!",
-                text: "An error occurred. Please try again.",
+                text: xhr.responseJSON?.message || "An error occurred. Please try again.",
                 icon: "error",
                 confirmButtonText: "OK"
             });
-            }
+        }
+    }
         });
     });
 });
