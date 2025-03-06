@@ -20,15 +20,12 @@ use Illuminate\Support\Facades\Session;
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                @if(in_array(41, $userPermissions))
-                    <a href="{{ route('admin.document.minutes_of_metting.create') }}" title="Add">
-                        <i class="bx bxs-plus-circle"></i>
-                    </a>
-                @else
-                    <a href="javascript:void(0);" class="disabled-link" title="No Permission">
-                        <i class="bx bxs-plus-circle text-muted"></i>
-                    </a>
-                @endif
+                @php
+                $userPermissions = session::get('user_permissions');
+                @endphp
+                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.minutes_of_metting.create') : 'javascript:void(0);' }}" 
+                class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}" 
+                title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
                 </div>
             </div>
         </div>
@@ -67,6 +64,7 @@ use Illuminate\Support\Facades\Session;
                                     <th scope="col">Designation</th>
                                     <th scope="col">Keywords</th>
                                     <th scope="col">Date of Upload</th>
+                                    <th scope="col">View</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -85,17 +83,18 @@ use Illuminate\Support\Facades\Session;
                                     <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
                                     <td>
                                         <!-- Button to Open Modal -->
-                                        <button class="btn btn-primary viewDetails" 
-                                            data-id="{{$r->id}}" 
-                                            data-computer_no="{{$r->computer_no}}" 
-                                            data-file_no="{{$r->file_no}}" 
-                                            data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
-                                            data-subject="{{$r->subject}}" 
-                                            data-issuer_name="{{$r->issuer_name}}" 
-                                            data-issuer_designation="{{$r->issuer_designation}}" 
-                                            data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
-                                            data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
-                                            View
+                                        <button type="button" class="btn btn-primary viewDetails" 
+                                        data-bs-toggle="modal" data-bs-target="#detailsModal"
+                                        data-id="{{$r->id}}" 
+                                        data-computer_no="{{$r->computer_no}}" 
+                                        data-file_no="{{$r->file_no}}" 
+                                        data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
+                                        data-subject="{{$r->subject}}" 
+                                        data-issuer_name="{{$r->issuer_name}}" 
+                                        data-issuer_designation="{{$r->issuer_designation}}" 
+                                        data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
+                                        data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
+                                        View
                                         </button>
                                     </td>
                                     <td>
@@ -139,16 +138,13 @@ use Illuminate\Support\Facades\Session;
     </div>
 </div>
 
-
 <!-- Bootstrap Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Recruitment Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="detailsModalLabel">Recruitment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <table class="table table-bordered">
@@ -267,22 +263,24 @@ use Illuminate\Support\Facades\Session;
             });
        });
 
-       $(document).ready(function(){
-        $('.viewDetails').click(function(){
-            // Get Data from Button Attributes
-            $('#modalComputerNo').text($(this).data('computer_no'));
-            $('#modalFileNo').text($(this).data('file_no'));
-            $('#modalDateOfIssue').text($(this).data('date_of_issue'));
-            $('#modalSubject').text($(this).data('subject'));
-            $('#modalIssuerName').text($(this).data('issuer_name'));
-            $('#modalIssuerDesignation').text($(this).data('issuer_designation'));
-            $('#modalKeyword').text($(this).data('keyword'));
-            $('#modalDateOfUpload').text($(this).data('date_of_upload'));
+       document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".viewDetails").forEach(button => {
+                button.addEventListener("click", function() {
+                    document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
+                    document.getElementById("modalFileNo").textContent = this.dataset.file_no;
+                    document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
+                    document.getElementById("modalSubject").textContent = this.dataset.subject;
+                    document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
+                    document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
+                    document.getElementById("modalKeyword").textContent = this.dataset.keyword;
+                    document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
 
-            // Open Modal
-            $('#detailsModal').modal('show');
+                    // Ensure modal opens (if data-bs-toggle doesn't work)
+                    var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                    modal.show();
+                });
+            });
         });
-    });
     
     </script>
 @endpush

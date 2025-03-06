@@ -20,15 +20,12 @@ use Illuminate\Support\Facades\Session;
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                @if(in_array(41, $userPermissions))
-                    <a href="{{ route('admin.document.recruitment.create') }}" title="Add">
-                        <i class="bx bxs-plus-circle"></i>
-                    </a>
-                @else
-                    <a href="javascript:void(0);" class="disabled-link" title="No Permission">
-                        <i class="bx bxs-plus-circle text-muted"></i>
-                    </a>
-                @endif
+                @php
+                $userPermissions = session::get('user_permissions');
+                @endphp
+                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.recruitment.create') : 'javascript:void(0);' }}" 
+                class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}" 
+                title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
                 </div>
             </div>
         </div>
@@ -69,6 +66,7 @@ use Illuminate\Support\Facades\Session;
                                     <th scope="col">Uploaded By Name & Designation</th>
                                     <th scope="col">Keywords</th>
                                     <th scope="col">Date of Upload</th>
+                                    <th scope="col">View</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
