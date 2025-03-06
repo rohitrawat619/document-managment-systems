@@ -180,7 +180,9 @@ class UserController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
+            return response()->json(['message' => 'Form created successfully!']);
+
+           // return redirect()->route('admin.users.index')->with('success','User Created Successfully !!');
 
         }
         catch (\Exception $e) {
