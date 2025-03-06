@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CabinateNote;
+use App\Models\Pragati;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use App\Models\CabinateNoteUpload;
+use App\Models\PragatiUpload;
 
 
-class CabinetController extends Controller
+class PragatiController extends Controller
 {
     public function __construct()
     {
@@ -23,8 +23,8 @@ class CabinetController extends Controller
 
     public function cabinet_note(Request $request)
 {
-    $cabinet_note = CabinateNote::where('is_deleted', 0)->paginate(10); 
-    return view('backend.document_types.cabinet_note.index', compact('cabinet_note'));
+    $cabinet_note = Pragati::where('is_deleted', 0)->paginate(10); 
+    return view('backend.document_types.pragati.index', compact('cabinet_note'));
 }
 
 public function create(Request $request)
@@ -51,7 +51,7 @@ public function create(Request $request)
                 $users = User::where('id', $authUser->id)->get();
             }
     
-            return view('backend.document_types.cabinet_note.create', compact('divisions', 'users','designation'));
+            return view('backend.document_types.pragati.create', compact('divisions', 'users','designation'));
         }
      
 
@@ -65,10 +65,10 @@ public function create(Request $request)
               
                 'computer_no' => 'required',
                 'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-                'subject' => 'required|string',
+                'agenda' => 'required|string',
                 'action' => 'required|string',
+                'date_of_reply' => 'required',
                 'issuer_name' => 'required|string',
-                'cabinet' => 'required|string',
                 'issuer_designation' => 'required|string',
                 'date_of_upload' => 'required',
                 'date_of_receipt' => 'required',
@@ -93,19 +93,19 @@ public function create(Request $request)
             }
             
 
-            $new_user = CabinateNote::create([
+            $new_user = Pragati::create([
                 'computer_no' => $request->computer_no,
                 'file_no'=> $request->file_no,
                 'user_id' => Auth::id(),
                 'date_of_receipt' => $request->date_of_receipt,
-                'subject' => $request->subject,
-                'cabinet' => $request->cabinet,
-                'action' => $request->action,
+                'agenda' => $request->agenda,
+                'action_taken' => $request->action,
+                'date_of_reply' => $request->date_of_reply,
                 'issuer_name' => $request->issuer_name,
                 'issuer_designation' => $request->issuer_designation,
                 'date_of_upload' => $request->date_of_upload,
                 'uploaded_by' => $roleId,
-                'keyword' => $request->key
+                'keywords' => $request->key
             ]);
 
 
@@ -117,9 +117,9 @@ public function create(Request $request)
                 //dd($a);
                 foreach ($a as $file) {
                     
-                    $path = $file->store('cabinet_note_upload', 'public');
+                    $path = $file->store('pragati_uploads', 'public');
 
-                    CabinateNoteUpload::create([
+                    PragatiUpload::create([
                         'file_path' => $path,
                         'user_id' => Auth::id(),
                         'record_id' => $new_user->id, 
@@ -148,17 +148,17 @@ public function create(Request $request)
 
     if($request->isMethod('get')) {
         
-        $cabinet_note = CabinateNote::where('id', $user_id)->first();
+        $cabinet_note = Pragati::where('id', $user_id)->first();
         // dd($CabinateNote);
         $data = $cabinet_note->id;
         $div = $cabinet_note->user_id;
 
-        $cabinet_note_upload = CabinateNoteUpload::where('record_id', $data)->get()->toArray();
+        $cabinet_note_upload = PragatiUpload::where('record_id', $data)->get()->toArray();
         // dd($CabinateNote_upload);
         //echo '<pre>'; print_r($CabinateNote); die;
         $divisions = Division::where('id', $div)->first();
         // dd($divisions);
-        return view('backend.document_types.cabinet_note.edit', compact('divisions', 'cabinet_note', 'cabinet_note_upload'));
+        return view('backend.document_types.pragati.edit', compact('divisions', 'cabinet_note', 'cabinet_note_upload'));
     }
     
     
@@ -168,7 +168,9 @@ public function create(Request $request)
         $validator = Validator::make($request->all(), [
             'computer_no' => 'required',
             'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-            'subject' => 'required|string',
+           'agenda' => 'required|string',
+            'action' => 'required|string',
+            'date_of_reply' => 'required',
             'issuer_name' => 'required|string',
             'issuer_designation' => 'required|string',
             'key' => 'required',
@@ -184,26 +186,27 @@ public function create(Request $request)
             return response()->json(['errors' => $validator->errors()], 422);
         }
         
-        $CabinateNote = CabinateNote::find($id);
+        $CabinateNote = Pragati::find($id);
 
         $CabinateNote->update([
             'computer_no' => $request->computer_no,
             'file_no' => $request->file_no,
             'date_of_receipt' => $request->date_of_receipt,
-            'subject' => $request->subject,
-            'action' => $request->action,
+            'agenda' => $request->agenda,
+            'action_taken' => $request->action,
+            'date_of_reply' => $request->date_of_reply,
             'issuer_name' => $request->issuer_name,
             'issuer_designation' => $request->issuer_designation,
             'date_of_upload' => $request->date_of_upload,
-            'keyword' => $request->key
+            'keywords' => $request->key
         ]);
      
     //$user = $request->user;
 
         if ($request->hasFile('upload_file')) {
             foreach ($request->file('upload_file') as $file) {
-                $path = $file->store('cabinet_note_upload', 'public');
-                CabinateNoteUpload::create([
+                $path = $file->store('pragati_uploads', 'public');
+                PragatiUpload::create([
                     'file_path' => $path,
                     'user_id' => $CabinateNote->user_id,
                     'record_id' => $CabinateNote->id,
@@ -239,7 +242,7 @@ public function deleteFile(Request $request)
             }
         }
 
-        $file = CabinateNoteUpload::find($fileId);
+        $file = PragatiUpload::find($fileId);
         // if ($file) {
         //     $file->delete();
         // }
@@ -254,7 +257,7 @@ public function destroy(Request $request)
     {  
         $user_id =base64_decode($request->id);
         $auth_id = Auth::user()->id;
-        $privacy = CabinateNote::find($user_id);
+        $privacy = Pragati::find($user_id);
         $privacy->is_deleted = '1';
         $privacy->deleted_by = $auth_id;
         $privacy->deleted_at = date('Y-m-d H:i:s');

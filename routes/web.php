@@ -252,6 +252,17 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
       Route::get('view-pdf/{file}', [App\Http\Controllers\CabinetController::class, 'viewPdf'])->name('view.pdf');
       Route::get('/admin/document/cabinet_note/get-divisions-by-user', [App\Http\Controllers\CabinetController::class, 'getDivisionsByUser'])->name('document.cabinet_note.get-divisions-by-user');
       Route::delete('/admin/document/cabinet_note/delete_file', [App\Http\Controllers\CabinetController::class, 'deleteFile'])->name('document.cabinet_note.delete_file');
+
+      //  Pragati
+
+      Route::get('/document/pragati',[App\Http\Controllers\PragatiController::class, 'cabinet_note'])->name('document.pragati.index');
+      Route::match(['get','post'],'/document/pragati/create',[App\Http\Controllers\PragatiController::class, 'create'])->name('document.pragati.create');
+      Route::match(['get','post'],'/document/pragati/edit/{id}',[App\Http\Controllers\PragatiController::class, 'edit'])->name('document.pragati.edit');
+      Route::post('/document/pragati/status',[App\Http\Controllers\PragatiController::class, 'status'])->name('document.pragati.status');
+      Route::post('/pragati/delete',[App\Http\Controllers\PragatiController::class, 'destroy'])->name('pragati.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\PragatiController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/pragati/get-divisions-by-user', [App\Http\Controllers\PragatiController::class, 'getDivisionsByUser'])->name('document.pragati.get-divisions-by-user');
+      Route::delete('/admin/document/pragati/delete_file', [App\Http\Controllers\PragatiController::class, 'deleteFile'])->name('document.pragati.delete_file');
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);
