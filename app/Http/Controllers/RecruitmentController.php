@@ -196,11 +196,10 @@ class RecruitmentController extends Controller
         $validator = Validator::make($request->all(), [
             'computer_no' => 'required',
             'file_no'=> 'required|regex:/^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u|min:1|max:255',
-            'date_of_issue' => 'required',
+            'date_of_publication' => 'required',
             'subject' => 'required|string',
             'issuer_name' => 'required|string',
             'issuer_designation' => 'required|string',
-            'division' => 'required',
             'key' => 'required',
             'date_of_upload' => 'required',
             'upload_file' => 'nullable|array|min:1',
@@ -243,7 +242,7 @@ class RecruitmentController extends Controller
         }
 
         DB::commit();
-        return response()->json('RecruitmentModel Updated Successfully!');
+        return response()->json(['message' => 'RecruitmentModel Updated Successfully!']);
         //return redirect()->route('admin.document.recruitment.index')->with('success', 'RecruitmentModel Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();

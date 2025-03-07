@@ -69,9 +69,11 @@ public function create(Request $request)
                 'issuer_name' => 'required|string',
                 'issuer_designation' => 'required|string',
                 'date_of_upload' => 'required',
+                'date_of_receipt' => 'required',
+                'date_of_sent' => 'required',
                 'upload_file' => 'required|array|min:1', 
-               'upload_file.*' => 'mimes:pdf|max:20480',
-               'key' => 'required',
+                'upload_file.*' => 'mimes:pdf|max:20480',
+                'key' => 'required',
                
             ];
 
@@ -85,7 +87,8 @@ public function create(Request $request)
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                 dd($validator->errors()); 
+                 //dd($validator->errors()); 
+                 return response()->json(['errors' => $validator->errors()], 422);
               
             }
             

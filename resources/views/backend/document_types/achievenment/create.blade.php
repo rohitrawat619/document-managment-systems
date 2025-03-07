@@ -10,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.document.achievenment.index')}}">Achievenment Rules</a>
+                        <li class="breadcrumb-item"><a href="{{route('admin.document.achievenment.index')}}">Achievenment</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Create</li>
                     </ol>
@@ -217,20 +217,22 @@
 					return false;
 				}
 
-                var keyValue = $('#key').val()
-                if($('#key').val()=="")
-				{
-                    $('#key_error').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
 
-                else if (keyValue.length < 5)
-                 {
+                if (keyValue === "") {
+                    $('#key_error').text("Please Enter Keywords").show();
+                    $('#key').focus();
+                    return false;
+                }
+
+                var characterCount = keyValue.replace(/\s/g, '').length;
+
+                if (characterCount < 5) {
                     $('#key_error').text("Minimum 5 characters required.").show();
                     $('#key').focus();
                     return false; 
-                } 
+                }
+
                 
             var fileInput2 = document.getElementById('upload_file');
             var file2 = fileInput2.files[0];

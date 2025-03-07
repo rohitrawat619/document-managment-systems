@@ -96,46 +96,37 @@ use Illuminate\Support\Facades\Session;
                                 <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                 <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                 <td>
-                                     <!-- Button to Open Modal -->
-                                     <button type="button" class="btn btn-primary viewDetails" 
-                                            data-bs-toggle="modal" data-bs-target="#detailsModal"
-                                            data-id="{{$r->id}}" 
-                                            data-computer_no="{{$r->computer_no}}" 
-                                            data-file_no="{{$r->file_no}}" 
-                                            data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
-                                            data-subject="{{$r->subject}}" 
-                                            data-issuer_name="{{$r->issuer_name}}" 
-                                            data-issuer_designation="{{$r->issuer_designation}}" 
-                                            data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
-                                            data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
-                                            View
-                                        </button>
+                                    <!-- Button to Open Modal -->
+                                    <button class="btn btn-primary viewDetails"
+                                        data-id="{{$r->id}}"
+                                        data-computer_no="{{$r->computer_no}}"
+                                        data-file_no="{{$r->file_no}}"
+                                        data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
+                                        data-subject="{{$r->subject}}"
+                                        data-issuer_name="{{$r->issuer_name}}"
+                                        data-issuer_designation="{{$r->issuer_designation}}"
+                                        data-keyword="{{ str_replace(',', ' ', $r->keyword) }}"
+                                        data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
+                                        View
+                                    </button>
                                 </td>
                                 <td>
                                 <div class="d-flex order-actions">
-                                        @if(in_array(42, $userPermissions))
-                                        <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
-                                            <i class="bx bxs-edit"></i>
-                                        </a>
-                                        @else
-                                            <a href="javascript:void(0);" 
-                                            class="disabled-link" 
-                                            title="No Permission" 
-                                            onclick="alert('You do not have edit permission to edit this item.');">
-                                            <i class="bx bxs-edit text-muted"></i>
-                                            </a>
-                                        @endif
-
-                                        @if(in_array(43, $userPermissions))
-                                            <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
-                                                <i class="bx bxs-trash"></i>
-                                            </a>
-                                        @else
-                                        <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission"
-                                        onclick="alert('You do not have permission to delete this item.');">
-                                            <i class="bx bxs-trash text-muted"></i>
-                                        </a>
-                                        @endif
+                                            @if(in_array(42, $userPermissions) || in_array(43, $userPermissions))
+                                                <a href="{{ route('admin.document.presentations.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <i class="bx bxs-edit"></i>
+                                                </a>
+                                                <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                    <i class="bx bxs-trash"></i>
+                                                </a>
+                                            @else
+                                                <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                                    <i class="bx bxs-edit text-muted"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                                    <i class="bx bxs-trash text-muted"></i>
+                                                </a>
+                                            @endif
                                         </div>
                                 </td>
                             </tr>

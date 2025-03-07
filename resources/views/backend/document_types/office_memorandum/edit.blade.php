@@ -24,7 +24,7 @@
                     <div class="card-body p-4">
                         <form id ="memorandumForm" action="{{ route('admin.document.office_memorandum.edit', $office_memorandum->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            @if(Auth::user()->is_admin==1)
+                            
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" name="division">
@@ -40,7 +40,7 @@
                                         </span>
                                     @endif
                                 </div>
-                            @endif
+                            
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $office_memorandum->computer_no }}" placeholder="computer no">
@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ $office_memorandum->issuer_name }}" placeholder="">
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ $office_memorandum->issuer_name }}" readonly>
                                 @if ($errors->has('issuer_name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
@@ -89,7 +89,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ $office_memorandum->issuer_designation }}" placeholder="">
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ $office_memorandum->issuer_designation }}" readonly>
                                 @if ($errors->has('issuer_designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
@@ -211,20 +211,22 @@
                     $('#file_no').focus();
                     return false;
                 }
-                var keyValue = $('#key').val()
-                if($('#key').val()=="")
-				{
-                    $('#key_error').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
 
-                else if (keyValue.length < 5)
-                 {
-                    $('#key_error').text("Minimum 5 characters required.").show();
-                    $('#key').focus();
-                    return false; 
-                } 
+if (keyValue === "") {
+    $('#key_error').text("Please Enter Keywords").show();
+    $('#key').focus();
+    return false;
+}
+
+var characterCount = keyValue.replace(/\s/g, '').length;
+
+if (characterCount < 5) {
+    $('#key_error').text("Minimum 5 characters required.").show();
+    $('#key').focus();
+    return false; 
+}
+
         });
     });
 </script>

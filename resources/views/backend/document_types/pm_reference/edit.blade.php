@@ -69,7 +69,7 @@
 
                             <div class="col-md-6">
                                 <label for="issuer_name" class="form-label">Issuer Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ $pm_reference->issuer_name }}" placeholder="">
+                                <input type="text" class="form-control" id="issuer_name" name="issuer_name" value="{{ $pm_reference->issuer_name }}" readonly>
                                 @if ($errors->has('issuer_name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_name') }}</strong>
@@ -78,7 +78,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ $pm_reference->issuer_designation }}" placeholder="">
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{ $pm_reference->issuer_designation }}" readonly>
                                 @if ($errors->has('issuer_designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
@@ -186,20 +186,22 @@
                     return false;
                 }
 
-                var keyValue = $('#key').val()
-                if($('#key').val()=="")
-				{
-                    $('#key_error').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
 
-                else if (keyValue.length < 5)
-                 {
+                if (keyValue === "") {
+                    $('#key_error').text("Please Enter Keywords").show();
+                    $('#key').focus();
+                    return false;
+                }
+
+                var characterCount = keyValue.replace(/\s/g, '').length;
+
+                if (characterCount < 5) {
                     $('#key_error').text("Minimum 5 characters required.").show();
                     $('#key').focus();
                     return false; 
-                } 
+                }
+
         });
     });
 </script>

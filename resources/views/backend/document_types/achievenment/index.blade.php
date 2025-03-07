@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Session;
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Achievenment Rules</li>
+                        <li class="breadcrumb-item active" aria-current="page">Achievenment</li>
                     </ol>
                 </nav>
             </div>
@@ -23,17 +23,9 @@ use Illuminate\Support\Facades\Session;
                 @php
                 $userPermissions = session::get('user_permissions');
                 @endphp
-
-                @php
-                $hasPermission = in_array(42, $userPermissions);
-                @endphp
-
-                <a href="{{ $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);' }}" 
-                    class="btn btn-primary {{ $hasPermission ? '' : 'no-permission' }}" 
-                    title="{{ $hasPermission ? 'Add' : 'No Permission' }}" 
-                    {!! $hasPermission ? '' : 'onclick="alert(\'You do not have write permission to perform this action.\');"' !!}>
-                    Add
-                    </a>
+                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.achievenment.create') : 'javascript:void(0);' }}" 
+                class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}" 
+                title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
                 </div>
             </div>
         </div>

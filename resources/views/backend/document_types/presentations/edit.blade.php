@@ -24,23 +24,6 @@
                     <div class="card-body p-4">
                         <form id="presentationsForm" action="{{ route('admin.document.presentations.edit', $presentations->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            <!-- @if(Auth::user()->is_admin==1)
-                                <div class="col-md-6">
-                                    <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="division">
-                                        <option value="">--Select--</option>
-                                 
-                                           
-                                              <option value="{{$divisions->id}}"  selected>{{$divisions->name}}</option>
-                            
-                                    </select>
-                                    @if ($errors->has('division'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('division') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif -->
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $presentations->computer_no }}" placeholder="computer no">

@@ -10,21 +10,21 @@ use Illuminate\Support\Facades\Session;
 <!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
-        <div class="container-fluid">
-          <div class="row row-cols-1 row-cols-md-3 g-3">
-          <div class="col">
-            <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-info" style="min-height: 60px;">
-                <div class="card-body d-flex flex-row justify-content-between align-items-center">
-                    <div>
-                        <p class="mb-0 text-secondary" style="font-size: 12px;">Total Divisions</p>
-                        <h4 class="my-1 text-info" style="font-size: 16px;">{{ $totaldivision }}</h4>
-                    </div>
-                    <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                        <i class='bx bxs-business'></i>
+                <div class="container-fluid">
+                <div class="row row-cols-1 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-info" style="min-height: 60px;">
+                        <div class="card-body d-flex flex-row justify-content-between align-items-center">
+                            <div>
+                                <p class="mb-0 text-secondary" style="font-size: 12px;">Total Divisions</p>
+                                <h4 class="my-1 text-info" style="font-size: 16px;">{{ $totaldivision }}</h4>
+                            </div>
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class='bx bxs-business'></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
             <div class="col">
                 <div class="card d-flex flex-column radius-10 border-start border-0 border-5 border-danger" style="min-height: 60px;">
                     <div class="card-body d-flex flex-row justify-content-between align-items-center">
@@ -54,7 +54,7 @@ use Illuminate\Support\Facades\Session;
     </div>
 </div>
 
-          </div>
+         
             <!--end row-->
 <div class="container-fluid">
             <div class="row">
@@ -64,10 +64,10 @@ use Illuminate\Support\Facades\Session;
 
                             <div id="chart-container">FusionCharts XT will load here!</div>
                             <meta name="csrf-token" content="{{ csrf_token() }}">
-                        </div>
+                            </div>
 
-                    </div>
-                </div>
+</div>
+</div>
 
              <!-- end row  -->
 
@@ -111,7 +111,7 @@ use Illuminate\Support\Facades\Session;
                     </ul>
                 </div>
             </div>
-            </div>
+            </div>  
     </div>
 <!--end page wrapper -->
 @push('scripts')
