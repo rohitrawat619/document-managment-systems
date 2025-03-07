@@ -81,10 +81,7 @@ use Illuminate\Support\Facades\Session;
                 @if(in_array('13', $userPermissions))
                     <li><a href="{{ route('admin.document.minutes_of_metting.index') }}"><i class='bx bx-radio-circle'></i> Minutes of Meeting (MoM) </a></li>
                 @endif
-                @if(in_array('14', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> 	
-                    Bilateral / Multilateral </a></li>
-                @endif
+               
                 @if(in_array('15', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> International Meetings (COPs, G20, etc)
                     </a></li>
@@ -129,7 +126,7 @@ use Illuminate\Support\Facades\Session;
                     <li><a href="{{ route('admin.document.cabinet_note.index') }}"><i class='bx bx-radio-circle'></i> Cabinet Note</a></li>
                 @endif
                 @if(in_array('29', $userPermissions))
-                    <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Pragati</a></li>
+                    <li><a href="{{ route('admin.document.pragati.index') }}"><i class='bx bx-radio-circle'></i> Pragati</a></li>
                 @endif
                 @if(in_array('30', $userPermissions))
                     <li><a href="{{ route('error404') }}"><i class='bx bx-radio-circle'></i> Prayas</a></li>
