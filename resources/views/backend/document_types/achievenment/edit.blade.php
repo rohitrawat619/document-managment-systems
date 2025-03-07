@@ -10,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.document.achievenment.index')}}">Achievenment Rules</a>
+                        <li class="breadcrumb-item"><a href="{{route('admin.document.achievenment.index')}}">Achievenment</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
