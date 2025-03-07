@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Session;
                     </ol>
                 </nav>
             </div>
+           
+            <div class="ms-auto">
+            <div class="btn-group">
             @php
                 $userPermissions = session::get('user_permissions');
                 @endphp
