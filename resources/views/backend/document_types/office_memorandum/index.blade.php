@@ -95,23 +95,23 @@ use Illuminate\Support\Facades\Session;
                                     <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                     <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
                                     <td>
-                                        <!-- Button to Open Modal -->
-                                        <button type="button" class="btn btn-primary viewDetails" 
-                                        data-bs-toggle="modal" data-bs-target="#detailsModal"
-                                        data-id="{{$r->id}}" 
-                                        data-computer_no="{{$r->computer_no}}" 
-                                        data-file_no="{{$r->file_no}}" 
-                                        data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
-                                        data-subject="{{$r->subject}}" 
-                                        data-issuer_name="{{$r->issuer_name}}" 
-                                        data-issuer_designation="{{$r->issuer_designation}}" 
-                                        data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
-                                        data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
-                                        View
+                                         <!-- Button to Open Modal -->
+                                         <button type="button" class="btn btn-primary viewDetails" 
+                                            data-bs-toggle="modal" data-bs-target="#detailsModal"
+                                            data-id="{{$r->id}}" 
+                                            data-computer_no="{{$r->computer_no}}" 
+                                            data-file_no="{{$r->file_no}}" 
+                                            data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
+                                            data-subject="{{$r->subject}}" 
+                                            data-issuer_name="{{$r->issuer_name}}" 
+                                            data-issuer_designation="{{$r->issuer_designation}}" 
+                                            data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
+                                            data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
+                                            View
                                         </button>
                                     </td>
                                     <td>        
-                                        <div class="d-flex order-actions">
+                                    <div class="d-flex order-actions">
                                         @if(in_array(42, $userPermissions))
                                         <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                             <i class="bx bxs-edit"></i>
@@ -209,6 +209,8 @@ use Illuminate\Support\Facades\Session;
     </div>
   </div>
 </div>
+
+
 @push('scripts')
     <script>
        $(document).on('click', '.status', function (event) {
@@ -308,12 +310,10 @@ use Illuminate\Support\Facades\Session;
                 }
             });
        });
-
      
-     
-       document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".viewDetails").forEach(button => {
-        button.addEventListener("click", function () {
+            document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".viewDetails").forEach(button => {
+            button.addEventListener("click", function () {
             document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
             document.getElementById("modalFileNo").textContent = this.dataset.file_no;
             document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
@@ -322,14 +322,14 @@ use Illuminate\Support\Facades\Session;
             document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
             document.getElementById("modalKeyword").textContent = this.dataset.keyword;
             document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
+            });
+        });
+
+        // Reset modal content when it closes
+        document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function () {
+            this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
         });
     });
-
-    // Reset modal content when it closes
-    document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function () {
-        this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
-    });
-});
 
 
     </script>

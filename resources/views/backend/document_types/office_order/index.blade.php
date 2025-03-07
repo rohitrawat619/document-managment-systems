@@ -21,11 +21,17 @@ use Illuminate\Support\Facades\Session;
             @php
                 $userPermissions = session::get('user_permissions');
                 @endphp
-            <div class="ms-auto">
-                <div class="btn-group">
-                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.office_order.create') : 'javascript:void(0);' }}" 
-                class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}" 
-                title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
+
+                @php
+                $hasPermission = in_array(42, $userPermissions);
+                @endphp
+
+                <a href="{{ $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);' }}" 
+                    class="btn btn-primary {{ $hasPermission ? '' : 'no-permission' }}" 
+                    title="{{ $hasPermission ? 'Add' : 'No Permission' }}" 
+                    {!! $hasPermission ? '' : 'onclick="alert(\'You do not have write permission to perform this action.\');"' !!}>
+                    Add
+                    </a>
                 </div>
             </div>
         </div>
@@ -86,8 +92,9 @@ use Illuminate\Support\Facades\Session;
                                     <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
                                     <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
                                     <td>
-                                        <!-- Button to Open Modal -->
-                                        <button class="btn btn-primary viewDetails" 
+                                         <!-- Button to Open Modal -->
+                                         <button type="button" class="btn btn-primary viewDetails" 
+                                            data-bs-toggle="modal" data-bs-target="#detailsModal"
                                             data-id="{{$r->id}}" 
                                             data-computer_no="{{$r->computer_no}}" 
                                             data-file_no="{{$r->file_no}}" 
@@ -102,26 +109,30 @@ use Illuminate\Support\Facades\Session;
                                     </td>
                                     <td>
                                     <div class="d-flex order-actions">
-                                    @if(in_array(42, $userPermissions))
-                                        <a href="{{ route('admin.document.office_order.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                        @if(in_array(42, $userPermissions))
+                                        <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                             <i class="bx bxs-edit"></i>
                                         </a>
-                                    @else
-                                        <a href="javascript:void(0);" class="disabled-link" title="No Permission">
+                                        @else
+                                            <a href="javascript:void(0);" 
+                                            class="disabled-link" 
+                                            title="No Permission" 
+                                            onclick="alert('You do not have edit permission to edit this item.');">
                                             <i class="bx bxs-edit text-muted"></i>
-                                        </a>
-                                    @endif
+                                            </a>
+                                        @endif
 
-                                    @if(in_array(43, $userPermissions))
-                                        <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
-                                            <i class="bx bxs-trash"></i>
-                                        </a>
-                                    @else
-                                        <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission">
+                                        @if(in_array(43, $userPermissions))
+                                            <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                <i class="bx bxs-trash"></i>
+                                            </a>
+                                        @else
+                                        <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission"
+                                        onclick="alert('You do not have permission to delete this item.');">
                                             <i class="bx bxs-trash text-muted"></i>
                                         </a>
-                                    @endif
-                                    </div>
+                                        @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -144,32 +155,60 @@ use Illuminate\Support\Facades\Session;
 
 
 
-<!-- Bootstrap Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Recruitment Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered">
-                    <tr><th>Computer No</th><td id="modalComputerNo"></td></tr>
-                    <tr><th>File No</th><td id="modalFileNo"></td></tr>
-                    <tr><th>Date of Issue</th><td id="modalDateOfIssue"></td></tr>
-                    <tr><th>Subject</th><td id="modalSubject"></td></tr>
-                    <tr><th>Issuer Name</th><td id="modalIssuerName"></td></tr>
-                    <tr><th>Issuer Designation</th><td id="modalIssuerDesignation"></td></tr>
-                    <tr><th>Keywords</th><td id="modalKeyword"></td></tr>
-                    <tr><th>Date of Upload</th><td id="modalDateOfUpload"></td></tr>
-                </table>
-            </div>
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>Computer No</th>
+                <td id="modalComputerNo"></td>
+              </tr>
+              <tr>
+                <th>File No</th>
+                <td id="modalFileNo"></td>
+              </tr>
+              <tr>
+                <th>Date of Issue</th>
+                <td id="modalDateOfIssue"></td>
+              </tr>
+              <tr>
+                <th>Subject</th>
+                <td id="modalSubject"></td>
+              </tr>
+              <tr>
+                <th>Issuer Name</th>
+                <td id="modalIssuerName"></td>
+              </tr>
+              <tr>
+                <th>Issuer Designation</th>
+                <td id="modalIssuerDesignation"></td>
+              </tr>
+              <tr>
+                <th>Keyword</th>
+                <td id="modalKeyword"></td>
+              </tr>
+              <tr>
+                <th>Date of Upload</th>
+                <td id="modalDateOfUpload"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
 </div>
-
 
 
 @push('scripts')
@@ -272,20 +311,23 @@ use Illuminate\Support\Facades\Session;
             });
        });
 
-       $(document).ready(function(){
-        $('.viewDetails').click(function(){
-            // Get Data from Button Attributes
-            $('#modalComputerNo').text($(this).data('computer_no'));
-            $('#modalFileNo').text($(this).data('file_no'));
-            $('#modalDateOfIssue').text($(this).data('date_of_issue'));
-            $('#modalSubject').text($(this).data('subject'));
-            $('#modalIssuerName').text($(this).data('issuer_name'));
-            $('#modalIssuerDesignation').text($(this).data('issuer_designation'));
-            $('#modalKeyword').text($(this).data('keyword'));
-            $('#modalDateOfUpload').text($(this).data('date_of_upload'));
+            document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".viewDetails").forEach(button => {
+            button.addEventListener("click", function () {
+            document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
+            document.getElementById("modalFileNo").textContent = this.dataset.file_no;
+            document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
+            document.getElementById("modalSubject").textContent = this.dataset.subject;
+            document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
+            document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
+            document.getElementById("modalKeyword").textContent = this.dataset.keyword;
+            document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
+            });
+        });
 
-            // Open Modal
-            $('#detailsModal').modal('show');
+        // Reset modal content when it closes
+        document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function () {
+            this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
         });
     });
 
