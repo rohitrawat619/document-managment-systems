@@ -140,7 +140,7 @@ class MinutesOfMetting extends Controller
             }
 
             DB::commit();
-            return response()->json('Form Created Successfully !!');
+            return response()->json(['message' => 'Form created successfully!']);
            // return redirect()->route('admin.document.minutes_of_metting.index')->with('success','Form Created Successfully !!');
 
         }
@@ -222,7 +222,7 @@ class MinutesOfMetting extends Controller
         }
 
         DB::commit();
-        return response()->json('Office Memorandum Updated Successfully!');
+        return response()->json(['message' => 'Minutes of Metting Updated successfully!']);
         //return redirect()->route('admin.document.minutes_of_metting.index')->with('success', 'Office Memorandum Updated Successfully!');
     } catch (\Exception $e) {
         DB::rollback();

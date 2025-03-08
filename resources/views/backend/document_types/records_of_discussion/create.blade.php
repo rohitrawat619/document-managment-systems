@@ -42,7 +42,7 @@
                                     <div id="error-message" style="color: red; display: none;"></div>
                                 </div>
                             
-                            @if(Auth::user()->is_admin == 1)
+                           
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" id="division" name="division">
@@ -56,7 +56,7 @@
                                     @endif
                                     <div id="division1" style="color: red; display: none;"></div>
                                 </div>
-                            @endif
+                           
                             <div class="col-md-6">
                                 <label for="agenda" class="form-label">Agenda <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="agenda" name="agenda" placeholder="">
@@ -89,7 +89,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="issuer_designation" class="form-label">Issuer Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" placeholder="">
+                                <input type="text" class="form-control" id="issuer_designation" name="issuer_designation" value="{{$designation->name}}" placeholder="" readonly>
                                 @if ($errors->has('issuer_designation'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('issuer_designation') }}</strong>
@@ -222,12 +222,22 @@
 					return false;
 				}
 
-                if($('#key').val()=="")
-				{
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
+
+                if (keyValue === "") {
                     $('#key_error').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                    $('#key').focus();
+                    return false;
+                }
+
+                var characterCount = keyValue.replace(/\s/g, '').length;
+
+                if (characterCount < 5) {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                }
+
                 
             var fileInput2 = document.getElementById('upload_file');
             var file2 = fileInput2.files[0];

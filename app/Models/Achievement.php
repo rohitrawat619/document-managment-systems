@@ -14,7 +14,7 @@ class Achievement extends Model
     protected $fillable = [
         'computer_no',
         'file_no',
-        'date_of_issue',
+        'date_of_publication',
         'subject',
         'issuer_name',
         'user_id',

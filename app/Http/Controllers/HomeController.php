@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -33,6 +34,10 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $role = Role::find($user->role_id);
+        // Check if the user needs to change their password
+        if ($user->is_pwd_changed == 0) {
+            return redirect()->route('admin.password.change');
+        }
         if ($role && !empty($role->permission_id)) {
             $permissions = explode(',', $role->permission_id); // Convert CSV to array
 
@@ -48,6 +53,33 @@ class HomeController extends Controller
             $totalForms = TotalCountModel::getTotalSubmissions();
 
             return view('backend.index', compact('totalUsers', 'totaldivision', 'totalForms'));
+    }
+
+    public function showChangePasswordForm()
+    {
+        return view('auth.change-password'); // Create this view file
+    }
+
+    public function changePassword(Request $request)
+    {
+    $request->validate([
+        'password' => 'required|min:6|confirmed',
+    ]);
+
+    $user = Auth::user();
+
+    if (!$user) {
+        return redirect()->route('login')->with('error', 'User not authenticated.');
+    }
+
+    $user->update([
+        'password' => Hash::make($request->password),
+        'is_pwd_changed' => 1,
+    ]);
+
+    session()->flash('success', 'Password Changed Successfully,Now You Can login With Your New Password');
+    Auth::logout();
+    return redirect()->route('admin.login');
     }
 
     public function error404()

@@ -145,7 +145,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/admin/document/recruitment/get-divisions-by-user', [App\Http\Controllers\RecruitmentController::class, 'getDivisionsByUser'])->name('document.recruitment.get-divisions-by-user');
     Route::delete('/admin/document/recruitment/delete_file', [App\Http\Controllers\RecruitmentController::class, 'deleteFile'])->name('document.recruitment.delete_file');
 
-     //achievenment 
+     //achievenment
 
      Route::get('/document/achievenment',[App\Http\Controllers\AchievementController::class, 'achievenment'])->name('document.achievenment.index');
      Route::match(['get','post'],'/document/achievenment/create',[App\Http\Controllers\AchievementController::class, 'create'])->name('document.achievenment.create');
@@ -156,7 +156,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
      Route::get('/admin/document/achievenment/get-divisions-by-user', [App\Http\Controllers\AchievementController::class, 'getDivisionsByUser'])->name('document.achievenment.get-divisions-by-user');
      Route::delete('/admin/document/achievenment/delete_file', [App\Http\Controllers\AchievementController::class, 'deleteFile'])->name('document.achievenment.delete_file');
 
-     // Record of Discussion 
+     // Record of Discussion
 
     Route::get('/document/records_of_discussion',[App\Http\Controllers\RecordController::class, 'records_of_discussion'])->name('document.records_of_discussion.index');
     Route::match(['get','post'],'/document/records_of_discussion/create',[App\Http\Controllers\RecordController::class, 'create'])->name('document.records_of_discussion.create');
@@ -168,7 +168,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::delete('/admin/document/records_of_discussion/delete_file', [App\Http\Controllers\RecordController::class, 'deleteFile'])->name('document.records_of_discussion.delete_file');
 
 
-    // Minutes of Meeting 
+    // Minutes of Meeting
 
     Route::get('/document/minutes_of_metting',[App\Http\Controllers\MinutesOfMetting::class, 'minutes_of_metting'])->name('document.minutes_of_metting.index');
     Route::match(['get','post'],'/document/minutes_of_metting/create',[App\Http\Controllers\MinutesOfMetting::class, 'create'])->name('document.minutes_of_metting.create');
@@ -192,7 +192,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::delete('/admin/document/gazette_notification/delete_file', [App\Http\Controllers\GazetteNotification::class, 'deleteFile'])->name('document.gazette_notification.delete_file');
 
 
-    
+
     // Presentations
 
     Route::get('/document/presentations',[App\Http\Controllers\PresentationController::class, 'presentations'])->name('document.presentations.index');
@@ -203,6 +203,64 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('view-pdf/{file}', [App\Http\Controllers\PresentationController::class, 'viewPdf'])->name('view.pdf');
     Route::get('/admin/document/presentations/get-divisions-by-user', [App\Http\Controllers\PresentationController::class, 'getDivisionsByUser'])->name('document.presentations.get-divisions-by-user');
     Route::delete('/admin/document/presentations/delete_file', [App\Http\Controllers\PresentationController::class, 'deleteFile'])->name('document.presentations.delete_file');
+
+    /*** routes for change password */
+    Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('password.update');
+
+     //  PM Reference
+
+     Route::get('/document/pm_reference',[App\Http\Controllers\PmReferenceController::class, 'pm_reference'])->name('document.pm_reference.index');
+     Route::match(['get','post'],'/document/pm_reference/create',[App\Http\Controllers\PmReferenceController::class, 'create'])->name('document.pm_reference.create');
+     Route::match(['get','post'],'/document/pm_reference/edit/{id}',[App\Http\Controllers\PmReferenceController::class, 'edit'])->name('document.pm_reference.edit');
+     Route::post('/document/pm_reference/status',[App\Http\Controllers\PmReferenceController::class, 'status'])->name('document.pm_reference.status');
+     Route::post('/pm_reference/delete',[App\Http\Controllers\PmReferenceController::class, 'destroy'])->name('pm_reference.delete');
+     Route::get('view-pdf/{file}', [App\Http\Controllers\PmReferenceController::class, 'viewPdf'])->name('view.pdf');
+     Route::get('/admin/document/pm_reference/get-divisions-by-user', [App\Http\Controllers\PmReferenceController::class, 'getDivisionsByUser'])->name('document.pm_reference.get-divisions-by-user');
+     Route::delete('/admin/document/pm_reference/delete_file', [App\Http\Controllers\PmReferenceController::class, 'deleteFile'])->name('document.pm_reference.delete_file');
+
+      //  VIP Reference
+
+      Route::get('/document/vip_reference',[App\Http\Controllers\VIPReferenceController::class, 'vip_reference'])->name('document.vip_reference.index');
+      Route::match(['get','post'],'/document/vip_reference/create',[App\Http\Controllers\VIPReferenceController::class, 'create'])->name('document.vip_reference.create');
+      Route::match(['get','post'],'/document/vip_reference/edit/{id}',[App\Http\Controllers\VIPReferenceController::class, 'edit'])->name('document.vip_reference.edit');
+      Route::post('/document/vip_reference/status',[App\Http\Controllers\VIPReferenceController::class, 'status'])->name('document.vip_reference.status');
+      Route::post('/vip_reference/delete',[App\Http\Controllers\VIPReferenceController::class, 'destroy'])->name('vip_reference.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\VIPReferenceController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/vip_reference/get-divisions-by-user', [App\Http\Controllers\VIPReferenceController::class, 'getDivisionsByUser'])->name('document.vip_reference.get-divisions-by-user');
+      Route::delete('/admin/document/vip_reference/delete_file', [App\Http\Controllers\VIPReferenceController::class, 'deleteFile'])->name('document.vip_reference.delete_file');
+
+      //  Cabinet Note
+
+      Route::get('/document/cabinet_note',[App\Http\Controllers\CabinetController::class, 'cabinet_note'])->name('document.cabinet_note.index');
+      Route::match(['get','post'],'/document/cabinet_note/create',[App\Http\Controllers\CabinetController::class, 'create'])->name('document.cabinet_note.create');
+      Route::match(['get','post'],'/document/cabinet_note/edit/{id}',[App\Http\Controllers\CabinetController::class, 'edit'])->name('document.cabinet_note.edit');
+      Route::post('/document/cabinet_note/status',[App\Http\Controllers\CabinetController::class, 'status'])->name('document.cabinet_note.status');
+      Route::post('/cabinet_note/delete',[App\Http\Controllers\CabinetController::class, 'destroy'])->name('cabinet_note.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\CabinetController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/cabinet_note/get-divisions-by-user', [App\Http\Controllers\CabinetController::class, 'getDivisionsByUser'])->name('document.cabinet_note.get-divisions-by-user');
+      Route::delete('/admin/document/cabinet_note/delete_file', [App\Http\Controllers\CabinetController::class, 'deleteFile'])->name('document.cabinet_note.delete_file');
+
+      //  Pragati
+
+      Route::get('/document/pragati',[App\Http\Controllers\PragatiController::class, 'cabinet_note'])->name('document.pragati.index');
+      Route::match(['get','post'],'/document/pragati/create',[App\Http\Controllers\PragatiController::class, 'create'])->name('document.pragati.create');
+      Route::match(['get','post'],'/document/pragati/edit/{id}',[App\Http\Controllers\PragatiController::class, 'edit'])->name('document.pragati.edit');
+      Route::post('/document/pragati/status',[App\Http\Controllers\PragatiController::class, 'status'])->name('document.pragati.status');
+      Route::post('/pragati/delete',[App\Http\Controllers\PragatiController::class, 'destroy'])->name('pragati.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\PragatiController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/pragati/get-divisions-by-user', [App\Http\Controllers\PragatiController::class, 'getDivisionsByUser'])->name('document.pragati.get-divisions-by-user');
+      Route::delete('/admin/document/pragati/delete_file', [App\Http\Controllers\PragatiController::class, 'deleteFile'])->name('document.pragati.delete_file');
+      //  Rebuttals
+
+      Route::get('/document/rebuttals',[App\Http\Controllers\RebuttalsController::class, 'rebuttals'])->name('document.rebuttals.index');
+      Route::match(['get','post'],'/document/rebuttals/create',[App\Http\Controllers\RebuttalsController::class, 'create'])->name('document.rebuttals.create');
+      Route::match(['get','post'],'/document/rebuttals/edit/{id}',[App\Http\Controllers\RebuttalsController::class, 'edit'])->name('document.rebuttals.edit');
+      Route::post('/document/rebuttals/status',[App\Http\Controllers\RebuttalsController::class, 'status'])->name('document.rebuttals.status');
+      Route::post('/rebuttals/delete',[App\Http\Controllers\RebuttalsController::class, 'destroy'])->name('rebuttals.delete');
+      Route::get('view-pdf/{file}', [App\Http\Controllers\RebuttalsController::class, 'viewPdf'])->name('view.pdf');
+      Route::get('/admin/document/rebuttals/get-divisions-by-user', [App\Http\Controllers\RebuttalsController::class, 'getDivisionsByUser'])->name('document.rebuttals.get-divisions-by-user');
+      Route::delete('/admin/document/rebuttals/delete_file', [App\Http\Controllers\RebuttalsController::class, 'deleteFile'])->name('document.rebuttals.delete_file');
 });
 
 Route::get('/get-designations/{roleId}', [App\Http\Controllers\UserController::class, 'getDesignations']);

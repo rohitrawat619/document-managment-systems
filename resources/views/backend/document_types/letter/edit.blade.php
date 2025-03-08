@@ -24,7 +24,7 @@
                     <div class="card-body p-4">
                         <form id="letterForm" action="{{ route('admin.document.letter.edit', $letter->id) }}" method="post" class="row g-3" enctype="multipart/form-data">
                             @csrf
-                            @if(Auth::user()->is_admin==1)
+                           
                                 <div class="col-md-6">
                                     <label for="division" class="form-label">Division <span class="text-danger">*</span></label>
                                     <select class="form-control" name="division">
@@ -40,7 +40,7 @@
                                         </span>
                                     @endif
                                 </div>
-                            @endif
+                          
                             <div class="col-md-6">
                                 <label for="computer_no" class="form-label">Computer No.(E/P) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="computer_no" name="computer_no" value="{{ $letter->computer_no }}" placeholder="computer no">
@@ -190,8 +190,11 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+@push('scripts')
+
 <script type="text/javascript">
 	$(document).ready(function () {
         $('#sub').click(function(e){
@@ -208,18 +211,26 @@
                     $('#file_no').focus();
                     return false;
                 }
-                if($('#key').val()=="")
-				{
-                    $('#key1').text("Please Enter Keywords").show();
-					$('#key').focus();
-					return false;
-				}
+                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
+
+                if (keyValue === "") {
+                    $('#key_error').text("Please Enter Keywords").show();
+                    $('#key').focus();
+                    return false;
+                }
+
+                var characterCount = keyValue.replace(/\s/g, '').length;
+
+                if (characterCount < 5) {
+                    $('#key_error').text("Minimum 5 characters required.").show();
+                    $('#key').focus();
+                    return false; 
+                }
+
         });
     });
 </script>
 
-
-@push('scripts')
 <script>
 $(document).ready(function() { 
     $('#letterForm').on('submit', function(e) {
@@ -242,7 +253,7 @@ $(document).ready(function() {
                     // window.location.href = "{{ route('admin.document.letter.index') }}";
                     Swal.fire({
                     title: "Success!",
-                    text: response.message || "Data Updated successfully!",
+                    text: response.message,
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {

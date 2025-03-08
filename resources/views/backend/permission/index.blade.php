@@ -101,6 +101,64 @@ use Illuminate\Support\Facades\Session;
         <!--end row-->
     </div>
 </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>Computer No</th>
+                <td id="modalComputerNo"></td>
+              </tr>
+              <tr>
+                <th>File No</th>
+                <td id="modalFileNo"></td>
+              </tr>
+              <tr>
+                <th>Date of Issue</th>
+                <td id="modalDateOfIssue"></td>
+              </tr>
+              <tr>
+                <th>Subject</th>
+                <td id="modalSubject"></td>
+              </tr>
+              <tr>
+                <th>Issuer Name</th>
+                <td id="modalIssuerName"></td>
+              </tr>
+              <tr>
+                <th>Issuer Designation</th>
+                <td id="modalIssuerDesignation"></td>
+              </tr>
+              <tr>
+                <th>Keyword</th>
+                <td id="modalKeyword"></td>
+              </tr>
+              <tr>
+                <th>Date of Upload</th>
+                <td id="modalDateOfUpload"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @push('scripts')
     <script>
        $(document).on('click', '.status', function (event) {
@@ -205,6 +263,28 @@ use Illuminate\Support\Facades\Session;
                 }
             });
        });
+
+            document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".viewDetails").forEach(button => {
+            button.addEventListener("click", function () {
+            document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
+            document.getElementById("modalFileNo").textContent = this.dataset.file_no;
+            document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
+            document.getElementById("modalSubject").textContent = this.dataset.subject;
+            document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
+            document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
+            document.getElementById("modalKeyword").textContent = this.dataset.keyword;
+            document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
+            });
+        });
+
+        // Reset modal content when it closes
+        document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function () {
+            this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
+        });
+    });
+
+
     </script>
 @endpush
 @endsection

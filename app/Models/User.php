@@ -25,6 +25,7 @@ class User extends Authenticatable
         'user_name',
         'email',
         'password',
+        'is_pwd_changed',
         'division',
         'designation',
         'role_id',
