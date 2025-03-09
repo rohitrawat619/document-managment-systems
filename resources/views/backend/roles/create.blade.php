@@ -52,16 +52,45 @@
                             </div>
                             
                             <hr/>
-                            @foreach($permission as $per)
-                            <div class = "col-md-3">
-                                <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                    {{ $per->name }}
-                                    </label>
+                            <div class="row">
+                                {{-- General Permissions --}}
+                                <div class="col-md-12">
+                                    <h4>General Permissions</h4>
+                                    <div class="row">
+                                        @foreach($permission as $per)
+                                            @if(!in_array($per->id, [40, 41, 42, 43])) 
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
+                                                        <label class="form-check-label" for="permission_{{ $per->id }}">
+                                                            {{ $per->name }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                {{-- Action Permissions (Placed at Bottom) --}}
+                                <div class="col-md-12 mt-4">
+                                    <h4>Action Permissions</h4>
+                                    <div class="row">
+                                        @foreach($permission as $per)
+                                            @if(in_array($per->id, [40, 41, 42, 43])) 
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
+                                                        <label class="form-check-label" for="permission_{{ $per->id }}">
+                                                            {{ $per->name }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
-                            @endforeach
                             
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">

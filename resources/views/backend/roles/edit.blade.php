@@ -19,7 +19,7 @@
         </div>
         <!--end breadcrumb-->
         <div class="row">
-    <div class="col-xl-12 mx-auto">
+        <div class="col-xl-12 mx-auto">
         <div class="card">
             <div class="card-body p-4">
                 <form action="{{route('admin.roles.edit',['id'=>base64_encode($roles->id)])}}" method="post" class="row g-3">
@@ -53,47 +53,48 @@
 
                     <hr/>
 
-                    <!-- General Permissions -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h5>General Permissions</h5>
-                        </div>
-                        @foreach($permissions as $per)
-                            @if(!in_array($per->id, [40, 41, 42, 43])) 
-                                <div class="col-md-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}"
-                                            {{ in_array($per->id, $rolePermissions) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="permission_{{ $per->id }}">
-                                            {{ $per->name }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
+                    <!-- General Permissions Dropdown -->
+<div class="row">
+    <div class="col-md-12">
+        <h5>General Permissions</h5>
+    </div>
 
-                    <hr/>
+    <div class="col-md-6">
+        <label for="general-permissions" class="form-label">Select Permission</label>
+        <select class="form-control" id="general-permissions">
+            <option value="">-- Select Permission --</option>
+            @foreach($permissions as $per)
+                @if(!in_array($per->id, [40, 41, 42, 43])) 
+                    <option value="{{ $per->id }}">{{ $per->name }}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+</div>
 
-                    <!-- Action Permissions -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h5>Action Permissions</h5>
-                        </div>
-                        @foreach($permissions as $per)
-                            @if(in_array($per->id, [40, 41, 42, 43])) 
-                                <div class="col-md-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}"
-                                            {{ in_array($per->id, $rolePermissions) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="permission_{{ $per->id }}">
-                                            {{ $per->name }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
+<hr/>
+
+<!-- Selected Permissions Table -->
+<div class="row">
+    <div class="col-md-12">
+        <h5>Selected Permissions & Actions</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Permission Name</th>
+                    <th>Read</th>
+                    <th>Write</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="permissions-table">
+                <!-- Selected permissions will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
 
                     <div class="col-md-12">
                         <div class="d-md-flex d-grid align-items-center gap-3">
@@ -115,6 +116,40 @@
     $(document).ready(function() {
     $('#multi-select').select2();
     });
+
+
+
+    $(document).ready(function() {
+        // Initialize Select2 for dropdown
+        $('#general-permissions').select2();
+
+        // Handle dropdown selection
+        $('#general-permissions').on('change', function() {
+            var permissionId = $(this).val();
+            var permissionName = $("#general-permissions option:selected").text();
+
+            if (permissionId && $("#row_" + permissionId).length == 0) {
+                var newRow = `
+                    <tr id="row_${permissionId}">
+                        <td>${permissionName}</td>
+                        <td><input type="checkbox" name="permissions[${permissionId}][]" value="read"></td>
+                        <td><input type="checkbox" name="permissions[${permissionId}][]" value="write"></td>
+                        <td><input type="checkbox" name="permissions[${permissionId}][]" value="update"></td>
+                        <td><input type="checkbox" name="permissions[${permissionId}][]" value="delete"></td>
+                        <td><button type="button" class="btn btn-danger btn-sm remove-permission" data-id="${permissionId}">Remove</button></td>
+                    </tr>
+                `;
+                $('#permissions-table').append(newRow);
+            }
+        });
+
+        // Remove selected permission
+        $(document).on('click', '.remove-permission', function() {
+            var id = $(this).data('id');
+            $('#row_' + id).remove();
+        });
+    });
+    
 </script>
 
 @endpush
