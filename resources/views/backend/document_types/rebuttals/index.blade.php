@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Session;
 @extends('layouts.backend.admin')
 @section('content')
 <div class="page-wrapper">
-    <div class="page-content">
+    <div class="page-content col-xl-12 mx-auto w-full text-sm text-left border">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
             <div class="breadcrumb-title pe-3">Document Type</div>
@@ -30,8 +30,8 @@ use Illuminate\Support\Facades\Session;
             </div>
         </div>
         <!--end breadcrumb-->
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row ">
+            <div class="col-md-12 ">
                 @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
@@ -43,9 +43,9 @@ use Illuminate\Support\Facades\Session;
                 </div>
                 @endif
             </div>
-            <div class="col-xl-12 mx-auto">
+            <div class="col-xl-12 mx-auto w-full text-sm text-left border">
                 <hr />
-                <div class="card">
+                <div class="card overflow-x-auto hidden md:block">
                     <div class="card-body">
                         <div class="d-flex  mb-3">
                             <form method="GET" action="{{ route('admin.document.rebuttals.index') }}" class="form-inline" style="width: 100%;">
@@ -94,7 +94,8 @@ use Illuminate\Support\Facades\Session;
                                             <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                             <td>
                                                 <!-- Button to Open Modal -->
-                                                <button class="btn btn-primary viewDetails"
+                                                <button type="button" class="btn btn-primary viewDetails"
+                                                    data-bs-toggle="modal" data-bs-target="#detailsModal"
                                                     data-id="{{$r->id}}"
                                                     data-computer_no="{{$r->computer_no}}"
                                                     data-file_no="{{$r->file_no}}"
@@ -147,57 +148,60 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 
-
-    <!-- Bootstrap Modal -->
-    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Recruitment Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Computer No</th>
-                            <td id="modalComputerNo"></td>
-                        </tr>
-                        <tr>
-                            <th>File No</th>
-                            <td id="modalFileNo"></td>
-                        </tr>
-                        <tr>
-                            <th>Date of Issue</th>
-                            <td id="modalDateOfIssue"></td>
-                        </tr>
-                        <tr>
-                            <th>Subject</th>
-                            <td id="modalSubject"></td>
-                        </tr>
-                        <tr>
-                            <th>Issuer Name</th>
-                            <td id="modalIssuerName"></td>
-                        </tr>
-                        <tr>
-                            <th>Issuer Designation</th>
-                            <td id="modalIssuerDesignation"></td>
-                        </tr>
-                        <tr>
-                            <th>Keywords</th>
-                            <td id="modalKeyword"></td>
-                        </tr>
-                        <tr>
-                            <th>Date of Upload</th>
-                            <td id="modalDateOfUpload"></td>
-                        </tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Computer No</th>
+                                    <td id="modalComputerNo"></td>
+                                </tr>
+                                <tr>
+                                    <th>File No</th>
+                                    <td id="modalFileNo"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Issue</th>
+                                    <td id="modalDateOfIssue"></td>
+                                </tr>
+                                <tr>
+                                    <th>Subject</th>
+                                    <td id="modalSubject"></td>
+                                </tr>
+                                <tr>
+                                    <th>Issuer Name</th>
+                                    <td id="modalIssuerName"></td>
+                                </tr>
+                                <tr>
+                                    <th>Issuer Designation</th>
+                                    <td id="modalIssuerDesignation"></td>
+                                </tr>
+                                <tr>
+                                    <th>Keyword</th>
+                                    <td id="modalKeyword"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Upload</th>
+                                    <td id="modalDateOfUpload"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-
 
     @push('scripts')
     <script>

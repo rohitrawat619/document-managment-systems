@@ -95,7 +95,15 @@
                             <div class="slick-slider">
                                 <div>
                                     <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-plum-plate" tabindex="-1">
-                                        <div class="slide-img-bg" style="background-image: url('{{asset('assets/admin/img/2.jpg')}}');"></div>
+                                        @php
+                                        $bgImage = asset('assets/admin/img/2.jpg');
+                                        @endphp
+
+                                        <div class="slide-img-bg" style="background-image: url('{{ $bgImage }}');"></div>@php
+                                        $bgImage = asset('assets/admin/img/2.jpg');
+                                        @endphp
+
+                                        <div class="slide-img-bg" style="background-image: url('{{ $bgImage }}');"></div>
                                         <div class="slider-content">
                                             <h3>Document Management System </h3>
                                             <p>This module will contain all functionalities from the present physical file system which is relevant to e-file manager module
@@ -105,7 +113,10 @@
                                 </div>
                                 <div>
                                     <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark" tabindex="-1">
-                                        <div class="slide-img-bg" style="background-image: url('{{asset('assets/admin/img/3.jpg')}}');"></div>
+                                        @php
+                                        $imagePath = asset('assets/admin/img/3.jpg');
+                                        @endphp
+                                        <div class="slide-img-bg" style="background-image: url('{{ $imagePath }}');"></div>
                                         <div class="slider-content">
                                             <h3>Document Management System </h3>
                                             <p>This module will contain all functionalities from the present physical file system which is relevant to e-file manager module
@@ -115,7 +126,7 @@
                                 </div>
                                 <div>
                                     <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-sunny-morning" tabindex="-1">
-                                        <div class="slide-img-bg" style="background-image: url('{{asset('assets/admin/img/1.jpg')}}');"></div>
+                                        <div class="slide-img-bg" style="background-image: url(/assets/admin/img/1.jpg);"></div>
                                         <div class="slider-content">
                                             <h3>Document Management System </h3>
                                             <p>This module will contain all functionalities from the present physical file system which is relevant to e-file manager module

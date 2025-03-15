@@ -28,10 +28,26 @@ use Illuminate\Support\Facades\Session;
                     $hasPermission = in_array(42, $userPermissions);
                     @endphp
 
-                    <a href="{{ $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);' }}"
-                        class="btn btn-primary {{ $hasPermission ? '' : 'no-permission' }}"
-                        title="{{ $hasPermission ? 'Add' : 'No Permission' }}"
-                        {!! $hasPermission ? '' : 'onclick="alert(\' You do not have write permission to perform this action.\');"' !!}>
+                    @php
+                    $url = $hasPermission
+                    ? route('admin.document.guideline.create')
+                    : 'javascript:void(0);';
+
+                    $class = 'btn btn-primary' . ($hasPermission ? '' : ' no-permission');
+
+                    $title = $hasPermission
+                    ? 'Add'
+                    : 'No Permission';
+
+                    $onclick = $hasPermission
+                    ? ''
+                    : 'onclick="alert(\'You do not have write permission to perform this action.\');"';
+                    @endphp
+
+                    <a href="{{ $url }}"
+                        class="{{ $class }}"
+                        title="{{ $title }}"
+                        {!! $onclick !!}>
                         Add
                     </a>
                 </div>
@@ -113,7 +129,7 @@ use Illuminate\Support\Facades\Session;
                                             <td>
                                                 <div class="d-flex order-actions">
                                                     @if(in_array(42, $userPermissions))
-                                                    <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <a href="{{ route('admin.document.guideline.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                                         <i class="bx bxs-edit"></i>
                                                     </a>
                                                     @else
@@ -154,51 +170,56 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 
-    <!-- Bootstrap Modal -->
-    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Recruitment Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Computer No</th>
-                            <td id="modalComputerNo"></td>
-                        </tr>
-                        <tr>
-                            <th>File No</th>
-                            <td id="modalFileNo"></td>
-                        </tr>
-                        <tr>
-                            <th>Date of Issue</th>
-                            <td id="modalDateOfIssue"></td>
-                        </tr>
-                        <tr>
-                            <th>Subject</th>
-                            <td id="modalSubject"></td>
-                        </tr>
-                        <tr>
-                            <th>Issuer Name</th>
-                            <td id="modalIssuerName"></td>
-                        </tr>
-                        <tr>
-                            <th>Issuer Designation</th>
-                            <td id="modalIssuerDesignation"></td>
-                        </tr>
-                        <tr>
-                            <th>Keywords</th>
-                            <td id="modalKeyword"></td>
-                        </tr>
-                        <tr>
-                            <th>Date of Upload</th>
-                            <td id="modalDateOfUpload"></td>
-                        </tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Computer No</th>
+                                    <td id="modalComputerNo"></td>
+                                </tr>
+                                <tr>
+                                    <th>File No</th>
+                                    <td id="modalFileNo"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Issue</th>
+                                    <td id="modalDateOfIssue"></td>
+                                </tr>
+                                <tr>
+                                    <th>Subject</th>
+                                    <td id="modalSubject"></td>
+                                </tr>
+                                <tr>
+                                    <th>Issuer Name</th>
+                                    <td id="modalIssuerName"></td>
+                                </tr>
+                                <tr>
+                                    <th>Issuer Designation</th>
+                                    <td id="modalIssuerDesignation"></td>
+                                </tr>
+                                <tr>
+                                    <th>Keyword</th>
+                                    <td id="modalKeyword"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Upload</th>
+                                    <td id="modalDateOfUpload"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

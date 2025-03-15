@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Session;
                     @endphp
 
                     @php
-                    $url = $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);';
+                    $url = $hasPermission ? route('admin.document.recruitment.create') : 'javascript:void(0);';
                     $class = 'btn btn-primary' . ($hasPermission ? '' : ' no-permission');
                     $title = $hasPermission ? 'Add' : 'No Permission';
                     $onclick = $hasPermission ? '' : "onclick=\"alert('You do not have write permission to perform this action.');\"";
@@ -117,7 +117,7 @@ use Illuminate\Support\Facades\Session;
                                             <td>
                                                 <div class="d-flex order-actions">
                                                     @if(in_array(42, $userPermissions))
-                                                    <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <a href="{{ route('admin.document.recruitment.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                                         <i class="bx bxs-edit"></i>
                                                     </a>
                                                     @else

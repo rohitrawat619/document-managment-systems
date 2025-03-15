@@ -28,10 +28,24 @@ use Illuminate\Support\Facades\Session;
                     $hasPermission = in_array(42, $userPermissions);
                     @endphp
 
-                    <a href="{{ $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);' }}"
-                        class="btn btn-primary {{ $hasPermission ? '' : 'no-permission' }}"
-                        title="{{ $hasPermission ? 'Add' : 'No Permission' }}"
-                        {!! $hasPermission ? '' : 'onclick="alert(\' You do not have write permission to perform this action.\');"' !!}>
+                    @php
+                    $url = $hasPermission
+                    ? route('admin.document.pm_reference.create')
+                    : 'javascript:void(0);';
+
+                    $class = 'btn btn-primary' . (!$hasPermission ? ' no-permission' : '');
+
+                    $title = $hasPermission ? 'Add' : 'No Permission';
+
+                    $onclick = $hasPermission
+                    ? ''
+                    : "onclick=\"alert('You do not have write permission to perform this action.');\"";
+                    @endphp
+
+                    <a href="{{ $url }}"
+                        class="{{ $class }}"
+                        title="{{ $title }}"
+                        {!! $onclick !!}>
                         Add
                     </a>
                 </div>
@@ -117,7 +131,7 @@ use Illuminate\Support\Facades\Session;
                                             <td>
                                                 <div class="d-flex order-actions">
                                                     @if(in_array(42, $userPermissions))
-                                                    <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                    <a href="{{ route('admin.document.pm_reference.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
                                                         <i class="bx bxs-edit"></i>
                                                     </a>
                                                     @else

@@ -28,10 +28,21 @@ use Illuminate\Support\Facades\Session;
                     $hasPermission = in_array(42, $userPermissions);
                     @endphp
 
-                    <a href="{{ $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);' }}"
-                        class="btn btn-primary {{ $hasPermission ? '' : 'no-permission' }}"
-                        title="{{ $hasPermission ? 'Add' : 'No Permission' }}"
-                        {!! $hasPermission ? '' : 'onclick="alert(\' You do not have write permission to perform this action.\');"' !!}>
+                    @php
+                    $url = $hasPermission
+                    ? route('admin.document.presentations.create')
+                    : 'javascript:void(0);';
+
+                    $classes = 'btn btn-primary' . ($hasPermission ? '' : ' no-permission');
+                    $title = $hasPermission ? 'Add' : 'No Permission';
+                    @endphp
+
+                    <a href="{{ $url }}"
+                        class="{{ $classes }}"
+                        title="{{ $title }}"
+                        @unless($hasPermission)
+                        onclick="alert('You do not have write permission to perform this action.');"
+                        @endunless>
                         Add
                     </a>
                 </div>
@@ -75,6 +86,7 @@ use Illuminate\Support\Facades\Session;
                                             <th scope="col">Uploaded By Name & Designation</th>
                                             <th scope="col">Keywords</th>
                                             <th scope="col">Date of Upload</th>
+                                            <th scope="col">View</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -97,7 +109,8 @@ use Illuminate\Support\Facades\Session;
                                             <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
                                             <td>
                                                 <!-- Button to Open Modal -->
-                                                <button class="btn btn-primary viewDetails"
+                                                <button type="button" class="btn btn-primary viewDetails"
+                                                    data-bs-toggle="modal" data-bs-target="#detailsModal"
                                                     data-id="{{$r->id}}"
                                                     data-computer_no="{{$r->computer_no}}"
                                                     data-file_no="{{$r->file_no}}"
@@ -145,7 +158,6 @@ use Illuminate\Support\Facades\Session;
             <!--end row-->
         </div>
     </div>
-
 
     <!-- Modal -->
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
@@ -201,126 +213,127 @@ use Illuminate\Support\Facades\Session;
             </div>
         </div>
     </div>
+</div>
 
-    @push('scripts')
-    <script>
-        $(document).on('click', '.status', function(event) {
-            var id = $(this).attr('data-id');
-            var type = $(this).attr('data-type');
+@push('scripts')
+<script>
+    $(document).on('click', '.status', function(event) {
+        var id = $(this).attr('data-id');
+        var type = $(this).attr('data-type');
 
-            // Correct way to call SweetAlert2
-            Swal.fire({
-                title: "Are you Want to Change The Status of This Form?",
-                text: "",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#189bc3",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "YES",
-                cancelButtonText: "CANCEL",
-                reverseButtons: true // Ensure the 'Cancel' button is on the right
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{route('admin.document.presentations.status')}}",
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            'id': id,
-                            'type': type
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                if (response.type == 'enable') {
-                                    $('table.userTable tr').find("[data-ac='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                    $('table.userTable tr').find("[data-dc='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.userTable tr').find("[data-a='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.userTable tr').find("[data-d='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                } else if (response.type == 'disable') {
-                                    $('table.userTable tr').find("[data-dc='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                    $('table.userTable tr').find("[data-ac='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.userTable tr').find("[data-d='" + id + "']").fadeOut("slow").addClass("d-none");
-                                    $('table.userTable tr').find("[data-a='" + id + "']").fadeIn("slow").removeClass("d-none");
-                                }
+        // Correct way to call SweetAlert2
+        Swal.fire({
+            title: "Are you Want to Change The Status of This Form?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#189bc3",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "YES",
+            cancelButtonText: "CANCEL",
+            reverseButtons: true // Ensure the 'Cancel' button is on the right
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{route('admin.document.presentations.status')}}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'id': id,
+                        'type': type
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            if (response.type == 'enable') {
+                                $('table.userTable tr').find("[data-ac='" + id + "']").fadeIn("slow").removeClass("d-none");
+                                $('table.userTable tr').find("[data-dc='" + id + "']").fadeOut("slow").addClass("d-none");
+                                $('table.userTable tr').find("[data-a='" + id + "']").fadeOut("slow").addClass("d-none");
+                                $('table.userTable tr').find("[data-d='" + id + "']").fadeIn("slow").removeClass("d-none");
+                            } else if (response.type == 'disable') {
+                                $('table.userTable tr').find("[data-dc='" + id + "']").fadeIn("slow").removeClass("d-none");
+                                $('table.userTable tr').find("[data-ac='" + id + "']").fadeOut("slow").addClass("d-none");
+                                $('table.userTable tr').find("[data-d='" + id + "']").fadeOut("slow").addClass("d-none");
+                                $('table.userTable tr').find("[data-a='" + id + "']").fadeIn("slow").removeClass("d-none");
                             }
-                            // Close SweetAlert
-                            Swal.close();
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            // handle error
                         }
-                    });
-                } else {
-                    // If the user clicked 'Cancel' or dismissed the SweetAlert
-                    Swal.close();
-                }
-            });
-        });
-
-        $(document).on('click', '.deleteBtn', function(event) {
-            var id = $(this).attr('data-id');
-
-            // Correct way to call SweetAlert2
-            Swal.fire({
-                title: "Are You Sure You Want to Delete?",
-                text: "",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#189bc3",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "YES",
-                cancelButtonText: "CANCEL",
-                reverseButtons: true // Ensure the 'Cancel' button is on the right
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{route('admin.presentations.delete')}}",
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            'id': id,
-                        },
-                        success: function(response) {
-
-                            if (response.success) {
-                                toastr.success('Form Deleted Successfully');
-                                window.setTimeout(function() {
-                                    window.location.reload();
-                                }, 2000);
-                            }
-                            // Close SweetAlert
-                            Swal.close();
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            // handle error
-                        }
-                    });
-                } else {
-                    // If the user clicked 'Cancel' or dismissed the SweetAlert
-                    Swal.close();
-                }
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".viewDetails").forEach(button => {
-                button.addEventListener("click", function() {
-                    document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
-                    document.getElementById("modalFileNo").textContent = this.dataset.file_no;
-                    document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
-                    document.getElementById("modalSubject").textContent = this.dataset.subject;
-                    document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
-                    document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
-                    document.getElementById("modalKeyword").textContent = this.dataset.keyword;
-                    document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
+                        // Close SweetAlert
+                        Swal.close();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        // handle error
+                    }
                 });
-            });
+            } else {
+                // If the user clicked 'Cancel' or dismissed the SweetAlert
+                Swal.close();
+            }
+        });
+    });
 
-            // Reset modal content when it closes
-            document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function() {
-                this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
+    $(document).on('click', '.deleteBtn', function(event) {
+        var id = $(this).attr('data-id');
+
+        // Correct way to call SweetAlert2
+        Swal.fire({
+            title: "Are You Sure You Want to Delete?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#189bc3",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "YES",
+            cancelButtonText: "CANCEL",
+            reverseButtons: true // Ensure the 'Cancel' button is on the right
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{route('admin.presentations.delete')}}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'id': id,
+                    },
+                    success: function(response) {
+
+                        if (response.success) {
+                            toastr.success('Form Deleted Successfully');
+                            window.setTimeout(function() {
+                                window.location.reload();
+                            }, 2000);
+                        }
+                        // Close SweetAlert
+                        Swal.close();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        // handle error
+                    }
+                });
+            } else {
+                // If the user clicked 'Cancel' or dismissed the SweetAlert
+                Swal.close();
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".viewDetails").forEach(button => {
+            button.addEventListener("click", function() {
+                document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
+                document.getElementById("modalFileNo").textContent = this.dataset.file_no;
+                document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
+                document.getElementById("modalSubject").textContent = this.dataset.subject;
+                document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
+                document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
+                document.getElementById("modalKeyword").textContent = this.dataset.keyword;
+                document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
             });
         });
-    </script>
-    @endpush
-    @endsection
+
+        // Reset modal content when it closes
+        document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function() {
+            this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
+        });
+    });
+</script>
+@endpush
+@endsection

@@ -28,10 +28,12 @@ use Illuminate\Support\Facades\Session;
                     $hasPermission = in_array(42, $userPermissions);
                     @endphp
 
-                    <a href="{{ $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);' }}"
-                        class="btn btn-primary {{ $hasPermission ? '' : 'no-permission' }}"
+                    <a href="{{ $hasPermission ? route('admin.document.records_of_discussion.create') : 'javascript:void(0);' }}"
+                        class="btn btn-primary{{ !$hasPermission ? ' no-permission' : '' }}"
                         title="{{ $hasPermission ? 'Add' : 'No Permission' }}"
-                        {!! $hasPermission ? '' : 'onclick="alert(\' You do not have write permission to perform this action.\');"' !!}>
+                        @unless($hasPermission)
+                        onclick="alert('You do not have write permission to perform this action.');"
+                        @endunless>
                         Add
                     </a>
                 </div>
@@ -91,7 +93,8 @@ use Illuminate\Support\Facades\Session;
                                             <td>{{ date('Y-m-d', strtotime($r->date_of_upload)) }}</td>
                                             <td>
                                                 <!-- Button to Open Modal -->
-                                                <button class="btn btn-primary viewDetails"
+                                                <button type="button" class="btn btn-primary viewDetails"
+                                                    data-bs-toggle="modal" data-bs-target="#detailsModal"
                                                     data-id="{{$r->id}}"
                                                     data-computer_no="{{$r->computer_no}}"
                                                     data-file_no="{{$r->file_no}}"
@@ -140,7 +143,6 @@ use Illuminate\Support\Facades\Session;
             <!--end row-->
         </div>
     </div>
-
 
     <!-- Modal -->
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
