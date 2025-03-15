@@ -131,8 +131,11 @@
         [type=submit],
         button {
             -webkit-appearance: button;
+            /* For Safari and older browsers */
+            appearance: button;
+            /* Standard property for modern browsers */
             background-color: transparent;
-            background-image: none
+            background-image: none;
         }
 
         :-moz-focusring {
@@ -152,9 +155,12 @@
             height: auto
         }
 
-        [type=search] {
+        [type="search"] {
             -webkit-appearance: textfield;
-            outline-offset: -2px
+            /* For Safari/old WebKit browsers */
+            appearance: textfield;
+            /* Standard property */
+            outline-offset: -2px;
         }
 
         ::-webkit-search-decoration {
@@ -231,7 +237,6 @@
         svg,
         video {
             display: block;
-            vertical-align: middle
         }
 
         img,

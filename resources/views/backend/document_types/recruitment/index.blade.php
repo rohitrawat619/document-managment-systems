@@ -28,10 +28,14 @@ use Illuminate\Support\Facades\Session;
                     $hasPermission = in_array(42, $userPermissions);
                     @endphp
 
-                    <a href="{{ $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);' }}"
-                        class="btn btn-primary {{ $hasPermission ? '' : 'no-permission' }}"
-                        title="{{ $hasPermission ? 'Add' : 'No Permission' }}"
-                        {!! $hasPermission ? '' : 'onclick="alert(\' You do not have write permission to perform this action.\');"' !!}>
+                    @php
+                    $url = $hasPermission ? route('admin.document.office_memorandum.create') : 'javascript:void(0);';
+                    $class = 'btn btn-primary' . ($hasPermission ? '' : ' no-permission');
+                    $title = $hasPermission ? 'Add' : 'No Permission';
+                    $onclick = $hasPermission ? '' : "onclick=\"alert('You do not have write permission to perform this action.');\"";
+                    @endphp
+
+                    <a href="{{ $url }}" class="{{ $class }}" title="{{ $title }}" {!! $onclick !!}>
                         Add
                     </a>
                 </div>
