@@ -28,9 +28,9 @@
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{$permission->name}}" placeholder="Permissions Name">
                                 @if ($errors->has('name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
                                 @endif
                             </div>
                             <div class="col-md-12">

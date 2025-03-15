@@ -7,11 +7,11 @@
             <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
             </div>
 
-              <div class="search-bar d-lg-block d-none" data-bs-toggle="modal" data-bs-target="#SearchModal">
-                 <a href="avascript:;" class="btn d-flex align-items-center"><i class='bx bx-search'></i>Search</a>
-              </div>
+            <div class="search-bar d-lg-block d-none" data-bs-toggle="modal" data-bs-target="#SearchModal">
+                <a href="avascript:;" class="btn d-flex align-items-center"><i class='bx bx-search'></i>Search</a>
+            </div>
 
-              <div class="top-menu ms-auto">
+            <div class="top-menu ms-auto">
                 <ul class="navbar-nav align-items-center gap-1">
                     <li class="nav-item mobile-search-icon d-flex d-lg-none" data-bs-toggle="modal" data-bs-target="#SearchModal">
                         <a class="nav-link" href="avascript:;"><i class='bx bx-search'></i>

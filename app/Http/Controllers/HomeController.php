@@ -43,16 +43,15 @@ class HomeController extends Controller
 
             Session::put('user_permissions', $permissions);
             Session::save();
-
         } else {
             $permissions = []; // Default empty permissions array
         }
-            $totalUsers = User::count();
-            $totaldivision = Division::count();
+        $totalUsers = User::count();
+        $totaldivision = Division::count();
 
-            $totalForms = TotalCountModel::getTotalSubmissions();
+        $totalForms = TotalCountModel::getTotalSubmissions();
 
-            return view('backend.index', compact('totalUsers', 'totaldivision', 'totalForms'));
+        return view('backend.index', compact('totalUsers', 'totaldivision', 'totalForms'));
     }
 
     public function showChangePasswordForm()
@@ -62,29 +61,28 @@ class HomeController extends Controller
 
     public function changePassword(Request $request)
     {
-    $request->validate([
-        'password' => 'required|min:6|confirmed',
-    ]);
+        $request->validate([
+            'password' => 'required|min:6|confirmed',
+        ]);
 
-    $user = Auth::user();
+        $user = Auth::user();
 
-    if (!$user) {
-        return redirect()->route('login')->with('error', 'User not authenticated.');
-    }
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'User not authenticated.');
+        }
 
-    $user->update([
-        'password' => Hash::make($request->password),
-        'is_pwd_changed' => 1,
-    ]);
+        $user->update([
+            'password' => Hash::make($request->password),
+            'is_pwd_changed' => 1,
+        ]);
 
-    session()->flash('success', 'Password Changed Successfully,Now You Can login With Your New Password');
-    Auth::logout();
-    return redirect()->route('admin.login');
+        session()->flash('success', 'Password Changed Successfully,Now You Can login With Your New Password');
+        Auth::logout();
+        return redirect()->route('admin.login');
     }
 
     public function error404()
     {
         return view('errors.404');
     }
-
 }

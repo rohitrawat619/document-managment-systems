@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Session;
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                @php
-                $userPermissions = session::get('user_permissions');
-                @endphp
-                <a href="{{ in_array(42, $userPermissions) ? route('admin.document.achievenment.create') : 'javascript:void(0);' }}" 
-                class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}" 
-                title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
+                    @php
+                    $userPermissions = session::get('user_permissions');
+                    @endphp
+                    <a href="{{ in_array(42, $userPermissions) ? route('admin.document.achievenment.create') : 'javascript:void(0);' }}"
+                        class="btn btn-primary {{ in_array(42, $userPermissions) ? '' : 'disabled' }}"
+                        title="{{ in_array(42, $userPermissions) ? 'Add' : 'No Permission' }}">Add</a>
                 </div>
             </div>
         </div>
@@ -33,150 +33,178 @@ use Illuminate\Support\Facades\Session;
         <div class="row">
             <div class="col-md-12">
                 @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
                 @endif
                 @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
                 @endif
             </div>
             <div class="col-xl-12 mx-auto">
-                <hr/>
+                <hr />
                 <div class="card">
                     <div class="card-body">
-                    <div class="d-flex  mb-3">
-                    <form method="GET" action="{{ route('admin.document.achievenment.index') }}" class="form-inline" style="width: 100%;">
-                    <div class="d-flex mb-3">
-                    <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
-                    <button type="submit" class="btn btn-primary ms-2">Search</button>
-                    <a href="{{ route('admin.document.achievenment.index') }}" class="btn btn-secondary ms-2">Reset</a>
-                    </div>
-                        <table class="table mb-0 table-hover table-bordered userTable">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Computer No.</th>
-                                    <th scope="col">File No.</th>
-                                    <th scope="col">Date of Issue</th>
-                                    <th scope="col">Subject</th>
-                                    <th scope="col">Issued by Name & Designation</th>
-                                    <th scope="col">Uploaded By Name & Designation</th>
-                                    <th scope="col">Keywords</th>
-                                    <th scope="col">Date of Upload</th>
-                                    <th scope="col">View</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                            $userPermissions = session::get('user_permissions');
-                            @endphp
-                            @forelse ($achievenment as $k => $r)
-                            <tr>
-                                <!-- Adjust numbering to be continuous across pages -->
-                                <th scope="row">{{ ($achievenment->currentPage() - 1) * $achievenment->perPage() + $k + 1 }}</th>
-                                <td>{{$r->computer_no}}</td>
-                                <td>{{$r->file_no}}</td>
-                                <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
-                                <td>{{$r->subject}}</td>
-                                <td>{{$r->issuer_name}}</td>
-                                <td>{{$r->issuer_designation}}</td>
-                                <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
-                                <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
-                                <td>
-                                         <!-- Button to Open Modal -->
-                                         <button type="button" class="btn btn-primary viewDetails" 
-                                        data-bs-toggle="modal" data-bs-target="#detailsModal"
-                                        data-id="{{$r->id}}" 
-                                        data-computer_no="{{$r->computer_no}}" 
-                                        data-file_no="{{$r->file_no}}" 
-                                        data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
-                                        data-subject="{{$r->subject}}" 
-                                        data-issuer_name="{{$r->issuer_name}}" 
-                                        data-issuer_designation="{{$r->issuer_designation}}" 
-                                        data-keyword="{{ str_replace(',', ' ', $r->keyword) }}" 
-                                        data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
-                                        View
-                                        </button>
-                                </td>
-                                <td>
-                                <div class="d-flex order-actions">
-                                        @if(in_array(42, $userPermissions))
-                                        <a href="{{ route('admin.document.office_memorandum.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
-                                            <i class="bx bxs-edit"></i>
-                                        </a>
-                                        @else
-                                            <a href="javascript:void(0);" 
-                                            class="disabled-link" 
-                                            title="No Permission" 
-                                            onclick="alert('You do not have edit permission to edit this item.');">
-                                            <i class="bx bxs-edit text-muted"></i>
-                                            </a>
-                                        @endif
+                        <div class="d-flex  mb-3">
+                            <form method="GET" action="{{ route('admin.document.achievenment.index') }}" class="form-inline" style="width: 100%;">
+                                <div class="d-flex mb-3">
+                                    <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request()->get('search') }}">
+                                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                                    <a href="{{ route('admin.document.achievenment.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                                </div>
+                                <table class="table mb-0 table-hover table-bordered userTable">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Computer No.</th>
+                                            <th scope="col">File No.</th>
+                                            <th scope="col">Date of Issue</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Issued by Name & Designation</th>
+                                            <th scope="col">Uploaded By Name & Designation</th>
+                                            <th scope="col">Keywords</th>
+                                            <th scope="col">Date of Upload</th>
+                                            <th scope="col">View</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                        $userPermissions = session::get('user_permissions');
+                                        @endphp
+                                        @forelse ($achievenment as $k => $r)
+                                        <tr>
+                                            <!-- Adjust numbering to be continuous across pages -->
+                                            <th scope="row">{{ ($achievenment->currentPage() - 1) * $achievenment->perPage() + $k + 1 }}</th>
+                                            <td>{{$r->computer_no}}</td>
+                                            <td>{{$r->file_no}}</td>
+                                            <td>{{date('Y-m-d',strtotime($r->date_of_issue))}}</td>
+                                            <td>{{$r->subject}}</td>
+                                            <td>{{$r->issuer_name}}</td>
+                                            <td>{{$r->issuer_designation}}</td>
+                                            <td>{{ str_replace(',', ' ', $r->keyword) }}</td>
+                                            <td>{{date('Y-m-d',strtotime($r->date_of_upload))}}</td>
+                                            <td>
+                                                <!-- Button to Open Modal -->
+                                                <button type="button" class="btn btn-primary viewDetails"
+                                                    data-bs-toggle="modal" data-bs-target="#detailsModal"
+                                                    data-id="{{$r->id}}"
+                                                    data-computer_no="{{$r->computer_no}}"
+                                                    data-file_no="{{$r->file_no}}"
+                                                    data-date_of_issue="{{date('Y-m-d', strtotime($r->date_of_issue))}}"
+                                                    data-subject="{{$r->subject}}"
+                                                    data-issuer_name="{{$r->issuer_name}}"
+                                                    data-issuer_designation="{{$r->issuer_designation}}"
+                                                    data-keyword="{{ str_replace(',', ' ', $r->keyword) }}"
+                                                    data-date_of_upload="{{date('Y-m-d', strtotime($r->date_of_upload))}}">
+                                                    View
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex order-actions">
+                                                    @if(in_array(42, $userPermissions))
+                                                    <a href="{{ route('admin.document.achievenment.edit', ['id' => base64_encode($r->id)]) }}" title="Edit">
+                                                        <i class="bx bxs-edit"></i>
+                                                    </a>
+                                                    @else
+                                                    <a href="javascript:void(0);"
+                                                        class="disabled-link"
+                                                        title="No Permission"
+                                                        onclick="alert('You do not have edit permission to edit this item.');">
+                                                        <i class="bx bxs-edit text-muted"></i>
+                                                    </a>
+                                                    @endif
 
-                                        @if(in_array(43, $userPermissions))
-                                            <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
-                                                <i class="bx bxs-trash"></i>
-                                            </a>
-                                        @else
-                                        <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission"
-                                        onclick="alert('You do not have permission to delete this item.');">
-                                            <i class="bx bxs-trash text-muted"></i>
-                                        </a>
-                                        @endif
-                                        </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <td class="text-center" colspan="9">No Records Found</td>
-                        @endforelse
-                            </tbody>
-                        </table>
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $achievenment->links('pagination::bootstrap-4') }}
+                                                    @if(in_array(43, $userPermissions))
+                                                    <a href="javascript:;" class="ms-3 deleteBtn" title="Delete" data-id="{{ base64_encode($r->id) }}">
+                                                        <i class="bx bxs-trash"></i>
+                                                    </a>
+                                                    @else
+                                                    <a href="javascript:void(0);" class="ms-3 disabled-link" title="No Permission"
+                                                        onclick="alert('You do not have permission to delete this item.');">
+                                                        <i class="bx bxs-trash text-muted"></i>
+                                                    </a>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <td class="text-center" colspan="9">No Records Found</td>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-center mt-4">
+                                    {{ $achievenment->links('pagination::bootstrap-4') }}
+                                </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--end row-->
-    </div>
-</div>
-
-
-<!-- Bootstrap Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Recruitment Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered">
-                    <tr><th>Computer No</th><td id="modalComputerNo"></td></tr>
-                    <tr><th>File No</th><td id="modalFileNo"></td></tr>
-                    <tr><th>Date of Issue</th><td id="modalDateOfIssue"></td></tr>
-                    <tr><th>Subject</th><td id="modalSubject"></td></tr>
-                    <tr><th>Issuer Name</th><td id="modalIssuerName"></td></tr>
-                    <tr><th>Issuer Designation</th><td id="modalIssuerDesignation"></td></tr>
-                    <tr><th>Keywords</th><td id="modalKeyword"></td></tr>
-                    <tr><th>Date of Upload</th><td id="modalDateOfUpload"></td></tr>
-                </table>
-            </div>
+            <!--end row-->
         </div>
     </div>
-</div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Computer No</th>
+                                    <td id="modalComputerNo"></td>
+                                </tr>
+                                <tr>
+                                    <th>File No</th>
+                                    <td id="modalFileNo"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Issue</th>
+                                    <td id="modalDateOfIssue"></td>
+                                </tr>
+                                <tr>
+                                    <th>Subject</th>
+                                    <td id="modalSubject"></td>
+                                </tr>
+                                <tr>
+                                    <th>Issuer Name</th>
+                                    <td id="modalIssuerName"></td>
+                                </tr>
+                                <tr>
+                                    <th>Issuer Designation</th>
+                                    <td id="modalIssuerDesignation"></td>
+                                </tr>
+                                <tr>
+                                    <th>Keyword</th>
+                                    <td id="modalKeyword"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Upload</th>
+                                    <td id="modalDateOfUpload"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-@push('scripts')
+    @push('scripts')
     <script>
-       $(document).on('click', '.status', function (event) {
+        $(document).on('click', '.status', function(event) {
             var id = $(this).attr('data-id');
             var type = $(this).attr('data-type');
 
@@ -201,7 +229,7 @@ use Illuminate\Support\Facades\Session;
                             'id': id,
                             'type': type
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.success) {
                                 if (response.type == 'enable') {
                                     $('table.userTable tr').find("[data-ac='" + id + "']").fadeIn("slow").removeClass("d-none");
@@ -218,7 +246,7 @@ use Illuminate\Support\Facades\Session;
                             // Close SweetAlert
                             Swal.close();
                         },
-                        error: function (xhr, textStatus, errorThrown) {
+                        error: function(xhr, textStatus, errorThrown) {
                             // handle error
                         }
                     });
@@ -227,9 +255,9 @@ use Illuminate\Support\Facades\Session;
                     Swal.close();
                 }
             });
-       });
+        });
 
-       $(document).on('click', '.deleteBtn', function (event) {
+        $(document).on('click', '.deleteBtn', function(event) {
             var id = $(this).attr('data-id');
 
             // Correct way to call SweetAlert2
@@ -252,18 +280,18 @@ use Illuminate\Support\Facades\Session;
                             "_token": "{{ csrf_token() }}",
                             'id': id,
                         },
-                        success: function (response) {
+                        success: function(response) {
 
                             if (response.success) {
                                 toastr.success('Form Deleted Successfully');
-                                window.setTimeout(function(){
+                                window.setTimeout(function() {
                                     window.location.reload();
-                                },2000);
+                                }, 2000);
                             }
                             // Close SweetAlert
                             Swal.close();
                         },
-                        error: function (xhr, textStatus, errorThrown) {
+                        error: function(xhr, textStatus, errorThrown) {
                             // handle error
                         }
                     });
@@ -272,28 +300,27 @@ use Illuminate\Support\Facades\Session;
                     Swal.close();
                 }
             });
-       });
+        });
 
-            document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".viewDetails").forEach(button => {
-            button.addEventListener("click", function () {
-            document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
-            document.getElementById("modalFileNo").textContent = this.dataset.file_no;
-            document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
-            document.getElementById("modalSubject").textContent = this.dataset.subject;
-            document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
-            document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
-            document.getElementById("modalKeyword").textContent = this.dataset.keyword;
-            document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
+                button.addEventListener("click", function() {
+                    document.getElementById("modalComputerNo").textContent = this.dataset.computer_no;
+                    document.getElementById("modalFileNo").textContent = this.dataset.file_no;
+                    document.getElementById("modalDateOfIssue").textContent = this.dataset.date_of_issue;
+                    document.getElementById("modalSubject").textContent = this.dataset.subject;
+                    document.getElementById("modalIssuerName").textContent = this.dataset.issuer_name;
+                    document.getElementById("modalIssuerDesignation").textContent = this.dataset.issuer_designation;
+                    document.getElementById("modalKeyword").textContent = this.dataset.keyword;
+                    document.getElementById("modalDateOfUpload").textContent = this.dataset.date_of_upload;
+                });
+            });
+
+            // Reset modal content when it closes
+            document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function() {
+                this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
             });
         });
-
-        // Reset modal content when it closes
-        document.getElementById('detailsModal').addEventListener('hidden.bs.modal', function () {
-            this.querySelectorAll(".modal-body span").forEach(span => span.textContent = "");
-        });
-    });
-    
     </script>
-@endpush
-@endsection
+    @endpush
+    @endsection
