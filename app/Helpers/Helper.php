@@ -1,13 +1,18 @@
 <?php
-namespace App\Helpers;
-class Helper {
 
-    public static function showCaptcha(){
+namespace App\Helpers;
+
+class Helper
+{
+
+    public static function showCaptcha()
+    {
         $captcha = self::generateCaptcha();
         session(['captcha_answer' => $captcha]);
     }
 
-    public static function generateCaptcha($length = 6){
+    public static function generateCaptcha($length = 6)
+    {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         $captcha = '';
         for ($i = 0; $i < $length; $i++) {
@@ -16,11 +21,13 @@ class Helper {
         return $captcha;
     }
 
-    public static function random_keys(){
+    public static function random_keys()
+    {
         return bin2Hex(random_bytes(16));
     }
 
-    public static function crypto_keys() {
+    public static function crypto_keys()
+    {
 
         // Use session for cryptojs keys
         session([
@@ -32,7 +39,8 @@ class Helper {
         ]);
     }
 
-    public static function decryptPassword($password) {
+    public static function decryptPassword($password)
+    {
         if (!empty($password)) {
             $password = base64_decode($password);
             $salt = hex2bin(session('salt'));
@@ -44,5 +52,3 @@ class Helper {
         }
     }
 }
-
-?>

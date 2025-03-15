@@ -28,46 +28,46 @@
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Role Name">
                                 @if ($errors->has('name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
                                 @endif
                             </div>
 
                             <div class="col-md-6">
-                            <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
-                            <select class="form-control" id="multi-select" name="designation[]" multiple="multiple">
-                            <option value="">--Select--</option>
+                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                                <select class="form-control" id="multi-select" name="designation[]" multiple="multiple">
+                                    <option value="">--Select--</option>
                                     @if(count($designations)>0)
-                                        @foreach ($designations as $dv)
-                                            <option value="{{$dv->id}}">{{$dv->name}}</option>
-                                        @endforeach
+                                    @foreach ($designations as $dv)
+                                    <option value="{{$dv->id}}">{{$dv->name}}</option>
+                                    @endforeach
                                     @endif
-                            </select>
-                            @if ($errors->has('designation'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('designation') }}</strong>
-                                    </span>
-                            @endif
+                                </select>
+                                @if ($errors->has('designation'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('designation') }}</strong>
+                                </span>
+                                @endif
                             </div>
-                            
-                            <hr/>
+
+                            <hr />
                             <div class="row">
                                 {{-- General Permissions --}}
                                 <div class="col-md-12">
                                     <h4>General Permissions</h4>
                                     <div class="row">
                                         @foreach($permission as $per)
-                                            @if(!in_array($per->id, [40, 41, 42, 43])) 
-                                                <div class="col-md-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
-                                                        <label class="form-check-label" for="permission_{{ $per->id }}">
-                                                            {{ $per->name }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            @endif
+                                        @if(!in_array($per->id, [40, 41, 42, 43]))
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
+                                                <label class="form-check-label" for="permission_{{ $per->id }}">
+                                                    {{ $per->name }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @endif
                                         @endforeach
                                     </div>
                                 </div>
@@ -77,21 +77,21 @@
                                     <h4>Action Permissions</h4>
                                     <div class="row">
                                         @foreach($permission as $per)
-                                            @if(in_array($per->id, [40, 41, 42, 43])) 
-                                                <div class="col-md-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
-                                                        <label class="form-check-label" for="permission_{{ $per->id }}">
-                                                            {{ $per->name }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            @endif
+                                        @if(in_array($per->id, [40, 41, 42, 43]))
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $per->id }}" id="permission_{{ $per->id }}">
+                                                <label class="form-check-label" for="permission_{{ $per->id }}">
+                                                    {{ $per->name }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @endif
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
                                     <button type="submit" class="btn btn-primary px-4">Submit</button>
@@ -112,7 +112,7 @@
 <script>
     /** select 2 multi select */
     $(document).ready(function() {
-    $('#multi-select').select2();
+        $('#multi-select').select2();
     });
 </script>
 

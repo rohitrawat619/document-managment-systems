@@ -1,4 +1,5 @@
-{{-- <?php defined( 'BASEPATH') OR exit( 'No direct script access allowed'); error_reporting(0); ?> --}}
+{{-- <?php defined('BASEPATH') or exit('No direct script access allowed');
+        error_reporting(0); ?> --}}
 <!doctype html>
 <html lang="en">
 
@@ -21,28 +22,27 @@
     <link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/css/slick-theme.css')}}"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/css/slick-theme.css')}}" />
     <script src="{{asset('assets/js/slick.js')}}" type="text/javascript" charset="utf-8"></script>
     <script src="{{asset('assets/js/main.js')}}" type="text/javascript"> </script>
     <script>
-        function preventBack(){window.history.forward();}
+        function preventBack() {
+            window.history.forward();
+        }
         setTimeout("preventBack()", 0);
-        window.onunload=function(){null};
+        window.onunload = function() {
+            null
+        };
     </script>
     <style>
-
         #refresh-captcha {
-        display: inline-block;
-        visibility: visible;
+            display: inline-block;
+            visibility: visible;
         }
-        #captchaText, #p-captchaText, #i-captchaText {
-            font-weight: bold;
-            font-size: 18px;
-            color: white;
-            margin-bottom: 10px;
-            text-transform: none;
-        }
-        #captchaText , #p-captchaText, #i-captchaText{
+
+        #captchaText,
+        #p-captchaText,
+        #i-captchaText {
             font-weight: bold;
             font-size: 18px;
             color: white;
@@ -50,11 +50,26 @@
             text-transform: none;
         }
 
-        #captcha,#p-captcha, #i-captcha{
+        #captchaText,
+        #p-captchaText,
+        #i-captchaText {
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            margin-bottom: 10px;
+            text-transform: none;
+        }
+
+        #captcha,
+        #p-captcha,
+        #i-captcha {
             text-transform: none !important;
         }
-        #refresh-captcha, #p-refresh-captcha, #i-refresh-captcha{
-            background-color:transparent;
+
+        #refresh-captcha,
+        #p-refresh-captcha,
+        #i-refresh-captcha {
+            background-color: transparent;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -119,35 +134,35 @@
                             <div class="app-logo"></div>
                             <h4 class="mb-0">
                                 <center> <b><span class="d-block"></span>
-                                <span>Please Change Your Password First, then Login</span></b></center>
+                                        <span>Please Change Your Password First, then Login</span></b></center>
                             </h4>
                             <!-- <h6 class="mt-3">No account? <a href="javascript:void(0);" class="text-primary">Sign up now</a></h6> -->
                             <div class="divider row"></div>
                             <div>
-                               <form action="{{ route('admin.password.update') }}" method="POST" enctype="multipart/form-data" id="loginFrm">
+                                <form action="{{ route('admin.password.update') }}" method="POST" enctype="multipart/form-data" id="loginFrm">
                                     @csrf
                                     <div class="form-row">
                                         <div class="col-md-12">
                                             @if (session('error'))
-                                                <div class="alert alert-danger">
-                                                    {{ session('error') }}
-                                                </div>
+                                            <div class="alert alert-danger">
+                                                {{ session('error') }}
+                                            </div>
                                             @endif
                                             @if (session('success'))
-                                                <div class="alert alert-success">
-                                                    {{ session('success') }}
-                                                </div>
+                                            <div class="alert alert-success">
+                                                {{ session('success') }}
+                                            </div>
                                             @endif
                                         </div>
-                                        
+
                                         <div class="col-md-12">
                                             <div class="position-relative form-group">
                                                 <b><label for="examplePassword">Password</label></b>
-                                                <input placeholder= "Password" name="password" id="password" class="form-control" type="password" autocomplete="off" onKeyPress="if(this.value.length==16) return false;" />
+                                                <input placeholder="Password" name="password" id="password" class="form-control" type="password" autocomplete="off" onKeyPress="if(this.value.length==16) return false;" />
                                                 @if ($errors->has('password'))
-                                                    <span class="invalid-feedback">
-                                                        <strong>{{ $errors->first('password') }}</strong>
-                                                    </span>
+                                                <span class="invalid-feedback">
+                                                    <strong>{{ $errors->first('password') }}</strong>
+                                                </span>
                                                 @endif
                                             </div>
                                         </div>
@@ -157,13 +172,13 @@
                                                 <b><label for="password_confirmation">Confirm Password</label></b>
                                                 <input placeholder="Confirm Password" name="password_confirmation" id="password_confirmation" class="form-control" type="text" autocomplete="off" onKeyPress="if(this.value.length==40) return false;" />
                                                 @if ($errors->has('password_confirmation'))
-                                                    <span class="invalid-feedback">
-                                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                                    </span>
+                                                <span class="invalid-feedback">
+                                                    <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                                </span>
                                                 @endif
                                             </div>
                                         </div>
-                                    
+
                                     </div>
                                     <div class="divider row"></div>
                                     <div class="d-flex align-items-center">
@@ -172,7 +187,7 @@
                                             <button type="submit" class="btn btn-primary btn-lg" id="" style="margin-top: -11%;">Change Password</button>
                                         </div>
                                     </div>
-                               </form>
+                                </form>
                             </div>
                         </div>
                     </div>

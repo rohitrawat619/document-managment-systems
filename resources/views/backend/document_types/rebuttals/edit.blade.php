@@ -41,23 +41,23 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Title/Subject <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="subject" name="subject" value="{{ $rebuttals->subject }}" >
+                                <input type="text" class="form-control" id="subject" name="subject" value="{{ $rebuttals->subject }}">
                                 <div id="subject_error" style="color: red; display: none;"></div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="court_name" class="form-label">Court/Tribunal Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="court_name" name="court_name"  value="{{ $rebuttals->court_name }}" >
+                                <input type="text" class="form-control" id="court_name" name="court_name" value="{{ $rebuttals->court_name }}">
                                 <div id="court_name_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="petitioner" class="form-label">Petitioner <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="petitioner" name="petitioner" value="{{ $rebuttals->petitioner }}" >
+                                <input type="text" class="form-control" id="petitioner" name="petitioner" value="{{ $rebuttals->petitioner }}">
                                 <div id="petitioner_error" style="color: red; display: none;"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="respondent" class="form-label">Respondent <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="respondent" name="respondent"  value="{{ $rebuttals->respondent }}">
+                                <input type="text" class="form-control" id="respondent" name="respondent" value="{{ $rebuttals->respondent }}">
                                 <div id="respondent_error" style="color: red; display: none;"></div>
                             </div>
 
@@ -76,7 +76,7 @@
                                 <input type="date" class="form-control" id="date_of_upload" name="date_of_upload" value="{{date('Y-m-d')}}" placeholder="date of issue" readonly>
                                 <div id="date_of_upload_error" style="color: red; display: none;"></div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label for="file_type" class="form-label">File Type <span class="text-danger">*</span></label>
                                 <select class="form-control" name="file_type">
@@ -97,27 +97,27 @@
 
                                 <div class="field_wrapper">
                                     @if(count($rebuttals_upload) == 0)
-                                        <div class="file-input-group d-flex align-items-center">
-                                            <input type="file" class="form-control" name="upload_file[]" id="upload_file">
-                                            <a href="javascript:void(0);" class="remove_button ms-2" style="display:none;">
-                                                <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
-                                            </a>
-                                        </div>
+                                    <div class="file-input-group d-flex align-items-center">
+                                        <input type="file" class="form-control" name="upload_file[]" id="upload_file">
+                                        <a href="javascript:void(0);" class="remove_button ms-2" style="display:none;">
+                                            <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
+                                        </a>
+                                    </div>
                                     @else
-                                        @foreach($rebuttals_upload as $key => $omu)
-                                        <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}" >
-                                            <input type="file" class="form-control" name="upload_file[]" disabled>
-                                            <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">
-                                            <span class="ms-2">{{ $omu['file_name'] }}</span>
-                                            <!-- Include data-id attribute here -->
-                                            <button type="button" class="view_pdf ms-2 my-2 btn btn-primary" data-file="{{ Storage::url($omu['file_path']) }}">View PDF</button>
-                                            <a href="javascript:void(0);" class="remove_button ms-2 my-2" title="Remove file" data-id="{{ $omu['id'] }}">
-                                                <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
-                                            </a>
-                                        </div>
-                                        @endforeach
+                                    @foreach($rebuttals_upload as $key => $omu)
+                                    <div class="file-input-group d-flex align-items-center" id="file-{{ $key }}">
+                                        <input type="file" class="form-control" name="upload_file[]" disabled>
+                                        <input type="hidden" name="existing_files[]" value="{{ $omu['file_path'] }}">
+                                        <span class="ms-2">{{ $omu['file_name'] }}</span>
+                                        <!-- Include data-id attribute here -->
+                                        <button type="button" class="view_pdf ms-2 my-2 btn btn-primary" data-file="{{ Storage::url($omu['file_path']) }}">View PDF</button>
+                                        <a href="javascript:void(0);" class="remove_button ms-2 my-2" title="Remove file" data-id="{{ $omu['id'] }}">
+                                            <img src="{{ url('assets/images/link-images/remove-icon.png') }}" />
+                                        </a>
+                                    </div>
+                                    @endforeach
                                     @endif
-                                   
+
                                 </div>
 
                                 <!-- Add button -->
@@ -128,23 +128,23 @@
                             </div>
 
                             <div id="pdfViewer" style="margin-top: 20px;">
-                            <iframe id="pdfIframe" width="100%" height="600px" style="display:none;" frameborder="0"></iframe>
+                                <iframe id="pdfIframe" width="100%" height="600px" style="display:none;" frameborder="0"></iframe>
                             </div>
 
-                            </div>
-                            <div class="col-md-12">
-                                <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button id ="sub" type="submit" class="btn btn-primary px-4" style="margin-bottom: 1%;margin-left: 1%;">Submit</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
+                    <div class="col-md-12">
+                        <div class="d-md-flex d-grid align-items-center gap-3">
+                            <button id="sub" type="submit" class="btn btn-primary px-4" style="margin-bottom: 1%;margin-left: 1%;">Submit</button>
+                        </div>
+                    </div>
+                    </form>
                 </div>
-
             </div>
+
         </div>
-        <!--end row-->
     </div>
+    <!--end row-->
+</div>
 </div>
 
 
@@ -152,201 +152,186 @@
 @push('scripts')
 
 <script type="text/javascript">
-	$(document).ready(function () {
-        $('#sub').click(function(e){
-            if($('#receipt_no').val()=="")
-				{
-                    $('#receipt_no1').text("Please Enter File No").show();
-					$('#receipt_no').focus();
-					return false;
-				}
-                var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
+    $(document).ready(function() {
+        $('#sub').click(function(e) {
+            if ($('#receipt_no').val() == "") {
+                $('#receipt_no1').text("Please Enter File No").show();
+                $('#receipt_no').focus();
+                return false;
+            }
+            var fileNoRegex = /^[A-Z][-][0-9]+[\/][0-9][\/]+[0-9]+[-][A-Z-()]+$/u;
 
-                if (!fileNoRegex.test($('#receipt_no').val())) {
-                    $('#receipt_no1').text("Invalid File No format. Please follow the correct format").show();
-                    $('#receipt_no').focus();
-                    return false;
-                }
+            if (!fileNoRegex.test($('#receipt_no').val())) {
+                $('#receipt_no1').text("Invalid File No format. Please follow the correct format").show();
+                $('#receipt_no').focus();
+                return false;
+            }
 
-                var keyValue = $('#key').val().trim().replace(/\s+/g, ' '); 
+            var keyValue = $('#key').val().trim().replace(/\s+/g, ' ');
 
-                if (keyValue === "") {
-                    $('#key_error').text("Please Enter Keywords").show();
-                    $('#key').focus();
-                    return false;
-                }
+            if (keyValue === "") {
+                $('#key_error').text("Please Enter Keywords").show();
+                $('#key').focus();
+                return false;
+            }
 
-                var characterCount = keyValue.replace(/\s/g, '').length;
+            var characterCount = keyValue.replace(/\s/g, '').length;
 
-                if (characterCount < 5) {
-                    $('#key_error').text("Minimum 5 characters required.").show();
-                    $('#key').focus();
-                    return false; 
-                }
+            if (characterCount < 5) {
+                $('#key_error').text("Minimum 5 characters required.").show();
+                $('#key').focus();
+                return false;
+            }
         });
     });
 </script>
 
 <script>
+    $(document).ready(function() {
+        $('#rebuttalsForm').on('submit', function(e) {
+            e.preventDefault();
 
-$(document).ready(function() { 
-    $('#rebuttalsForm').on('submit', function(e) {
-        e.preventDefault();  
+            var keywords = $('#key').val();
+            var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
+            $('#key').val(formattedKeywords);
 
-        var keywords = $('#key').val();
-        var formattedKeywords = keywords.trim().replace(/\s+/g, ',');
-        $('#key').val(formattedKeywords);
+            var formData = new FormData(this);
 
-        var formData = new FormData(this);  
-
-        $.ajax({
-            url: $(this).attr('action'),  
-            type: 'POST',
-            data: formData,
-            processData: false,  
-            contentType: false, 
-            success: function(response) { 
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
                     // alert(response);
                     // window.location.href = "{{ route('admin.document.rebuttals.index') }}";
                     Swal.fire({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success",
-                    confirmButtonText: "OK"
-                }).then(() => {
-                    window.location.href = "{{ route('admin.document.rebuttals.index') }}";
-                });
-            },
-            error: function(xhr) {
-        console.log(xhr);
-        $('.btn-primary1').prop('disabled', false).text('Submit');
+                        title: "Success!",
+                        text: response.message,
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "{{ route('admin.document.rebuttals.index') }}";
+                    });
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                    $('.btn-primary1').prop('disabled', false).text('Submit');
 
-        if (xhr.responseJSON && xhr.responseJSON.errors) {
-            var errors = xhr.responseJSON.errors;
-            if (errors.file_type) {
-                $('#file_type_error').text(errors.file_type[0]).show();
-            }
-            if (errors.upload_file) {
-                $('#upload_file_error').text(errors.upload_file[0]).show();
-            }
-            $.each(errors, function(key, value) {
-                $('#' + key + '_error').text(value[0]).show(); 
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        var errors = xhr.responseJSON.errors;
+                        if (errors.file_type) {
+                            $('#file_type_error').text(errors.file_type[0]).show();
+                        }
+                        if (errors.upload_file) {
+                            $('#upload_file_error').text(errors.upload_file[0]).show();
+                        }
+                        $.each(errors, function(key, value) {
+                            $('#' + key + '_error').text(value[0]).show();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: xhr.responseJSON?.message || "An error occurred. Please try again.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                }
             });
-        } else {
-            Swal.fire({
-                title: "Error!",
-                text: xhr.responseJSON?.message || "An error occurred. Please try again.",
-                icon: "error",
-                confirmButtonText: "OK"
-            });
-        }
-    }
         });
     });
-});
 
 
-$(document).ready(function() {
-    var maxField = 5; 
-    var addButton = $('.add_button'); 
-    var wrapper = $('.field_wrapper'); 
-    <?php $removeIconUrl = url('assets/images/link-images/remove-icon.png'); ?>
-    var removeIconUrl = '{{ $removeIconUrl }}';
+    $(document).ready(function() {
+        var maxField = 5;
+        var addButton = $('.add_button');
+        var wrapper = $('.field_wrapper');
+        <?php $removeIconUrl = url('assets/images/link-images/remove-icon.png'); ?>
+        var removeIconUrl = '{{ $removeIconUrl }}';
 
-    var fieldHTML = '<div class="file-input-group d-flex align-items-center">' +
-                    '<input type="file" class="form-control" name="upload_file[]">' +
-                    '<button type="button" class="view_pdf ms-2 my-2 btn btn-primary" style="display:none;">View PDF</button>' + 
-                    '<a href="javascript:void(0);" class="remove_button ms-2 my-2">' +
-                    '<img src="' + removeIconUrl + '" alt="remove" />' +
-                    '</a>'  +
-                    '</div>';
+        var fieldHTML = '<div class="file-input-group d-flex align-items-center">' +
+            '<input type="file" class="form-control" name="upload_file[]">' +
+            '<button type="button" class="view_pdf ms-2 my-2 btn btn-primary" style="display:none;">View PDF</button>' +
+            '<a href="javascript:void(0);" class="remove_button ms-2 my-2">' +
+            '<img src="' + removeIconUrl + '" alt="remove" />' +
+            '</a>' +
+            '</div>';
 
-    var x = wrapper.children('div').length; 
+        var x = wrapper.children('div').length;
 
-    $(addButton).click(function() {
-        if (x < maxField) { 
-            x++; 
-            $(wrapper).append(fieldHTML); 
+        $(addButton).click(function() {
+            if (x < maxField) {
+                x++;
+                $(wrapper).append(fieldHTML);
 
-            $(wrapper).find('input[type="file"]').last().change(function(e) {
-                var file = e.target.files[0];
-                var viewButton = $(this).siblings('.view_pdf');  
-                if (file && file.type === 'application/pdf') {
-                    viewButton.show();
-                    viewButton.click(function() {
-                        var fileURL = URL.createObjectURL(file);
-                        $('#pdfIframe').attr('src', fileURL).show(); 
+                $(wrapper).find('input[type="file"]').last().change(function(e) {
+                    var file = e.target.files[0];
+                    var viewButton = $(this).siblings('.view_pdf');
+                    if (file && file.type === 'application/pdf') {
+                        viewButton.show();
+                        viewButton.click(function() {
+                            var fileURL = URL.createObjectURL(file);
+                            $('#pdfIframe').attr('src', fileURL).show();
+                        });
+                    }
+                });
+            } else {
+                alert('A maximum of ' + maxField + ' fields are allowed to be added.');
+            }
+        });
+
+        $(wrapper).on('click', '.remove_button', function(e) {
+            e.preventDefault();
+
+            var filePath = $(this).siblings('input[type="hidden"]').val();
+            var fileId = $(this).data('id');
+
+            if (filePath) {
+                if (confirm('Are you sure you want to delete this file?')) {
+                    var $currentElement = $(this).closest('.file-input-group');
+                    $.ajax({
+                        url: "{{ route('admin.document.rebuttals.delete_file') }}",
+                        type: 'DELETE',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            file_path: filePath,
+                            file_id: fileId,
+                            delete_from_storage: true
+                        },
+                        success: function(response) {
+                            alert('File deleted successfully!');
+                            $currentElement.find('input[type="hidden"]').val('');
+                            $currentElement.remove();
+                            location.reload();
+
+                            var currentFileCount = $('.file-input-group').length;
+
+
+                            if (currentFileCount >= 5) {
+                                alert('You cannot add more than 5 files.');
+                            }
+                        },
+                        error: function() {
+                            alert('An error occurred while deleting the file.');
+                        }
                     });
                 }
-            });
-        } else {
-            alert('A maximum of ' + maxField + ' fields are allowed to be added.');
-        }
+            } else {
+                $(this).closest('.file-input-group').remove();
+                x--;
+            }
+        });
+
+
+
+        $(document).on('click', '.view_pdf', function() {
+            var fileURL = $(this).data('file');
+            $('#pdfIframe').attr('src', fileURL).show();
+        });
     });
-
-    $(wrapper).on('click', '.remove_button', function(e) {
-    e.preventDefault(); 
-    
-    var filePath = $(this).siblings('input[type="hidden"]').val();
-    var fileId = $(this).data('id');
-
-    if (filePath) {
-        if (confirm('Are you sure you want to delete this file?')) {
-            var $currentElement = $(this).closest('.file-input-group'); 
-            $.ajax({
-                url: "{{ route('admin.document.rebuttals.delete_file') }}", 
-                type: 'DELETE',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    file_path: filePath,
-                    file_id: fileId,
-                    delete_from_storage: true
-                },
-                success: function(response) {
-                    alert('File deleted successfully!');
-                    $currentElement.find('input[type="hidden"]').val(''); 
-                    $currentElement.remove(); 
-                    location.reload();
-
-                    var currentFileCount = $('.file-input-group').length;
-
-                    
-                    if (currentFileCount >= 5) {
-                        alert('You cannot add more than 5 files.');
-                    }
-                },
-                error: function() {
-                    alert('An error occurred while deleting the file.');
-                }
-            });
-        }
-    } else {
-        $(this).closest('.file-input-group').remove();
-        x--;
-    }
-});
-
-
-
-    $(document).on('click', '.view_pdf', function() {
-        var fileURL = $(this).data('file'); 
-        $('#pdfIframe').attr('src', fileURL).show();
-    });
-});
 </script>
 
 @endpush
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
